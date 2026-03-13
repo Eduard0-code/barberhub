@@ -2,11 +2,14 @@
 O projeto aborda a criação de uma plataforma de gestão e agendamento para a Barbearia BarberHub, um estabelecimento que busca alinhar a tradição do cuidado masculino com a praticidade da era digital. A visão geral contempla um ecossistema onde o cliente possui autonomia para agendar serviços e o gestor detém controle total sobre o fluxo financeiro e de estoque. O projeto justifica-se pela necessidade de eliminar gargalos operacionais e melhorar a experiência do cliente, focando em um público que valoriza agilidade e qualidade.
 
 ## Problema
-Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
+Muitas barbearias ainda realizam seus processos administrativos de forma manual. Isso pode gerar diversos problemas operacionais, como:
+Dificuldade no controle de clientes cadastrados
+Conflitos de horários nos agendamentos
+Alta de controle financeiro organizado
+Ausência de controle de estoque de produtos
+Dificuldade em obter feedback dos clientes sobre os serviços
+Essas limitações podem impactar negativamente na organização do negócio e na experiência do cliente.
 
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de  fato existir, pois ainda não é a hora de apresentar requisitos  detalhados ou projetos.
-
-Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thinking, que permite um olhar de ponta a ponta para o problema.
 
 > **Links Úteis**:
 > - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
@@ -15,28 +18,35 @@ Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thin
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima. 
-
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
+Identificar os principais processos de negócio de uma barbearia
+modelar os processos atuais do estabelecimento
+Propor melhorias por meio da digitalização desses processos
+Desenvolver modelos de processos utilizando BPMN
+Propor o desenvolvimento de um sistema digital para auxiliar na gestão dos principais processos de uma barbearia.
+Para alcançar o objetivo geral, o projeto foca nos seguintes pontos detalhados no arquivo:
+Otimização do Fluxo de Atendimento: Criar um módulo de agendamento em tempo real que permita a gestão de horários dos barbeiros, eliminando conflitos de agenda e reduzindo o tempo de espera dos clientes.
+Controle Inteligente de Insumos: Estruturar um sistema de gerenciamento de estoque que vincule automaticamente o uso de produtos (pomadas, lâminas, loções) à prestação dos serviços, gerando alertas de reposição e evitando desperdícios.
  
 > **Links Úteis**:
 > - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
 
 ## Justificativa
-
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
-
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
+A digitalização de processos em pequenos negócios permite melhorar a organização, reduzir erros manuais e facilitar o controle das atividades.
+No caso das barbearias, um sistema de gestão pode ajudar no controle de clientes, agendamentos, finanças, estoque e avaliação dos serviços.
+Além disso, o uso de tecnologia pode melhorar a experiência do cliente e contribuir para o crescimento do negócio.
 
 > **Links Úteis**:
 > - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
 
 ## Público-Alvo
+O projeto destina-se aos usuários:
+Proprietários de barbearias
+Responsáveis pela gestão do negócio e pelo controle financeiro.
+Barbeiros
+Profissionais que realizam os atendimentos e utilizam o sistema para consultar agendamentos e registrar serviços.
+Clientes
+Usuários que realizam agendamentos e avaliam os serviços prestados.
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
-hierárquicas, etc.
-
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
 
 > **Links Úteis**:
 > - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
