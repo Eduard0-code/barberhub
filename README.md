@@ -1,10 +1,13 @@
-# TÍTULO DO PROJETO
+# BarberHub
 
 `CURSO`
+Tecnologia em Análise e Desenvolvimento de Sistemas
 
 `DISCIPLINA`
+Trabalho Interdisciplinar: Aplicações para Processos de Negócios
 
 `SEMESTRE`
+2º semestre
 
 Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
 
@@ -17,7 +20,7 @@ Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo de
 
 ## Orientador
 
-* Nome completo do professor 1
+* Cleia Marcia Gomes Amaral
 
 ## Instruções de utilização
 
