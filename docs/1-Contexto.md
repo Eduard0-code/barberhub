@@ -1,6 +1,5 @@
 # Introdução
-
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+O projeto aborda a criação de uma plataforma de gestão e agendamento para a Barbearia BarberHub, um estabelecimento que busca alinhar a tradição do cuidado masculino com a praticidade da era digital. A visão geral contempla um ecossistema onde o cliente possui autonomia para agendar serviços e o gestor detém controle total sobre o fluxo financeiro e de estoque. O projeto justifica-se pela necessidade de eliminar gargalos operacionais e melhorar a experiência do cliente, focando em um público que valoriza agilidade e qualidade.
 
 ## Problema
 Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
