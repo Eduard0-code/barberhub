@@ -9,7 +9,7 @@ Trabalho Interdisciplinar: Aplicações para Processos de Negócios
 `SEMESTRE`
 2º semestre
 
-Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
+O projeto BarberHub se consiste em unificar a expêriencia do usuário, o serviço do barbeiro e a gestão do dono, tudo em uma aplicação web simples e intuitiva. Os usuários agendam os seus cortes, são lembrados e avaliam no fim do atendimento. O barbeiro se organiza conforme a agenda é preenchida, vê os produtos disponíveis, atende e registra os pagamentos + produtos usados. O gestor/dono vê o rendimento da barbearia, como o lucro, gasto, estoque de produtos, como está o andamento dos atendimentos entre os barbeiros. Essa unificação busca agilizar e criar uma visão geral do estabelecimento, sem complicações de utilizar multíplas plataformas.
 
 ## Integrantes
 
