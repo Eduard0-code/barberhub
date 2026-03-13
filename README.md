@@ -6,8 +6,8 @@ Tecnologia em Análise e Desenvolvimento de Sistemas
 `DISCIPLINA`
 Trabalho Interdisciplinar: Aplicações para Processos de Negócios
 
-`SEMESTRE`
-2º semestre
+`SEMESTRE
+1./2026`
 
 O BarberHub é uma solução digital de gestão desenhada para unificar a jornada da barbearia. Através de uma interface web intuitiva, o projeto otimiza o fluxo entre o agendamento do cliente, a rotina operacional do barbeiro e o controle financeiro do gestor. Utilizando modelagem de processos (BPMN), a ferramenta substitui o uso de múltiplas plataformas por um sistema centralizado que organiza desde o estoque até o faturamento, elevando a eficiência do negócio e a fidelização do cliente.
 
