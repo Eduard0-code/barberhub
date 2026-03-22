@@ -14,14 +14,14 @@ Roberto precisa interromper constantemente seus atendimentos para responder clie
 Do ponto de vista do cliente (Lucas), não existe um sistema claro para visualizar horários disponíveis, nem garantia de pontualidade, dificultando o planejamento de compromissos importantes.
 
 **Principais problemas** 
-Agendamentos feitos manualmente
-Falta de visualização de horários disponíveis
-Interrupções constantes no trabalho do barbeiro
-Falta de confirmação automática
-Clientes esquecem horários
-Ausência de controle financeiro estruturado
-Falta de controle de estoque
-Falta de registro de avaliações
+* Agendamentos feitos manualmente
+* Falta de visualização de horários disponíveis
+* Interrupções constantes no trabalho do barbeiro
+* Falta de confirmação automática
+* Clientes esquecem horários
+* Ausência de controle financeiro estruturado
+* Falta de controle de estoque
+* Falta de registro de avaliações
 
 ### 3.2. Descrição geral da proposta (Modelagem TO BE)
 
@@ -32,14 +32,14 @@ Roberto poderá definir seus horários de funcionamento, visualizar todos os age
 Além disso, o sistema integrará funcionalidades de controle financeiro, avaliações de serviços e gestão de estoque, centralizando todas as operações da barbearia.
 
 **Melhorias**
-Agendamento online automatizado
-Visualização de horários em tempo real
-Redução de interrupções para Roberto
-Envio de notificações e lembretes
-Controle financeiro básico
-Registro de avaliações
-Controle de estoque
-Histórico de clientes
+* Agendamento online automatizado
+* Visualização de horários em tempo real
+* Redução de interrupções para Roberto
+* Envio de notificações e lembretes
+* Controle financeiro básico
+* Registro de avaliações
+* Controle de estoque
+* Histórico de clientes
 
 ### 3.3. Modelagem dos processos
 
@@ -56,17 +56,17 @@ Na proposta (TO BE), o sistema permitirá que o próprio cliente (Lucas) realize
 
 Os tipos de dados utilizados no processo são:
 
-Área de texto: campo de texto de múltiplas linhas
-Caixa de texto: campo de texto de uma linha
-Número: campo numérico
-Data: campo do tipo data (dd-mm-aaaa)
-Hora: campo do tipo hora (hh:mm:ss)
-Data e Hora: campo do tipo data e hora (dd-mm-aaaa, hh:mm:ss)
-Imagem: campo contendo uma imagem
-Seleção única: campo com opções mutuamente exclusivas
-Seleção múltipla: campo com múltiplas opções selecionáveis
-Arquivo: campo para upload de documentos
-Link: campo para armazenar URL
+* Área de texto: campo de texto de múltiplas linhas
+* Caixa de texto: campo de texto de uma linha
+* Número: campo numérico
+* Data: campo do tipo data (dd-mm-aaaa)
+* Hora: campo do tipo hora (hh:mm:ss)
+* Data e Hora: campo do tipo data e hora (dd-mm-aaaa, hh:mm:ss)
+* Imagem: campo contendo uma imagem
+* Seleção única: campo com opções mutuamente exclusivas
+* Seleção múltipla: campo com múltiplas opções selecionáveis
+* Arquivo: campo para upload de documentos
+* Link: campo para armazenar URL
 
 **Acessar tela de cadastro**
 | **Campo**       | **Tipo** | **Restrições** | **Valor default** |
@@ -134,17 +134,17 @@ Os tipos de dados utilizados são:
 
 Os tipos de dados utilizados no processo são:
 
-Área de texto: campo de texto de múltiplas linhas
-Caixa de texto: campo de texto de uma linha
-Número: campo numérico
-Data: campo do tipo data (dd-mm-aaaa)
-Hora: campo do tipo hora (hh:mm:ss)
-Data e Hora: campo do tipo data e hora (dd-mm-aaaa, hh:mm:ss)
-Imagem: campo contendo uma imagem
-Seleção única: campo com várias opções mutuamente exclusivas
-Seleção múltipla: campo com várias opções selecionáveis
-Arquivo: campo para upload de documentos
-Link: campo que armazena uma URL
+* Área de texto: campo de texto de múltiplas linhas
+* Caixa de texto: campo de texto de uma linha
+* Número: campo numérico
+* Data: campo do tipo data (dd-mm-aaaa)
+* Hora: campo do tipo hora (hh:mm:ss)
+* Data e Hora: campo do tipo data e hora (dd-mm-aaaa, hh:mm:ss)
+* Imagem: campo contendo uma imagem
+* Seleção única: campo com várias opções mutuamente exclusivas
+* Seleção múltipla: campo com várias opções selecionáveis
+* Arquivo: campo para upload de documentos
+* Link: campo que armazena uma URL
 
 **Visualizar serviços**
 | **Campo**         | **Tipo**      | **Restrições**  | **Valor default** |
@@ -241,13 +241,13 @@ Esse processo contribui para melhor controle financeiro, redução de erros e ma
 
 Os tipos de dados utilizados no processo são:
 
-Área de texto: campo de texto de múltiplas linhas
-Caixa de texto: campo de texto de uma linha
-Número: campo numérico
-Data: campo do tipo data (dd-mm-aaaa)
-Hora: campo do tipo hora (hh:mm:ss)
-Data e Hora: campo do tipo data e hora (dd-mm-aaaa, hh:mm:ss)
-Seleção única: campo com opções mutuamente exclusivas
+* Área de texto: campo de texto de múltiplas linhas
+* Caixa de texto: campo de texto de uma linha
+* Número: campo numérico
+* Data: campo do tipo data (dd-mm-aaaa)
+* Hora: campo do tipo hora (hh:mm:ss)
+* Data e Hora: campo do tipo data e hora (dd-mm-aaaa, hh:mm:ss)
+* Seleção única: campo com opções mutuamente exclusivas
 
 **Informar serviço realizado**
 | **Campo** | **Tipo**       | **Restrições** | **Valor default** |
@@ -299,14 +299,14 @@ Isso permite que Roberto acompanhe a satisfação dos clientes e identifique opo
 ##### 3.3.4.2  Detalhamento das atividades do usuário (user tasks)
 Os tipos de dados utilizados no processo são:
 
-Área de texto: campo de texto de múltiplas linhas
-Caixa de texto: campo de texto de uma linha
-Número: campo numérico
-Data: campo do tipo data (dd-mm-aaaa)
-Hora: campo do tipo hora (hh:mm:ss)
-Data e Hora: campo do tipo data e hora
-Seleção única: campo com opções mutuamente exclusivas
-Tabela: conjunto de dados estruturados
+* Área de texto: campo de texto de múltiplas linhas
+* Caixa de texto: campo de texto de uma linha
+* Número: campo numérico
+* Data: campo do tipo data (dd-mm-aaaa)
+* Hora: campo do tipo hora (hh:mm:ss)
+* Data e Hora: campo do tipo data e hora
+* Seleção única: campo com opções mutuamente exclusivas
+* Tabela: conjunto de dados estruturados
 
 **Acessar avaliação**
 | **Campo**         | **Tipo**       | **Restrições** | **Valor default** |
@@ -375,12 +375,12 @@ Esse processo melhora a organização e evita interrupções nos atendimentos po
 
 Os tipos de dados utilizados no processo são:
 
-Área de texto: campo de texto de múltiplas linhas
-Caixa de texto: campo de texto de uma linha
-Número: campo numérico
-Data: campo do tipo data (dd-mm-aaaa)
-Hora: campo do tipo hora (hh:mm:ss)
-Seleção única: campo com opções mutuamente exclusivas
+* Área de texto: campo de texto de múltiplas linhas
+* Caixa de texto: campo de texto de uma linha
+* Número: campo numérico
+* Data: campo do tipo data (dd-mm-aaaa)
+* Hora: campo do tipo hora (hh:mm:ss)
+* Seleção única: campo com opções mutuamente exclusivas
 
 **Utilizar material**
 | **Campo**            | **Tipo**       | **Restrições** | **Valor default** |
