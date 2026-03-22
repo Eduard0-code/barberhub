@@ -116,8 +116,9 @@ Link: campo para armazenar URL
 
 
 ##### 3.3.1.3 Wireframes (user tasks) 
+![`wireframe Cadastro`](images/wireframeCadastro.png)
 
-### 3.3.2 Processo 2 – Gestão do Agendamento
+### 3.3.2 Processo 2 – (Gestão do Agendamento)
 
 O processo de agendamento tem como objetivo permitir que o cliente reserve um horário de atendimento de forma organizada e automatizada.
 
@@ -224,8 +225,9 @@ Link: campo que armazena uma URL
 | voltar       | Fim do processo          | cancel   |
 
 ##### 3.3.2.3 Wireframes (user tasks)
+![`wireframe Agendamento`](images/wireframeAgendamento.png)
 
-### 3.3.3 Processo 3 – Gestão do Financeira
+### 3.3.3 Processo 3 – (Gestão do Financeira)
 O processo de gestão financeira tem como objetivo registrar e controlar os valores recebidos pelos serviços realizados na barbearia.
 
 No cenário atual (AS IS), o controle financeiro é feito manualmente, geralmente por anotações, o que pode gerar erros e falta de organização. No cenário proposto (TO BE),após o barbeiro concluir o serviço no sistema,ele registra automaticamente os serviços realizados com seus valores, permitindo que o Barbeiro tenha uma visão clara do faturamento diário.
@@ -281,8 +283,9 @@ Seleção única: campo com opções mutuamente exclusivas
 
 
 ##### 3.3.3.3 Wireframes (user tasks)
+![`wireframe Financeiro`](images/wireframeFinanceiro.png)
 
-### 3.3.4 Processo 4 – Gestão da Avaliação do Serviço
+### 3.3.4 Processo 4 – (Gestão da Avaliação do Serviço)
 
 O processo de avaliação do serviço tem como objetivo coletar a opinião dos clientes sobre o atendimento realizado, permitindo melhorar a qualidade dos serviços prestados.
 
@@ -355,8 +358,9 @@ Tabela: conjunto de dados estruturados
 | sair         | Fim do processo       | cancel   |
 
 ##### 3.3.4.3 Wireframes (user tasks)
+![`wireframe Avaliacao`](images/wireframeAvaliacao.png)
 
-### 3.3.5 Processo 5 – Gestão do Estoque de Material da Barbearia
+### 3.3.5 Processo 5 – (Gestão do Estoque de Material da Barbearia)
 
 O processo de gestão de estoque tem como objetivo controlar a quantidade de materiais utilizados na barbearia, garantindo que não faltem itens essenciais para a realização dos serviços.
 
@@ -365,7 +369,7 @@ No cenário atual (AS IS), o controle de estoque é feito manualmente, o que pod
 Esse processo melhora a organização e evita interrupções nos atendimentos por falta de produtos.
 
 ##### 3.3.5.1  Modelagem BPMN
-![`ProcessodeGestãodeEstoqueDiagrama`](images/ProcessodeGestãodeEstoqueDiagrama.png)
+![`Processo de Gestão de Estoque Diagrama`](images/ProcessodeGestãodeEstoqueDiagrama.png)
 
 ##### 3.3.5.2  Detalhamento das atividades do usuário (user tasks)
 
@@ -424,5 +428,5 @@ Seleção única: campo com opções mutuamente exclusivas
 | salvar       | Atualizar estoque | default  |
 
 ##### 3.3.5.3 Wireframes (user tasks) 
-
+![`wireframe Estoque`](images/wireframeEstoque.png)
 
