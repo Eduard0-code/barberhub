@@ -51,7 +51,7 @@ Atualmente (AS IS), esse processo não é estruturado, sendo realizado de forma 
 Na proposta (TO BE), o sistema permitirá que o próprio cliente (Lucas) realize seu cadastro de forma autônoma, garantindo organização, rapidez e melhor experiência. Isso também reduz o tempo que Roberto gasta coletando dados manualmente.
 
 ##### 3.3.1.1  Modelagem BPMN
-[`ProcessodeGestãodeCadastrodeClienteDiagrama`](images/ProcessodeGestãodeCadastrodeClienteDiagrama.png)
+![`ProcessodeGestãodeCadastrodeClienteDiagrama`](images/ProcessodeGestãodeCadastrodeClienteDiagrama.png)
 ##### 3.3.1.2  Detalhamento das atividades do usuário (user tasks)
 
 Os tipos de dados utilizados no processo são:
@@ -126,7 +126,7 @@ No cenário atual (AS IS), os agendamentos são feitos manualmente por mensagens
 Esse processo melhora a pontualidade, reduz faltas e aumenta a eficiência da barbearia.
 
 ##### 3.3.2.1  Modelagem BPMN
-[`Processo de Gestão de Agendamento Diagrama`](images/ProcessodeGestãodeAgendamentoDiagrama.png)
+![`Processo de Gestão de Agendamento Diagrama`](images/ProcessodeGestãodeAgendamentoDiagrama.png)
 ##### 3.3.2.2  Detalhamento das atividades do usuário (user tasks)
 
 Os tipos de dados utilizados são:
@@ -233,7 +233,7 @@ No cenário atual (AS IS), o controle financeiro é feito manualmente, geralment
 Esse processo contribui para melhor controle financeiro, redução de erros e maior organização do negócio.
 
 ##### 3.3.3.1  Modelagem BPMN
-[`Processo de Gestão Financeira Diagrama`](images/ProcessodeGestãoFinanceiraDiagrama.png)
+![`Processo de Gestão Financeira Diagrama`](images/ProcessodeGestãoFinanceiraDiagrama.png)
 
 ##### 3.3.3.2  Detalhamento das atividades do usuário (user tasks)
 
@@ -291,7 +291,7 @@ No cenário atual (AS IS), as avaliações são informais ou inexistentes, ocorr
 Isso permite que Roberto acompanhe a satisfação dos clientes e identifique oportunidades de melhoria.
 
 ##### 3.3.4.1  Modelagem BPMN
-[`Processo de Gestão da Avaliação do Serviço Diagrama`](images/ProcessodeGestãodaAvaliaçãodoServiçoDiagrama.png)
+![`Processo de Gestão da Avaliação do Serviço Diagrama`](images/ProcessodeGestãodaAvaliaçãodoServiçoDiagrama.png)
 
 ##### 3.3.4.2  Detalhamento das atividades do usuário (user tasks)
 Os tipos de dados utilizados no processo são:
@@ -365,7 +365,7 @@ No cenário atual (AS IS), o controle de estoque é feito manualmente, o que pod
 Esse processo melhora a organização e evita interrupções nos atendimentos por falta de produtos.
 
 ##### 3.3.5.1  Modelagem BPMN
-[`ProcessodeGestãodeEstoqueDiagrama`](images/ProcessodeGestãodeEstoqueDiagrama.png)
+![`ProcessodeGestãodeEstoqueDiagrama`](images/ProcessodeGestãodeEstoqueDiagrama.png)
 
 ##### 3.3.5.2  Detalhamento das atividades do usuário (user tasks)
 
