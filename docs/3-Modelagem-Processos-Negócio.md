@@ -68,55 +68,78 @@ Os tipos de dados utilizados no processo são:
 * Arquivo: campo para upload de documentos
 * Link: campo para armazenar URL
 
-**Acessar tela de cadastro**
-| **Campo**       | **Tipo** | **Restrições** | **Valor default** |
-| --------------- | -------- | -------------- | ----------------- |
-| botão cadastrar | Link     | obrigatório    | -                 |
+**Acessar tela de cadastro 1**
+| **Campo**         | **Tipo**       | **Restrições**      | **Valor default** |
+| ---------------   | --------       | --------------      | ----------------- |
+| email             | Caixa de texto | formato de e-mail   | joao@exemplo.com  |
+| senha             | Caixa de texto | mínimo 8 caracteres | ********          |
+| botão login       | Link           | obrigatório         | -                 |
+| botão cadastro    | Link           | obrigatório         | -                 |
+
 | **Comandos** | **Destino**                | **Tipo** |
 | ------------ | -------------------------- | -------- |
-| cadastrar    | Preencher dados do cliente | default  |
+| login        | Homepage                   | link     |
+| cadastrar    | Preencher dados do cliente | link     |
 
-**Preencher dados do cliente**
-| **Campo** | **Tipo**       | **Restrições**      | **Valor default** |
-| --------- | -------------- | ------------------- | ----------------- |
-| nome      | Caixa de texto | obrigatório         | -                 |
-| telefone  | Caixa de texto | formato válido      | -                 |
-| email     | Caixa de texto | formato de e-mail   | -                 |
-| senha     | Caixa de texto | mínimo 8 caracteres | -                 |
+**Preencher dados do cliente 2**
+| **Campo**      | **Tipo**       | **Restrições**      | **Valor default** |
+| ---------      | -------------- | ------------------- | ----------------- |
+| nome           | Caixa de texto | obrigatório         | Ex: João da Silva |
+| telefone       | Caixa de texto | formato válido      |  (31) 99999-9999  |
+| email          | Caixa de texto | formato de e-mail   | joao@exemplo.com  |
+| senha          | Caixa de texto | mínimo 8 caracteres | ********          |
+| botão cadastrar| Link           | -                   | -                 |
+| botão cancelar | cancel         | -                   | -                 |
+
 | **Comandos** | **Destino**     | **Tipo** |
 | ------------ | --------------- | -------- |
-| salvar       | Validar dados   | default  |
-| cancelar     | Fim do processo | cancel   |
+| cadastrar    | Fim do processo | link     |
+| cancelar     | Tela de login   | cancel   |
 
-**Validar dados**
+**Validar dados 3**
 | **Campo** | **Tipo** | **Restrições**                  | **Valor default** |
 | --------- | -------- | ------------------------------- | ----------------- |
 | validação | Sistema  | campos obrigatórios preenchidos | automático        |
+
 | **Comandos** | **Destino**     | **Tipo** |
 | ------------ | --------------- | -------- |
 | válido       | Salvar cadastro | default  |
 | inválido     | Corrigir dados  | cancel   |
 
-**Corrigir dados**
-| **Campo** | **Tipo**       | **Restrições** | **Valor default** |
-| --------- | -------------- | -------------- | ----------------- |
-| campos    | Caixa de texto | obrigatório    | -                 |
-| **Comandos** | **Destino**   | **Tipo** |
-| ------------ | ------------- | -------- |
-| reenviar     | Validar dados | default  |
+**Salvar Cadastro**
+| **Campo**    | **Tipo**       | **Restrições** | **Valor default** |
+| ---------    | -------------- | -------------- | ----------------- |
+| nome         | Caixa de texto | obrigatório    | automático        |
+| telefone     | Caixa de texto | obrigatório    | automático        |
+| email        | Caixa de texto | obrigatório    | automático        |
+| senha        | Caixa de texto | obrigatório    | automático        |
 
-**Salvar cadastro**
-| **Campo**     | **Tipo** | **Restrições** | **Valor default** |
-| ------------- | -------- | -------------- | ----------------- |
-| dados cliente | Sistema  | obrigatório    | automático        |
+| **Comandos** | **Destino**        | **Tipo** |
+| ------------ | ------------------ | -------- |
+| concluir     | Enviar confirmação | default  |
+
+**Enviar confirmação**
+| **Campo** | **Tipo**      | **Restrições** | **Valor default** |
+| --------- | ------------- | -------------- | ----------------- |
+| mensagem  | Área de texto | obrigatório    | automático        |
+
 | **Comandos** | **Destino**     | **Tipo** |
 | ------------ | --------------- | -------- |
-| concluir     | Fim do processo | default  |
+| finalizar    | Fim do processo | default  |
 
+**Corrigir Dados**
+| **Campo** | **Tipo**      | **Restrições** | **Valor default** |
+| --------- | ------------- | -------------- | ----------------- |
+| mensagem  | Área de texto | obrigatório    | automático        |
+
+| **Comandos** | **Destino**                | **Tipo** |
+| ------------ | ---------------            | -------- |
+| voltar       | Preencher dados do cliente | default  |
 
 
 ##### 3.3.1.3 Wireframes (user tasks) 
 ![`wireframe Cadastro`](images/wireframeCadastro.png)
+![`wireframe Cadastro`](images/wireframeCadastro2.png)
 
 ### 3.3.2 Processo 2 – (Gestão do Agendamento)
 
@@ -146,50 +169,62 @@ Os tipos de dados utilizados no processo são:
 * Arquivo: campo para upload de documentos
 * Link: campo que armazena uma URL
 
-**Visualizar serviços**
+**Visualizar serviços 1**
 | **Campo**         | **Tipo**      | **Restrições**  | **Valor default** |
 | ----------------- | ------------- | --------------- | ----------------- |
 | lista de serviços | Seleção única | obrigatório     | -                 |
 | tempo do serviço  | Número        | somente leitura | automático        |
 | preço             | Número        | somente leitura | automático        |
+| botão continuar   | Link          | -               | -                 |
+
 | **Comandos** | **Destino**        | **Tipo** |
 | ------------ | ------------------ | -------- |
-| selecionar   | Selecionar horário | default  |
+| continuar    | Selecionar horário | default  |
 
-**Selecionar data e horário**
-| **Campo** | **Tipo** | **Restrições**        | **Valor default** |
-| --------- | -------- | --------------------- | ----------------- |
-| data      | Data     | obrigatória           | -                 |
-| horário   | Hora     | deve estar disponível | -                 |
+**Selecionar data e horário 2**
+| **Campo**       | **Tipo** | **Restrições**        | **Valor default** |
+| ---------       | -------- | --------------------- | ----------------- |
+| data            | Data     | obrigatória           | -                 |
+| horário         | Hora     | deve estar disponível | -                 |
+| botão revisar   | Link     | -                     | -                 |
+| botão voltar    | Link     | -                     | -                 |
+
 | **Comandos** | **Destino**               | **Tipo** |
 | ------------ | ------------------------- | -------- |
-| confirmar    | Verificar disponibilidade | default  |
-| cancelar     | Fim do processo           | cancel   |
+| revisar      | Confirme seu Agendamento  | Link     |
+| voltar       | Selecionar serviço        | cancel   |
+
+**Confirmar Agendamento 3**
+| **Campo**                  | **Tipo** | **Restrições**            | **Valor default** |
+| ---------                  | -------- | ------------------------- | ----------------- |
+| resumo do pedido           | Tabela   | atualização em tempo real | automático        |
+| botão Confirmar Agendamento| Link     | -                         | -                 |
+| botão voltar               | Link     | -                         | -                 |
+
+| **Comandos**            | **Destino**                  | **Tipo** |
+| ------------            | ---------------------------- | -------- |
+| Confirmar Agendamento   | Fim do processo              | default  |
+| voltar                  | Selecionar data e horário    | cancel   |
 
 **Verificar disponibilidade**
 | **Campo** | **Tipo** | **Restrições**            | **Valor default** |
 | --------- | -------- | ------------------------- | ----------------- |
 | agenda    | Tabela   | atualização em tempo real | automático        |
+
 | **Comandos** | **Destino**                  | **Tipo** |
 | ------------ | ---------------------------- | -------- |
 | disponível   | Registrar agendamento        | default  |
-| indisponível | Exibir horários alternativos | cancel   |
+| indisponível | Selecionar data e horário    | cancel   |
 
-**Exibir horários alternativos**
-| **Campo**            | **Tipo** | **Restrições** | **Valor default** |
-| -------------------- | -------- | -------------- | ----------------- |
-| horários disponíveis | Tabela   | obrigatório    | automático        |
-| **Comandos**            | **Destino**               | **Tipo** |
-| ----------------------- | ------------------------- | -------- |
-| selecionar novo horário | Selecionar data e horário | default  |
 
 **Registrar agendamento**
-| **Campo** | **Tipo**       | **Restrições** | **Valor default** |
-| --------- | -------------- | -------------- | ----------------- |
-| cliente   | Caixa de texto | obrigatório    | automático        |
-| serviço   | Caixa de texto | obrigatório    | automático        |
-| data      | Data           | obrigatório    | automático        |
-| horário   | Hora           | obrigatório    | automático        |
+| **Campo**    | **Tipo**           | **Restrições** | **Valor default** |
+| ---------    | --------------     | -------------- | ----------------- |
+| cliente      | Caixa de texto     | obrigatório    | automático        |
+| serviço      | Caixa de texto     | obrigatório    | automático        |
+| data         | Data               | obrigatório    | automático        |
+| horário      | Hora               | obrigatório    | automático        |
+
 | **Comandos** | **Destino**        | **Tipo** |
 | ------------ | ------------------ | -------- |
 | concluir     | Enviar confirmação | default  |
@@ -198,6 +233,7 @@ Os tipos de dados utilizados no processo são:
 | **Campo** | **Tipo**      | **Restrições** | **Valor default** |
 | --------- | ------------- | -------------- | ----------------- |
 | mensagem  | Área de texto | obrigatório    | automático        |
+
 | **Comandos** | **Destino**     | **Tipo** |
 | ------------ | --------------- | -------- |
 | finalizar    | Fim do processo | default  |
@@ -209,6 +245,7 @@ Os tipos de dados utilizados no processo são:
 | horário início               | Hora             | obrigatório       | -                 |
 | horário fim                  | Hora             | obrigatório       | -                 |
 | intervalo entre atendimentos | Número           | mínimo 10 minutos | 30                |
+
 | **Comandos**    | **Destino**      | **Tipo** |
 | --------------- | ---------------- | -------- |
 | salvar horários | Atualizar agenda | default  |
@@ -219,10 +256,12 @@ Os tipos de dados utilizados no processo são:
 | --------------------- | -------- | --------------- | ----------------- |
 | data                  | Data     | obrigatório     | data atual        |
 | lista de agendamentos | Tabela   | somente leitura | automático        |
+
 | **Comandos** | **Destino**              | **Tipo** |
 | ------------ | ------------------------ | -------- |
 | atualizar    | Visualizar agenda do dia | default  |
 | voltar       | Fim do processo          | cancel   |
+
 
 ##### 3.3.2.3 Wireframes (user tasks)
 ![`wireframe Agendamento`](images/wireframeAgendamento.png)
@@ -243,40 +282,46 @@ Os tipos de dados utilizados no processo são:
 
 * Área de texto: campo de texto de múltiplas linhas
 * Caixa de texto: campo de texto de uma linha
+* Lista: campo de lista suspensa
 * Número: campo numérico
 * Data: campo do tipo data (dd-mm-aaaa)
 * Hora: campo do tipo hora (hh:mm:ss)
 * Data e Hora: campo do tipo data e hora (dd-mm-aaaa, hh:mm:ss)
 * Seleção única: campo com opções mutuamente exclusivas
 
-**Informar serviço realizado**
+**Informar serviço realizado 1**
 | **Campo** | **Tipo**       | **Restrições** | **Valor default** |
 | --------- | -------------- | -------------- | ----------------- |
-| serviço   | Caixa de texto | obrigatório    | -                 |
-| **Comandos** | **Destino**    | **Tipo** |
-| ------------ | -------------- | -------- |
-| confirmar    | Informar valor | default  |
+| serviço   | lista          | obrigatório    | -                 |
 
-**Informar valor do serviço**
+
+**Informar valor do serviço 2**
 | **Campo** | **Tipo** | **Restrições** | **Valor default** |
 | --------- | -------- | -------------- | ----------------- |
 | valor     | Número   | obrigatório    | -                 |
-| **Comandos** | **Destino**         | **Tipo** |
-| ------------ | ------------------- | -------- |
-| registrar    | Registrar pagamento | default  |
+
+**Informar forma de pagamento 3**
+| **Campo** | **Tipo** | **Restrições** | **Valor default** |
+| --------- | -------- | -------------- | ----------------- |
+| valor     | Número   | obrigatório    | -                 |
+
+
 
 **Registrar pagamento**
-| **Campo**       | **Tipo** | **Restrições** | **Valor default** |
-| --------------- | -------- | -------------- | ----------------- |
-| dados pagamento | Tabela   | obrigatório    | automático        |
-| **Comandos** | **Destino**     | **Tipo** |
-| ------------ | --------------- | -------- |
-| salvar       | Atualizar caixa | default  |
+| **Campo**                 | **Tipo** | **Restrições** | **Valor default** |
+| ---------------           | -------- | -------------- | ----------------- |
+| dados pagamento           | Tabela   | obrigatório    | automático        |
+| botão confirmar pagamento | Tabela   | obrigatório    | automático        |
+
+| **Comandos**              | **Destino**     | **Tipo** |
+| ------------              | --------------- | -------- |
+| confirmar pagamento       | Atualizar caixa | default  |
 
 **Atualizar caixa**
-| **Campo**    | **Tipo** | **Restrições** | **Valor default** |
-| ------------ | -------- | -------------- | ----------------- |
-| total diário | Número   | automático     | atualizado        |
+| **Campo**      | **Tipo** | **Restrições** | **Valor default** |
+| ------------   | -------- | -------------- | ----------------- |
+| total recebido | Número   | automático     | atualizado        |
+
 | **Comandos** | **Destino**     | **Tipo** |
 | ------------ | --------------- | -------- |
 | finalizar    | Fim do processo | default  |
@@ -301,6 +346,8 @@ Os tipos de dados utilizados no processo são:
 
 * Área de texto: campo de texto de múltiplas linhas
 * Caixa de texto: campo de texto de uma linha
+* Lista: campo de lista suspensa
+* Link: campo que armazena uma URL
 * Número: campo numérico
 * Data: campo do tipo data (dd-mm-aaaa)
 * Hora: campo do tipo hora (hh:mm:ss)
@@ -308,54 +355,47 @@ Os tipos de dados utilizados no processo são:
 * Seleção única: campo com opções mutuamente exclusivas
 * Tabela: conjunto de dados estruturados
 
-**Acessar avaliação**
+
+**Acessar avaliação 1**
 | **Campo**         | **Tipo**       | **Restrições** | **Valor default** |
 | ----------------- | -------------- | -------------- | ----------------- |
-| serviço realizado | Caixa de texto | obrigatório    | automático        |
-| **Comandos** | **Destino**   | **Tipo** |
-| ------------ | ------------- | -------- |
-| avaliar      | Informar nota | default  |
+| avaliações        | Link           | -              | -        |
 
-**Informar nota**
-| **Campo**    | **Tipo** | **Restrições**     | **Valor default** |
-| ------------ | -------- | ------------------ | ----------------- |
-| nota (1 a 5) | Número   | mínimo 1, máximo 5 | -                 |
-| **Comandos** | **Destino**         | **Tipo** |
-| ------------ | ------------------- | -------- |
-| próximo      | Escrever comentário | default  |
+| **Comandos** | **Destino**     | **Tipo** |
+| ------------ | -------------   | -------- |
+| avaliações   | avaliar serviço | default  |
 
-**Escrever comentário**
-| **Campo**  | **Tipo**      | **Restrições** | **Valor default** |
-| ---------- | ------------- | -------------- | ----------------- |
-| comentário | Área de texto | opcional       | -                 |
-| **Comandos** | **Destino**      | **Tipo** |
-| ------------ | ---------------- | -------- |
-| enviar       | Enviar avaliação | default  |
+**Avaliar Serviço 2**
+| **Campo**              | **Tipo**      | **Restrições**     | **Valor default** |
+| ---------              | --------      | --------------     | ----------------- |
+| nota (1 a 5)           | Número        | mínimo 1, máximo 5 | -                 |
+| comentário             | Área de texto | opcional           | -                 |
+| botão enviar avaliação | Link          | -                  | -                 |
 
-**Enviar avaliação**
-| **Campo**       | **Tipo** | **Restrições** | **Valor default** |
-| --------------- | -------- | -------------- | ----------------- |
-| dados avaliação | Tabela   | obrigatório    | automático        |
-| **Comandos** | **Destino**         | **Tipo** |
-| ------------ | ------------------- | -------- |
-| confirmar    | Registrar avaliação | default  |
+| **Comandos**     | **Destino**         | **Tipo** |
+| ------------     | ----------------    | -------- |
+| enviar avaliação | Registrar avaliação | default  |
 
 **Registrar avaliação**
 | **Campo** | **Tipo** | **Restrições** | **Valor default** |
 | --------- | -------- | -------------- | ----------------- |
 | avaliação | Tabela   | obrigatório    | automático        |
+
 | **Comandos** | **Destino**           | **Tipo** |
 | ------------ | --------------------- | -------- |
-| salvar       | Visualizar avaliações | default  |
+| salvar       | Fim do processo       | default  |
 
 **Visualizar avaliações**
-| **Campo**           | **Tipo** | **Restrições**  | **Valor default** |
-| ------------------- | -------- | --------------- | ----------------- |
-| lista de avaliações | Tabela   | somente leitura | automático        |
-| **Comandos** | **Destino**           | **Tipo** |
-| ------------ | --------------------- | -------- |
-| atualizar    | Visualizar avaliações | default  |
-| sair         | Fim do processo       | cancel   |
+| **Campo**                       | **Tipo** | **Restrições**  | **Valor default** |
+| -------------------             | -------- | --------------- | ----------------- |
+| últimas avaliações              | Tabela   | somente leitura | automático        |
+| botão carregar mais avaliações  | Lista    | somente leitura | automático        |
+| botão mais recentes             | Lista    | somente leitura | automático        |
+
+| **Comandos**               | **Destino**                       | **Tipo** |
+| ------------               | ---------------------             | -------- |
+| carregar mais avaliações   | Amplia a lista de avaliações      | default  |
+| mais recentes              | exibe as avaliações mais recentes | cancel   |
 
 ##### 3.3.4.3 Wireframes (user tasks)
 ![`wireframe Avaliacao`](images/wireframeAvaliacao.png)
@@ -383,18 +423,22 @@ Os tipos de dados utilizados no processo são:
 * Seleção única: campo com opções mutuamente exclusivas
 
 **Utilizar material**
-| **Campo**            | **Tipo**       | **Restrições** | **Valor default** |
-| -------------------- | -------------- | -------------- | ----------------- |
-| material utilizado   | Caixa de texto | obrigatório    | -                 |
-| quantidade utilizada | Número         | obrigatório    | -                 |
-| **Comandos**  | **Destino**       | **Tipo** |
-| ------------- | ----------------- | -------- |
-| confirmar uso | Atualizar estoque | default  |
+| **Campo**             | **Tipo**       | **Restrições** | **Valor default** |
+| --------------------  | -------------- | -------------- | ----------------- |
+| material utilizado    | Caixa de texto | obrigatório    | -                 |
+| quantidade utilizada  | Número         | obrigatório    | -                 |
+| observações           | Área de texto  | opcional       | -                 |
+| botão registrar baixa | Link           | -              | -                 |
+
+| **Comandos**    | **Destino**       | **Tipo** |
+| -------------   | ----------------- | -------- |
+| registrar baixa | Atualizar estoque | Link     |
 
 **Atualizar estoque**
 | **Campo**        | **Tipo** | **Restrições** | **Valor default** |
 | ---------------- | -------- | -------------- | ----------------- |
 | quantidade atual | Número   | automático     | atualizado        |
+
 | **Comandos** | **Destino**           | **Tipo** |
 | ------------ | --------------------- | -------- |
 | verificar    | Gateway estoque baixo | default  |
@@ -403,6 +447,7 @@ Os tipos de dados utilizados no processo são:
 | **Campo**       | **Tipo**      | **Restrições** | **Valor default** |
 | --------------- | ------------- | -------------- | ----------------- |
 | mensagem alerta | Área de texto | obrigatório    | automático        |
+
 | **Comandos** | **Destino**           | **Tipo** |
 | ------------ | --------------------- | -------- |
 | notificar    | Verificar necessidade | default  |
@@ -412,6 +457,7 @@ Os tipos de dados utilizados no processo são:
 | --------------------- | -------------- | -------------- | ----------------- |
 | material              | Caixa de texto | obrigatório    | -                 |
 | quantidade necessária | Número         | obrigatório    | -                 |
+
 | **Comandos** | **Destino**         | **Tipo** |
 | ------------ | ------------------- | -------- |
 | comprar      | Registrar reposição | default  |
@@ -422,10 +468,12 @@ Os tipos de dados utilizados no processo são:
 | --------------------- | -------------- | -------------- | ----------------- |
 | material              | Caixa de texto | obrigatório    | -                 |
 | quantidade adicionada | Número         | obrigatório    | -                 |
-| data                  | Data           | obrigatório    | atual             |
-| **Comandos** | **Destino**       | **Tipo** |
-| ------------ | ----------------- | -------- |
-| salvar       | Atualizar estoque | default  |
+| custo                 | Número         | obrigatório    | atual             |
+| fornecedor            | Caixa de texto | obrigatório    | atual             |
+
+| **Comandos**        | **Destino**       | **Tipo** |
+| ------------        | ----------------- | -------- |
+| confirmar reposição | Atualizar estoque | default  |
 
 ##### 3.3.5.3 Wireframes (user tasks) 
 ![`wireframe Estoque`](images/wireframeEstoque.png)
