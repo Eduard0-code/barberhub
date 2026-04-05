@@ -106,7 +106,7 @@ Os tipos de dados utilizados no processo são:
 | válido       | Salvar cadastro | default  |
 | inválido     | Corrigir dados  | cancel   |
 
-**Salvar Cadastro**
+**Salvar Cadastro 4**
 | **Campo**    | **Tipo**       | **Restrições** | **Valor default** |
 | ---------    | -------------- | -------------- | ----------------- |
 | nome         | Caixa de texto | obrigatório    | automático        |
@@ -118,7 +118,7 @@ Os tipos de dados utilizados no processo são:
 | ------------ | ------------------ | -------- |
 | concluir     | Enviar confirmação | default  |
 
-**Enviar confirmação**
+**Enviar confirmação 5**
 | **Campo** | **Tipo**      | **Restrições** | **Valor default** |
 | --------- | ------------- | -------------- | ----------------- |
 | mensagem  | Área de texto | obrigatório    | automático        |
@@ -127,7 +127,7 @@ Os tipos de dados utilizados no processo são:
 | ------------ | --------------- | -------- |
 | finalizar    | Fim do processo | default  |
 
-**Corrigir Dados**
+**Corrigir Dados 6**
 | **Campo** | **Tipo**      | **Restrições** | **Valor default** |
 | --------- | ------------- | -------------- | ----------------- |
 | mensagem  | Área de texto | obrigatório    | automático        |
@@ -206,7 +206,7 @@ Os tipos de dados utilizados no processo são:
 | Confirmar Agendamento   | Fim do processo              | default  |
 | voltar                  | Selecionar data e horário    | cancel   |
 
-**Verificar disponibilidade**
+**Verificar disponibilidade 4**
 | **Campo** | **Tipo** | **Restrições**            | **Valor default** |
 | --------- | -------- | ------------------------- | ----------------- |
 | agenda    | Tabela   | atualização em tempo real | automático        |
@@ -217,7 +217,7 @@ Os tipos de dados utilizados no processo são:
 | indisponível | Selecionar data e horário    | cancel   |
 
 
-**Registrar agendamento**
+**Registrar agendamento 5**
 | **Campo**    | **Tipo**           | **Restrições** | **Valor default** |
 | ---------    | --------------     | -------------- | ----------------- |
 | cliente      | Caixa de texto     | obrigatório    | automático        |
@@ -229,7 +229,7 @@ Os tipos de dados utilizados no processo são:
 | ------------ | ------------------ | -------- |
 | concluir     | Enviar confirmação | default  |
 
-**Enviar confirmação**
+**Enviar confirmação 6**
 | **Campo** | **Tipo**      | **Restrições** | **Valor default** |
 | --------- | ------------- | -------------- | ----------------- |
 | mensagem  | Área de texto | obrigatório    | automático        |
@@ -238,7 +238,7 @@ Os tipos de dados utilizados no processo são:
 | ------------ | --------------- | -------- |
 | finalizar    | Fim do processo | default  |
 
-**Definir horários de atendimento**
+**Definir horários de atendimento 7**
 | **Campo**                    | **Tipo**         | **Restrições**    | **Valor default** |
 | ---------------------------- | ---------------- | ----------------- | ----------------- |
 | dias de funcionamento        | Seleção múltipla | obrigatório       | -                 |
@@ -251,7 +251,7 @@ Os tipos de dados utilizados no processo são:
 | salvar horários | Atualizar agenda | default  |
 | cancelar        | Fim do processo  | cancel   |
 
-**Visualizar agenda do dia**
+**Visualizar agenda do dia 8**
 | **Campo**             | **Tipo** | **Restrições**  | **Valor default** |
 | --------------------- | -------- | --------------- | ----------------- |
 | data                  | Data     | obrigatório     | data atual        |
@@ -265,6 +265,9 @@ Os tipos de dados utilizados no processo são:
 
 ##### 3.3.2.3 Wireframes (user tasks)
 ![`wireframe Agendamento`](images/wireframeAgendamento.png)
+![`wireframe Agendamento`](images/wireframeAgendamento1.png)
+![`wireframe Agendamento`](images/wireframeAgendamento2.png)
+![`wireframe Agendamento`](images/wireframeAgendamento3.png)
 
 ### 3.3.3 Processo 3 – (Gestão do Financeira)
 O processo de gestão financeira tem como objetivo registrar e controlar os valores recebidos pelos serviços realizados na barbearia.
@@ -307,7 +310,7 @@ Os tipos de dados utilizados no processo são:
 
 
 
-**Registrar pagamento**
+**Registrar pagamento 4**
 | **Campo**                 | **Tipo** | **Restrições** | **Valor default** |
 | ---------------           | -------- | -------------- | ----------------- |
 | dados pagamento           | Tabela   | obrigatório    | automático        |
@@ -317,7 +320,7 @@ Os tipos de dados utilizados no processo são:
 | ------------              | --------------- | -------- |
 | confirmar pagamento       | Atualizar caixa | default  |
 
-**Atualizar caixa**
+**Atualizar caixa 5**
 | **Campo**      | **Tipo** | **Restrições** | **Valor default** |
 | ------------   | -------- | -------------- | ----------------- |
 | total recebido | Número   | automático     | atualizado        |
@@ -376,7 +379,7 @@ Os tipos de dados utilizados no processo são:
 | ------------     | ----------------    | -------- |
 | enviar avaliação | Registrar avaliação | default  |
 
-**Registrar avaliação**
+**Registrar avaliação 3**
 | **Campo** | **Tipo** | **Restrições** | **Valor default** |
 | --------- | -------- | -------------- | ----------------- |
 | avaliação | Tabela   | obrigatório    | automático        |
@@ -385,7 +388,7 @@ Os tipos de dados utilizados no processo são:
 | ------------ | --------------------- | -------- |
 | salvar       | Fim do processo       | default  |
 
-**Visualizar avaliações**
+**Visualizar avaliações 4**
 | **Campo**                       | **Tipo** | **Restrições**  | **Valor default** |
 | -------------------             | -------- | --------------- | ----------------- |
 | últimas avaliações              | Tabela   | somente leitura | automático        |
@@ -422,7 +425,7 @@ Os tipos de dados utilizados no processo são:
 * Hora: campo do tipo hora (hh:mm:ss)
 * Seleção única: campo com opções mutuamente exclusivas
 
-**Utilizar material**
+**Utilizar material 1**
 | **Campo**             | **Tipo**       | **Restrições** | **Valor default** |
 | --------------------  | -------------- | -------------- | ----------------- |
 | material utilizado    | Caixa de texto | obrigatório    | -                 |
@@ -434,7 +437,7 @@ Os tipos de dados utilizados no processo são:
 | -------------   | ----------------- | -------- |
 | registrar baixa | Atualizar estoque | Link     |
 
-**Atualizar estoque**
+**Atualizar estoque 2**
 | **Campo**        | **Tipo** | **Restrições** | **Valor default** |
 | ---------------- | -------- | -------------- | ----------------- |
 | quantidade atual | Número   | automático     | atualizado        |
@@ -443,7 +446,7 @@ Os tipos de dados utilizados no processo são:
 | ------------ | --------------------- | -------- |
 | verificar    | Gateway estoque baixo | default  |
 
-**Gerar alerta de reposição**
+**Gerar alerta de reposição 3**
 | **Campo**       | **Tipo**      | **Restrições** | **Valor default** |
 | --------------- | ------------- | -------------- | ----------------- |
 | mensagem alerta | Área de texto | obrigatório    | automático        |
@@ -452,7 +455,7 @@ Os tipos de dados utilizados no processo são:
 | ------------ | --------------------- | -------- |
 | notificar    | Verificar necessidade | default  |
 
-**Verificar necessidade de compra**
+**Verificar necessidade de compra 4**
 | **Campo**             | **Tipo**       | **Restrições** | **Valor default** |
 | --------------------- | -------------- | -------------- | ----------------- |
 | material              | Caixa de texto | obrigatório    | -                 |
@@ -463,7 +466,7 @@ Os tipos de dados utilizados no processo são:
 | comprar      | Registrar reposição | default  |
 | ignorar      | Fim do processo     | cancel   |
 
-**Registrar reposição**
+**Registrar reposição 5**
 | **Campo**             | **Tipo**       | **Restrições** | **Valor default** |
 | --------------------- | -------------- | -------------- | ----------------- |
 | material              | Caixa de texto | obrigatório    | -                 |
