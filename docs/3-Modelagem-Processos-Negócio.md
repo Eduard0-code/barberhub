@@ -389,7 +389,7 @@ Os tipos de dados utilizados no processo são:
 | ------------ | -------------   | -------- |
 | avaliações   | avaliar serviço | default  |
 
-**Avaliar Serviço 2**
+**Informar nota 2**
 | **Campo**              | **Tipo**      | **Restrições**     | **Valor default** |
 | ---------              | --------      | --------------     | ----------------- |
 | nota (1 a 5)           | Número        | mínimo 1, máximo 5 | -                 |
