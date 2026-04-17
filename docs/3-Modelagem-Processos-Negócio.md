@@ -37,8 +37,8 @@ Além disso, o sistema integrará funcionalidades de controle financeiro, avalia
 * Histórico de clientes
 
 ### 3.3. Modelagem dos processos
-![3.3.1 Processo - (Gestão do Cadastro do Cliente)](./3.3.1-Processo-Gestão-do-Cadastro-do-Cliente.md)
-![3.3.2 Processo 2 – (Gestão do Agendamento)](./3.3.2-Processo-2–Gestão-do-Agendamento.md)
-![3.3.3 Processo 3 – (Gestão do Financeira)](./3.3.3-Processo-3–Gestão-do-Financeira.md)
-![3.3.4 Processo 4 – (Gestão da Avaliação do Serviço)](./3.3.4-Processo-4–Gestão-da-Avaliação-do-Serviço.md)
-![3.3.5 Processo 5 – (Gestão do Estoque de Material da Barbearia)](./3.3.5-Processo-5–Gestão-do-Estoque-de-Material-da-Barbearia.md)
+* [3.3.1 Processo - (Gestão do Cadastro do Cliente)](./3.3.1-Processo-Gestão-do-Cadastro-do-Cliente.md)
+* [3.3.2 Processo 2 – (Gestão do Agendamento)](./3.3.2-Processo-2–Gestão-do-Agendamento.md)
+* [3.3.3 Processo 3 – (Gestão do Financeira)](./3.3.3-Processo-3–Gestão-do-Financeira.md)
+* [3.3.4 Processo 4 – (Gestão da Avaliação do Serviço)](./3.3.4-Processo-4–Gestão-da-Avaliação-do-Serviço.md)
+* [3.3.5 Processo 5 – (Gestão do Estoque de Material da Barbearia)](./3.3.5-Processo-5–Gestão-do-Estoque-de-Material-da-Barbearia.md)
