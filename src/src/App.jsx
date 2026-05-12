@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
+import BarberCadLog from './components/Cadastro-Login-Barber.jsx'
 import './App.css'
 
 function App() {
