@@ -68,68 +68,50 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Modelo ER�
 
 #### 4.3.2 Esquema Relacional
 
-O Esquema Relacional corresponde à representação dos dados em tabelas juntamente com as restrições de integridade e chave primária.
- 
-As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Relacional”.
-
-> - [Criando um modelo relacional - Documentação da IBM](https://www.ibm.com/docs/pt-br/cognos-analytics/10.2.2?topic=designer-creating-relational-model)
-
-![Exemplo de um modelo relacional](images/modeloRelacional.png "Exemplo de Modelo Relacional.")
----
+![Modelo Relacional Final](images/Tabela_agendamento.jpg "Modelo Relacional - Barbearia do Roberto")
 
 
 #### 4.3.3 Modelo Físico
 
-Insira aqui o script de criação das tabelas do banco de dados.
-
-Veja um exemplo:
-
 <code>
 
- -- Criação da tabela Médico
-CREATE TABLE Medico (
-    MedCodigo INTEGER PRIMARY KEY,
-    MedNome VARCHAR(100)
+ -- Tabela Clientes: 
+CREATE TABLE Clientes (
+    CliCodigo INTEGER PRIMARY KEY,
+    CliNome VARCHAR(50),
+    CliEmail VARCHAR(100),
+    CliTelefone VARCHAR(15),
+    CliSenha VARCHAR(20),
+    CliCriado DATETIME
 );
 
-
--- Criação da tabela Paciente
-CREATE TABLE Paciente (
-    PacCodigo INTEGER PRIMARY KEY,
-    PacNome VARCHAR(100)
+-- Tabela Servico: 
+CREATE TABLE Servico (
+    SrvCodigo INTEGER PRIMARY KEY,
+    SrvNome VARCHAR(100)
 );
 
--- Criação da tabela Consulta
-CREATE TABLE Consulta (
-    ConCodigo INTEGER PRIMARY KEY,
-    MedCodigo INTEGER,
-    PacCodigo INTEGER,
-    Data DATE,
-    FOREIGN KEY (MedCodigo) REFERENCES Medico(MedCodigo),
-    FOREIGN KEY (PacCodigo) REFERENCES Paciente(PacCodigo)
+-- Tabela Configuracao_Agenda: 
+CREATE TABLE Configuracao_Agenda (
+    CfgCodigo INTEGER PRIMARY KEY,
+    CfgDias VARCHAR(50),
+    CfgHorarioInicio TIME,
+    CfgHorarioFim TIME,
+    CfgIntervalo INTEGER
 );
 
--- Criação da tabela Medicamento
-CREATE TABLE Medicamento (
-    MdcCodigo INTEGER PRIMARY KEY,
-    MdcNome VARCHAR(100)
-);
-
--- Criação da tabela Prescricao
-CREATE TABLE Prescricao (
-    ConCodigo INTEGER,
-    MdcCodigo INTEGER,
-    Posologia VARCHAR(200),
-    PRIMARY KEY (ConCodigo, MdcCodigo),
-    FOREIGN KEY (ConCodigo) REFERENCES Consulta(ConCodigo),
-    FOREIGN KEY (MdcCodigo) REFERENCES Medicamento(MdcCodigo)
+-- Tabela Agendamento: 
+CREATE TABLE Agendamento (
+    AgdCodigo INTEGER PRIMARY KEY,
+    CliCodigo INTEGER,
+    SrvCodigo INTEGER,
+    AgdData DATE,
+    AgdHorario TIME,
+    FOREIGN KEY (CliCodigo) REFERENCES Clientes(CliCodigo),
+    FOREIGN KEY (SrvCodigo) REFERENCES Servico(SrvCodigo)
 );
 
 </code>
-
-Este script deverá ser incluído em um arquivo .sql na pasta src\bd.
-
-
 
 
 ### 4.4. Tecnologias
