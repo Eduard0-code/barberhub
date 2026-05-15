@@ -5,14 +5,19 @@
 ## 4.1. Arquitetura da solução
 
 
-......  COLOQUE AQUI O SEU TEXTO E O DIAGRAMA DE ARQUITETURA .......
+O diagrama mostra como a aplicação funciona e como as tecnologias se conectam.
 
- Inclua um diagrama da solução e descreva os módulos e as tecnologias
- que fazem parte da solução. Discorra sobre o diagrama.
+O usuário acessa o sistema pelo navegador. A parte visual da aplicação é feita com HTML, CSS e React, garantindo uma interface moderna e responsiva. Essa aplicação é hospedada na Vercel.
+
+O React se comunica com o backend desenvolvido em Spring Boot, que é responsável por processar as informações e regras do sistema. Os dados são armazenados no banco de dados MySQL.
+
+Toda a comunicação acontece de forma segura, e a arquitetura foi organizada para oferecer bom desempenho, facilidade de manutenção e escalabilidade da aplicação.
+
+![Exemplo de Arquitetura](./images/ArquiteturadaSolução.png)
  
  **Exemplo do diagrama de Arquitetura**:
  
- ![Exemplo de Arquitetura](./images/ArquiteturadaSolução.png)
+ ![Exemplo de Arquitetura](./images/arquitetura-exemplo.png)
  
 
 ### 4.2. Protótipos de telas
