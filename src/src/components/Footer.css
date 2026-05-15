@@ -1,0 +1,89 @@
+/* Reset Básico */
+body { font-family: 'Segoe UI', sans-serif; background-color: #f9f9f9; margin: 0; color: #333; }
+/* Footer.css */
+.footer-container {
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  padding: 15px 0;
+  position: fixed; 
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Esquerda: Logo e Nome */
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+}
+
+.logo-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-brand {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Centro: Copyright */
+.footer-center p {
+  font-size: 0.75rem;
+  color: #999;
+  margin: 0;
+}
+
+/* Direita: Ícones e Ações */
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-icon-btn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s ease;
+}
+
+.footer-icon-btn:hover {
+  color: #1a1a1a;
+}
+
+.footer-icon-btn.help {
+  background-color: #f5f5f5;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.footer-icon-btn.help:hover {
+  background-color: #eeeeee;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .footer-center { display: none; } /* Esconde o copyright em telas muito pequenas */
+  .footer-content { padding: 0 20px; }
+}

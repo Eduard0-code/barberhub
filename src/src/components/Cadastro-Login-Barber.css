@@ -1,0 +1,227 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg: #F2EFE9;
+    --card: #FAFAF8;
+    --ink: #1A1A1A;
+    --ink-muted: #7A7672;
+    --border: #E0DDD8;
+    --accent: #1A1A1A;
+    --accent-hover: #333;
+    --input-bg: #FFFFFF;
+    --input-border: #D6D3CE;
+    --input-focus: #1A1A1A;
+    --error: #C0392B;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  .app {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: var(--bg);
+    background-image: radial-gradient(circle at 20% 80%, rgba(26,26,26,0.04) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(26,26,26,0.03) 0%, transparent 50%);
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06);
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-icon {
+    color: var(--ink);
+    width: 28px;
+    height: 28px;
+  }
+
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .avatar-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .avatar-btn:hover { background: #D6D3CE; }
+
+  /* BODY */
+  .card-body {
+    padding: 32px 24px 28px;
+  }
+
+  .page-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .page-subtitle {
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+
+  /* FORM */
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+
+  .input-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-muted);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 11px 14px 11px 38px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .form-input::placeholder {
+    color: #B8B5B0;
+    font-size: 13.5px;
+  }
+
+  .form-input:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
+  }
+
+  .form-hint {
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-top: 5px;
+  }
+
+  /* FOOTER */
+  .card-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 0 24px 28px;
+  }
+
+  .btn {
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--ink);
+  }
+
+  .btn-outline:hover {
+    background: var(--border);
+  }
+
+  .btn-solid {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: #FFFFFF;
+  }
+
+  .btn-solid:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 24px 24px;
+  }
