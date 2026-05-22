@@ -18,24 +18,24 @@ Toda a comunicação acontece de forma segura, e a arquitetura foi organizada pa
  
 ### 4.2. Protótipos de telas
 
-#Cadastro
+# Cadastro
 ![Wireframe](./images/wireframeCadastro.png)
-#Código 
+# Código 
 [Cadastro-Login](../src/src/components/Cadastro-Login-Barber.jsx)
 
-#Agendamento Cliente 
+# Agendamento Cliente 
 ![Wireframe](./images/wireframeAgendamento.png)
-#Código 
+# Código 
 [Cadastro-Login](../src/src/components/AgendamentoCliente.jsx)
 
-#Agendamento Barbeiro
+# Agendamento Barbeiro
 ![Wireframe](./images/wireframeAgendamento2.png)
-#Código 
+# Código 
 [Cadastro-Login](../src/src/components/AgendamentoBarbeiro.jsx)
 
-#Agendamento Visualização Barbeiro
+# Agendamento Visualização Barbeiro
 ![Wireframe](./images/wireframeAgendamento3.png)
-#Código 
+# Código 
 [Cadastro-Login](../src/src/components/VisualizacaoBarbeiro.jsx)
 
 
