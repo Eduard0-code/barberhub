@@ -49,14 +49,6 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de
 > - [Diagramas de Classes - Documentação da IBM](https://www.ibm.com/docs/pt-br/rational-soft-arch/9.6.1?topic=diagrams-class)
 > - [O que é um diagrama de classe UML? | Lucidchart](https://www.lucidchart.com/pages/pt/o-que-e-diagrama-de-classe-uml)
 
-## Modelo ER
-
-O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.]
-
-As referências abaixo irão auxiliá-lo na geração do artefato “Modelo ER”.
-
-> - [Como fazer um diagrama entidade relacionamento | Lucidchart](https://www.lucidchart.com/pages/pt/como-fazer-um-diagrama-entidade-relacionamento)
-
 
 ### 4.3. Modelo de dados
 
@@ -72,17 +64,12 @@ O Modelo ER representa através de um diagrama como as entidades (coisas, objeto
 
 ![esquema relacional](images/esquema%20relacional.png)
 
-As referências abaixo irão auxiliá-lo na geração do artefato “Modelo ER”.
-
-> - [Como fazer um diagrama entidade relacionamento | Lucidchart](https://www.lucidchart.com/pages/pt/como-fazer-um-diagrama-entidade-relacionamento)
 
 #### 4.3.2 Esquema Relacional
 
 O Esquema Relacional corresponde à representação dos dados em tabelas juntamente com as restrições de integridade e chave primária.
  
-As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Relacional”.
 
-> - [Criando um modelo relacional - Documentação da IBM](https://www.ibm.com/docs/pt-br/cognos-analytics/10.2.2?topic=designer-creating-relational-model)
 
 ![Tabela Relacional](images/Tabela%20Relacional.png)
 ---
@@ -92,51 +79,58 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Rel
 
 <code>
 
- -- Tabela Clientes: 
-CREATE TABLE Clientes (
-    CliCodigo INTEGER PRIMARY KEY,
-    CliNome VARCHAR(50),
-    CliEmail VARCHAR(100),
-    CliTelefone VARCHAR(15),
-    CliSenha VARCHAR(20),
-    CliCriado DATETIME
-);
+Table Clientes {
+  CliCodigo integer [pk]
+  CliNome varchar(50)
+  CliEmail varchar(100)
+  CliTelefone varchar(15)
+  CliSenha varchar(20)
+  CliCriado datetime
+}
 
--- Tabela Servico: 
-CREATE TABLE Servico (
-    SrvCodigo INTEGER PRIMARY KEY,
-    SrvNome VARCHAR(100)
-);
+Table Barbeiro {
+  BarCodigo integer [pk]
+  BarNome varchar(50)
+  BarTelefone varchar(15)
+  BarEmail varchar(100)
+  BarEspecialidade varchar(100)
+  BarAtivo boolean
+}
 
--- Tabela Configuracao_Agenda: 
-CREATE TABLE Configuracao_Agenda (
-    CfgCodigo INTEGER PRIMARY KEY,
-    CfgDias VARCHAR(50),
-    CfgHorarioInicio TIME,
-    CfgHorarioFim TIME,
-    CfgIntervalo INTEGER
-);
+Table Servico {
+  SrvCodigo integer [pk]
+  SrvNome varchar(100)
+  SrvPreco decimal(10,2)
+}
 
--- Tabela Agendamento: 
-CREATE TABLE Agendamento (
-    AgdCodigo INTEGER PRIMARY KEY,
-    CliCodigo INTEGER,
-    SrvCodigo INTEGER,
-    AgdData DATE,
-    AgdHorario TIME,
-    FOREIGN KEY (CliCodigo) REFERENCES Clientes(CliCodigo),
-    FOREIGN KEY (SrvCodigo) REFERENCES Servico(SrvCodigo)
-);
+Table Configuracao_Agenda {
+  CfgCodigo integer [pk]
+  BarCodigo integer [ref: > Barbeiro.BarCodigo]
+  CfgDias varchar(50)
+  CfgHorarioInicio time
+  CfgHorarioFim time
+  CfgIntervalo integer
+}
+
+Table Agendamento {
+  AgdCodigo integer [pk]
+  CliCodigo integer [ref: > Clientes.CliCodigo]
+  BarCodigo integer [ref: > Barbeiro.BarCodigo]
+  SrvCodigo integer [ref: > Servico.SrvCodigo]
+  AgdData date
+  AgdHorario time
+  AgdPreco decimal(10,2)
+  AgdStatus varchar(20)
+}
 
 </code>
 
 
-### 4.4. Tecnologias
+### 4.4. Tecnologias.
 
-_Descreva qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas._
+Para o desenvolvimento do sistema de barbearia serão utilizadas tecnologias voltadas para frontend, backend, banco de dados e deploy da aplicação. O frontend será desenvolvido com React, HTML e CSS, responsáveis pela interface e interação do usuário. O backend utilizará Spring Boot para criação da API REST e regras de negócio. O armazenamento dos dados será realizado no MySQL. Já o deploy da aplicação será feito na plataforma Vercel.
 
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
-
+O funcionamento do sistema ocorrerá da seguinte forma: o usuário acessa o frontend pelo navegador, que envia requisições para a API Spring Boot. O backend processa as informações, realiza consultas no banco MySQL e retorna as respostas para o usuário.
 
 | **Dimensão**   | **Tecnologia**  |
 | ---            | ---             |
@@ -144,4 +138,5 @@ Apresente também uma figura explicando como as tecnologias estão relacionadas 
 | Front end      | HTML+CSS+React    |
 | Back end       | SpringBoot |
 | Deploy         | Versel    |
-
+| API REST       | JAVA      |
+| Versionamento  | GITHUB    |
