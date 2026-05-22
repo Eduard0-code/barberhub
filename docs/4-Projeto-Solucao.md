@@ -42,23 +42,10 @@ Toda a comunicação acontece de forma segura, e a arquitetura foi organizada pa
 
 ## Diagrama de Classes
 
-O diagrama de classes ilustra graficamente como será a estrutura do software, e como cada uma das classes da sua estrutura estarão interligadas. Essas classes servem de modelo para materializar os objetos que executarão na memória.
-
-As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de Classes”.
-
-> - [Diagramas de Classes - Documentação da IBM](https://www.ibm.com/docs/pt-br/rational-soft-arch/9.6.1?topic=diagrams-class)
-> - [O que é um diagrama de classe UML? | Lucidchart](https://www.lucidchart.com/pages/pt/o-que-e-diagrama-de-classe-uml)
-
 
 ### 4.3. Modelo de dados
 
-O desenvolvimento da solução proposta requer a existência de bases de dados que permitam efetuar os cadastros de dados e controles associados aos processos identificados, assim como recuperações.
-Utilizando a notação do DER (Diagrama Entidade e Relacionamento), elaborem um modelo, na ferramenta visual indicada na disciplina, que contemple todas as entidades e atributos associados às atividades dos processos identificados. Deve ser gerado um único DER que suporte todos os processos escolhidos, visando, assim, uma base de dados integrada. O modelo deve contemplar, também, o controle de acesso de usuários (partes interessadas dos processos) de acordo com os papéis definidos nos modelos do processo de negócio.
-_Apresente o modelo de dados por meio de um modelo relacional que contemple todos os conceitos e atributos apresentados na modelagem dos processos._
-
 #### 4.3.1 Modelo ER
-
-O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.
 
 ![Diagrama ER](images/DIagrama%20ER.png)
 
@@ -86,7 +73,6 @@ Table Clientes {
   CliTelefone varchar(15)
   CliSenha varchar(20)
   CliCriado datetime
-  ClisenhaConfirmar varchar(20)
 }
 
 Table Barbeiro {
@@ -139,5 +125,4 @@ O funcionamento do sistema ocorrerá da seguinte forma: o usuário acessa o fron
 | Front end      | HTML+CSS+React    |
 | Back end       | SpringBoot |
 | Deploy         | Versel    |
-| API REST       | JAVA      |
 | Versionamento  | GITHUB    |
