@@ -26,17 +26,17 @@ Toda a comunicação acontece de forma segura, e a arquitetura foi organizada pa
 # Agendamento Cliente 
 ![Wireframe](./images/wireframeAgendamento.png)
 # Código 
-[Cadastro-Login](../src/src/components/AgendamentoCliente.jsx)
+[Agendamento-Cliente](../src/src/components/AgendamentoCliente.jsx)
 
 # Agendamento Barbeiro
 ![Wireframe](./images/wireframeAgendamento2.png)
 # Código 
-[Cadastro-Login](../src/src/components/AgendamentoBarbeiro.jsx)
+[Agendamento-Barbeiro](../src/src/components/AgendamentoBarbeiro.jsx)
 
 # Agendamento Visualização Barbeiro
 ![Wireframe](./images/wireframeAgendamento3.png)
 # Código 
-[Cadastro-Login](../src/src/components/VisualizacaoBarbeiro.jsx)
+[Visualização-Barbeiro](../src/src/components/VisualizacaoBarbeiro.jsx)
 
 
 
@@ -49,7 +49,7 @@ Toda a comunicação acontece de forma segura, e a arquitetura foi organizada pa
 
 ![Diagrama ER](images/DIagrama%20ER.png)
 
-![esquema relacional](images/esquema%20relacional.png)
+![Esquema relacional](images/esquema%20relacional.png)
 
 
 #### 4.3.2 Esquema Relacional
