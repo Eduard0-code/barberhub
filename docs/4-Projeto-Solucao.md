@@ -5,33 +5,39 @@
 ## 4.1. Arquitetura da solução
 
 
-......  COLOQUE AQUI O SEU TEXTO E O DIAGRAMA DE ARQUITETURA .......
+O diagrama mostra como a aplicação funciona e como as tecnologias se conectam.
 
- Inclua um diagrama da solução e descreva os módulos e as tecnologias
- que fazem parte da solução. Discorra sobre o diagrama.
- 
- **Exemplo do diagrama de Arquitetura**:
- 
- ![Projeto Arquitetura](./images/Projeto_arquitetura.png)
- 
+O usuário acessa o sistema pelo navegador. A parte visual da aplicação é feita com HTML, CSS e React, garantindo uma interface moderna e responsiva. Essa aplicação é hospedada na Vercel.
 
+O React se comunica com o backend desenvolvido em Spring Boot, que é responsável por processar as informações e regras do sistema. Os dados são armazenados no banco de dados MySQL.
+
+Toda a comunicação acontece de forma segura, e a arquitetura foi organizada para oferecer bom desempenho, facilidade de manutenção e escalabilidade da aplicação.
+
+![Projeto Arquitetura](./images/Projeto_arquitetura.png)
+ 
+ 
 ### 4.2. Protótipos de telas
 
-Visão geral da interação do usuário pelas telas do sistema e protótipo interativo das telas com as funcionalidades que fazem parte do sistema (wireframes).
-Apresente as principais interfaces da plataforma. Discuta como ela foi elaborada de forma a atender os requisitos funcionais, não funcionais e histórias de usuário abordados nas <a href="02-Especificação do Projeto.md"> Especificação do Projeto</a>.
-A partir das atividades de usuário identificadas na seção anterior, elabore o protótipo de tela de cada uma delas.
-![Exemplo de Wireframe](images/wireframe-example.png)
+# Cadastro
+![Wireframe](./images/wireframeCadastro.png)
+# Código 
+[Cadastro-Login](../src/src/components/Cadastro-Login-Barber.jsx)
 
-São protótipos usados em design de interface para sugerir a estrutura de um site web e seu relacionamentos entre suas páginas. Um wireframe web é uma ilustração semelhante do layout de elementos fundamentais na interface.
- 
-> **Links Úteis**:
-> - [Protótipos vs Wireframes](https://www.nngroup.com/videos/prototypes-vs-wireframes-ux-projects/)
-> - [Ferramentas de Wireframes](https://rockcontent.com/blog/wireframes/)
-> - [MarvelApp](https://marvelapp.com/developers/documentation/tutorials/)
-> - [Figma](https://www.figma.com/)
-> - [Adobe XD](https://www.adobe.com/br/products/xd.html#scroll)
-> - [Axure](https://www.axure.com/edu) (Licença Educacional)
-> - [InvisionApp](https://www.invisionapp.com/) (Licença Educacional)
+# Agendamento Cliente 
+![Wireframe](./images/wireframeAgendamento.png)
+# Código 
+[Cadastro-Login](../src/src/components/AgendamentoCliente.jsx)
+
+# Agendamento Barbeiro
+![Wireframe](./images/wireframeAgendamento2.png)
+# Código 
+[Cadastro-Login](../src/src/components/AgendamentoBarbeiro.jsx)
+
+# Agendamento Visualização Barbeiro
+![Wireframe](./images/wireframeAgendamento3.png)
+# Código 
+[Cadastro-Login](../src/src/components/VisualizacaoBarbeiro.jsx)
+
 
 
 ## Diagrama de Classes
@@ -84,69 +90,45 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Rel
 
 #### 4.3.3 Modelo Físico
 
-Insira aqui o script de criação das tabelas do banco de dados.
-
-Veja um exemplo:
-
 <code>
 
- -- Criação da tabela Médico
-CREATE TABLE Medico (
-    MedCodigo INTEGER PRIMARY KEY,
-    MedNome VARCHAR(100)
+ -- Tabela Clientes: 
+CREATE TABLE Clientes (
+    CliCodigo INTEGER PRIMARY KEY,
+    CliNome VARCHAR(50),
+    CliEmail VARCHAR(100),
+    CliTelefone VARCHAR(15),
+    CliSenha VARCHAR(20),
+    CliCriado DATETIME
 );
 
-
--- Criação da tabela Paciente
-CREATE TABLE Paciente (
-    PacCodigo INTEGER PRIMARY KEY,
-    PacNome VARCHAR(100)
+-- Tabela Servico: 
+CREATE TABLE Servico (
+    SrvCodigo INTEGER PRIMARY KEY,
+    SrvNome VARCHAR(100)
 );
 
--- Criação da tabela Consulta
-CREATE TABLE Consulta (
-    ConCodigo INTEGER PRIMARY KEY,
-    MedCodigo INTEGER,
-    PacCodigo INTEGER,
-    Data DATE,
-    FOREIGN KEY (MedCodigo) REFERENCES Medico(MedCodigo),
-    FOREIGN KEY (PacCodigo) REFERENCES Paciente(PacCodigo)
+-- Tabela Configuracao_Agenda: 
+CREATE TABLE Configuracao_Agenda (
+    CfgCodigo INTEGER PRIMARY KEY,
+    CfgDias VARCHAR(50),
+    CfgHorarioInicio TIME,
+    CfgHorarioFim TIME,
+    CfgIntervalo INTEGER
 );
 
--- Criação da tabela Medicamento
-CREATE TABLE Medicamento (
-    MdcCodigo INTEGER PRIMARY KEY,
-    MdcNome VARCHAR(100)
-);
-
--- Criação da tabela Prescricao
-CREATE TABLE Prescricao (
-    ConCodigo INTEGER,
-    MdcCodigo INTEGER,
-    Posologia VARCHAR(200),
-    PRIMARY KEY (ConCodigo, MdcCodigo),
-    FOREIGN KEY (ConCodigo) REFERENCES Consulta(ConCodigo),
-    FOREIGN KEY (MdcCodigo) REFERENCES Medicamento(MdcCodigo)
+-- Tabela Agendamento: 
+CREATE TABLE Agendamento (
+    AgdCodigo INTEGER PRIMARY KEY,
+    CliCodigo INTEGER,
+    SrvCodigo INTEGER,
+    AgdData DATE,
+    AgdHorario TIME,
+    FOREIGN KEY (CliCodigo) REFERENCES Clientes(CliCodigo),
+    FOREIGN KEY (SrvCodigo) REFERENCES Servico(SrvCodigo)
 );
 
 </code>
-
-Banco de dados da gestão do cadastro de cliente
-
-Criação da tabela Clientes
-CREATE TABLE Clientes (
-CliCodigo   INTEGER       PRIMARY KEY,
-CliNome     VARCHAR(100),
-CliEmail    VARCHAR(150),
-CliTelefone VARCHAR(20),
-CliSenha    VARCHAR(255),
-CliCriado   DATETIME
-);
-
-
-Este script deverá ser incluído em um arquivo .sql na pasta src\bd.
-
-
 
 
 ### 4.4. Tecnologias
@@ -159,7 +141,7 @@ Apresente também uma figura explicando como as tecnologias estão relacionadas 
 | **Dimensão**   | **Tecnologia**  |
 | ---            | ---             |
 | SGBD           | MySQL           |
-| Front end      | HTML+CSS+JS     |
-| Back end       | Java SpringBoot |
-| Deploy         | Github Pages    |
+| Front end      | HTML+CSS+React    |
+| Back end       | SpringBoot |
+| Deploy         | Versel    |
 
