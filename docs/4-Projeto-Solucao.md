@@ -12,7 +12,7 @@
  
  **Exemplo do diagrama de Arquitetura**:
  
- ![Exemplo de Arquitetura](./images/arquitetura-exemplo.png)
+ ![Projeto Arquitetura](./images/Projeto_arquitetura.png)
  
 
 ### 4.2. Protótipos de telas
@@ -60,7 +60,11 @@ _Apresente o modelo de dados por meio de um modelo relacional que contemple todo
 
 #### 4.3.1 Modelo ER
 
-O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.]
+O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.
+
+![Diagrama ER](images/DIagrama%20ER.png)
+
+![esquema relacional](images/esquema%20relacional.png)
 
 As referências abaixo irão auxiliá-lo na geração do artefato “Modelo ER”.
 
@@ -74,7 +78,7 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Rel
 
 > - [Criando um modelo relacional - Documentação da IBM](https://www.ibm.com/docs/pt-br/cognos-analytics/10.2.2?topic=designer-creating-relational-model)
 
-![Exemplo de um modelo relacional](images/modeloRelacional.png "Exemplo de Modelo Relacional.")
+![Tabela Relacional](images/Tabela%20Relacional.png)
 ---
 
 
@@ -126,6 +130,19 @@ CREATE TABLE Prescricao (
 );
 
 </code>
+
+Banco de dados da gestão do cadastro de cliente
+
+Criação da tabela Clientes
+CREATE TABLE Clientes (
+CliCodigo   INTEGER       PRIMARY KEY,
+CliNome     VARCHAR(100),
+CliEmail    VARCHAR(150),
+CliTelefone VARCHAR(20),
+CliSenha    VARCHAR(255),
+CliCriado   DATETIME
+);
+
 
 Este script deverá ser incluído em um arquivo .sql na pasta src\bd.
 
