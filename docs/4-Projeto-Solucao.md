@@ -86,6 +86,7 @@ Table Clientes {
   CliTelefone varchar(15)
   CliSenha varchar(20)
   CliCriado datetime
+  ClisenhaConfirmar varchar(20)
 }
 
 Table Barbeiro {
