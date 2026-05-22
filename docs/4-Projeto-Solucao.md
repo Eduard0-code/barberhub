@@ -15,28 +15,29 @@ Toda a comunicação acontece de forma segura, e a arquitetura foi organizada pa
 
 ![Exemplo de Arquitetura](./images/ArquiteturadaSolução.png)
  
- **Exemplo do diagrama de Arquitetura**:
  
- ![Exemplo de Arquitetura](./images/arquitetura-exemplo.png)
- 
-
 ### 4.2. Protótipos de telas
 
-Visão geral da interação do usuário pelas telas do sistema e protótipo interativo das telas com as funcionalidades que fazem parte do sistema (wireframes).
-Apresente as principais interfaces da plataforma. Discuta como ela foi elaborada de forma a atender os requisitos funcionais, não funcionais e histórias de usuário abordados nas <a href="02-Especificação do Projeto.md"> Especificação do Projeto</a>.
-A partir das atividades de usuário identificadas na seção anterior, elabore o protótipo de tela de cada uma delas.
-![Exemplo de Wireframe](images/wireframe-example.png)
+#Cadastro
+![Wireframe](./images/wireframeCadastro.png)
+#Código 
+[Cadastro-Login](../src/src/components/Cadastro-Login-Barber.jsx)
 
-São protótipos usados em design de interface para sugerir a estrutura de um site web e seu relacionamentos entre suas páginas. Um wireframe web é uma ilustração semelhante do layout de elementos fundamentais na interface.
- 
-> **Links Úteis**:
-> - [Protótipos vs Wireframes](https://www.nngroup.com/videos/prototypes-vs-wireframes-ux-projects/)
-> - [Ferramentas de Wireframes](https://rockcontent.com/blog/wireframes/)
-> - [MarvelApp](https://marvelapp.com/developers/documentation/tutorials/)
-> - [Figma](https://www.figma.com/)
-> - [Adobe XD](https://www.adobe.com/br/products/xd.html#scroll)
-> - [Axure](https://www.axure.com/edu) (Licença Educacional)
-> - [InvisionApp](https://www.invisionapp.com/) (Licença Educacional)
+#Agendamento Cliente 
+![Wireframe](./images/wireframeAgendamento.png)
+#Código 
+[Cadastro-Login](../src/src/components/AgendamentoCliente.jsx)
+
+#Agendamento Barbeiro
+![Wireframe](./images/wireframeAgendamento2.png)
+#Código 
+[Cadastro-Login](../src/src/components/AgendamentoBarbeiro.jsx)
+
+#Agendamento Visualização Barbeiro
+![Wireframe](./images/wireframeAgendamento3.png)
+#Código 
+[Cadastro-Login](../src/src/components/VisualizacaoBarbeiro.jsx)
+
 
 
 ## Diagrama de Classes
@@ -129,7 +130,7 @@ Apresente também uma figura explicando como as tecnologias estão relacionadas 
 | **Dimensão**   | **Tecnologia**  |
 | ---            | ---             |
 | SGBD           | MySQL           |
-| Front end      | HTML+CSS+JS     |
-| Back end       | Java SpringBoot |
-| Deploy         | Github Pages    |
+| Front end      | HTML+CSS+React    |
+| Back end       | SpringBoot |
+| Deploy         | Versel    |
 
