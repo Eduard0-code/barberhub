@@ -53,11 +53,8 @@ O Modelo ER representa através de um diagrama como as entidades (coisas, objeto
 ![Diagrama ER](images/Modelo-ER.png)
 
 ![esquema relacional](images/Esquema-Relacional.png)
-=======
-![Diagrama ER](images/DIagrama%20ER.png)
 
-![Esquema relacional](images/esquema%20relacional.png)
->>>>>>> 51392b10bfe8f54fff46bf0b92662e05281ce716
+
 
 
 #### 4.3.2 Esquema Relacional
