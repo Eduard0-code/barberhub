@@ -122,6 +122,17 @@ CREATE TABLE Avaliacao (
     AvaData DATETIME,
     FOREIGN KEY (AgdCodigo) REFERENCES Agendamento(AgdCodigo)
 );
+-- Tabela Gestão do Financeiro
+CREATE TABLE Financeiro (
+    FinCodigo        INTEGER PRIMARY KEY,
+    AgdCodigo        INTEGER,
+    FinValorPago     DECIMAL(10,2),
+    FinStatus        VARCHAR(20),
+    FinDataPagto     DATE,
+    FinTicketMedio   DECIMAL(10,2),
+    FinTotalRecebido DECIMAL(10,2),
+    FOREIGN KEY (AgdCodigo) REFERENCES Agendamento(AgdCodigo)
+);
 
 </code>
 
