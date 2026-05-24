@@ -116,7 +116,7 @@ CREATE TABLE Agendamento (
 -- Tabela de Avaliação de Serviço
 CREATE TABLE Avaliacao (
     AvaCodigo INTEGER PRIMARY KEY,
-    AgdCodigo INTEGER UNIQUE, -- Garante que cada agendamento receba apenas uma avaliação
+    AgdCodigo INTEGER UNIQUE, 
     AvaNota INTEGER,
     AvaComentario VARCHAR(500),
     AvaData DATETIME,
