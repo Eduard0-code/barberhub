@@ -70,28 +70,6 @@ O Esquema Relacional corresponde à representação dos dados em tabelas juntame
 #### 4.3.3 Modelo Físico
 
 <code>
-
-<<<<<<< HEAD
--- Tabela de Clientes
-CREATE TABLE Clientes (
-    CliCodigo INTEGER PRIMARY KEY,
-    CliNome VARCHAR(50),
-    CliEmail VARCHAR(100),
-    CliTelefone VARCHAR(15),
-    CliSenha VARCHAR(20),
-    CliCriado DATETIME
-);
-=======
-Table Clientes {
-  CliCodigo integer [pk]
-  CliNome varchar(50)
-  CliEmail varchar(100)
-  CliTelefone varchar(15)
-  CliSenha varchar(20)
-  CliCriado datetime
-}
->>>>>>> 51392b10bfe8f54fff46bf0b92662e05281ce716
-
 -- Tabela de Barbeiros
 CREATE TABLE Barbeiro (
     BarCodigo INTEGER PRIMARY KEY,
