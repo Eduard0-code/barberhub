@@ -38,6 +38,22 @@ Toda a comunicação acontece de forma segura, e a arquitetura foi organizada pa
 # Código 
 [Visualização-Barbeiro](../src/src/components/VisualizacaoBarbeiro.jsx)
 
+# Avaliação Cliente
+![Wireframe](./images/wireframeAvaliacaoCliente.png)
+# Código 
+[Avaliação-Cliente](../src/src/components/AvaliacaoCliente.jsx)
+
+# Avaliação Barbeiro
+![Wireframe](./images/wireframeAvaliacao.png)
+# Código 
+[Avaliação-Barbeiro](../src/src/components/AvaliacaoBarbeiro.jsx)
+
+# Financeiro
+![Wireframe](./images/wireframeFinanceiro.png)
+# Código 
+[Financeiro](../src/src/components/GestaoFinanceira.jsx)
+
+
 
 
 ## Diagrama de Classes
