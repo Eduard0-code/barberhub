@@ -40,11 +40,15 @@ const MenuLateral = () => {
               Clientes
             </button>
 
-            <button className="menu-item">
+            <button className="menu-item" onClick={() => navigate("/avaliacao-cliente")}>
               <Star size={18} />
-              Avaliações
+              Avaliar
             </button>
-            <button className="menu-item">
+            <button className="menu-item" onClick={() => navigate("/avaliacao-barbeiro")}>
+              <Star size={18} />
+              Avaliações 
+            </button>
+            <button className="menu-item" onClick={() => navigate("/gestao-financeira")}>
               <DollarSign size={18} />
               Financeiro
             </button>
