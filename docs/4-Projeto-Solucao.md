@@ -66,7 +66,7 @@ Toda a comunicação acontece de forma segura, e a arquitetura foi organizada pa
 <<<<<<< HEAD
 O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.
 
-![Diagrama ER](images/Modelo_ER.png)
+![Diagrama ER](images/Modelo_er.png)
 
 ![esquema relacional](images/Sistema_Relacional.jpeg)
 
