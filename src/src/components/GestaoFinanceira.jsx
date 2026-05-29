@@ -1,9 +1,10 @@
 // pages/GestaoFinanceira.jsx
 
-import './GestaoFinanceira.css';
-import Header from '../components/Header.jsx';
-import Footer from '../components/Footer.jsx';
-import MenuLateral from '../components/MenuLateral.jsx';
+import "./GestaoFinanceira.css";
+import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
+import MenuLateral from "../components/MenuLateral.jsx";
+import { useState } from "react";
 
 import {
   Wallet,
@@ -15,219 +16,213 @@ import {
   Download,
   ChevronLeft,
   ChevronRight,
-} from 'lucide-react';
+} from "lucide-react";
 
-import GraficoFinanceiro from '../components/GraficoFinanceiro';
+import GraficoFinanceiro from "../components/GraficoFinanceiro";
 
 const GestaoFinanceira = () => {
+  const [periodo, setPeriodo] = useState("semana");
   const atendimentos = [
     {
-      horario: '14:30',
-      cliente: 'João Silva',
-      servico: 'Corte + Barba',
-      valor: 'R$ 65,00',
-      status: 'Concluído',
+      horario: "14:30",
+      cliente: "João Silva",
+      servico: "Corte + Barba",
+      valor: "R$ 65,00",
+      status: "Concluído",
     },
     {
-      horario: '13:00',
-      cliente: 'Marcos Pereira',
-      servico: 'Corte de Cabelo',
-      valor: 'R$ 40,00',
-      status: 'Concluído',
+      horario: "13:00",
+      cliente: "Marcos Pereira",
+      servico: "Corte de Cabelo",
+      valor: "R$ 40,00",
+      status: "Concluído",
     },
     {
-      horario: '11:45',
-      cliente: 'Cliente Avulso',
-      servico: 'Barba',
-      valor: 'R$ 30,00',
-      status: 'Concluído',
+      horario: "11:45",
+      cliente: "Cliente Avulso",
+      servico: "Barba",
+      valor: "R$ 30,00",
+      status: "Concluído",
     },
     {
-      horario: '10:30',
-      cliente: 'Carlos Eduardo',
-      servico: 'Corte + Pigmentação',
-      valor: 'R$ 80,00',
-      status: 'Concluído',
+      horario: "10:30",
+      cliente: "Carlos Eduardo",
+      servico: "Corte + Pigmentação",
+      valor: "R$ 80,00",
+      status: "Concluído",
     },
     {
-      horario: '15:30',
-      cliente: 'Felipe Santos',
-      servico: 'Corte de Cabelo',
-      valor: 'R$ 40,00',
-      status: 'Agendado',
+      horario: "15:30",
+      cliente: "Felipe Santos",
+      servico: "Corte de Cabelo",
+      valor: "R$ 40,00",
+      status: "Agendado",
     },
   ];
 
   return (
     <>
-    <Header />
-    <div className="financeiro-container">
-    <MenuLateral />
-      
+      <Header />
+      <div className="financeiro-container">
+        <MenuLateral />
 
-      <div className="financeiro-content">
-        {/* CARDS */}
-        <div className="financeiro-cards">
-          <div className="financeiro-card">
-            <div className="card-icon">
-              <Wallet size={18} />
+        <div className="financeiro-content">
+          {/* CARDS */}
+          <div className="financeiro-cards">
+            <div className="financeiro-card">
+              <div className="card-icon">
+                <Wallet size={18} />
+              </div>
+
+              <span>Total Recebido (Hoje)</span>
+
+              <h2>R$ 450,00</h2>
+
+              <p>+12% em relação a ontem</p>
             </div>
 
-            <span>Total Recebido (Hoje)</span>
+            <div className="financeiro-card">
+              <div className="card-icon">
+                <Users size={18} />
+              </div>
 
-            <h2>R$ 450,00</h2>
+              <span>Atendimentos (Hoje)</span>
 
-            <p>+12% em relação a ontem</p>
-          </div>
+              <h2>12</h2>
 
-          <div className="financeiro-card">
-            <div className="card-icon">
-              <Users size={18} />
+              <p>3 agendados para tarde</p>
             </div>
 
-            <span>Atendimentos (Hoje)</span>
+            <div className="financeiro-card">
+              <div className="card-icon">
+                <Receipt size={18} />
+              </div>
 
-            <h2>12</h2>
+              <span>Ticket Médio</span>
 
-            <p>3 agendados para tarde</p>
-          </div>
+              <h2>R$ 37,50</h2>
 
-          <div className="financeiro-card">
-            <div className="card-icon">
-              <Receipt size={18} />
-            </div>
-
-            <span>Ticket Médio</span>
-
-            <h2>R$ 37,50</h2>
-
-            <p>Calculado com base em 30 dias</p>
-          </div>
-        </div>
-
-        {/* GRID */}
-        <div className="financeiro-grid">
-          <div className="pagamentos-card">
-            <div className="pagamentos-header">
-              <h3>Atualizar Pagamentos</h3>
-
-              <Plus size={18} />
-            </div>
-
-            <div className="pagamentos-body">
-              <button className="btn-update">
-                <Check size={18} />
-                Atualizar
-              </button>
-
-              <button className="btn-cancel">
-                Cancelar
-              </button>
+              <p>Calculado com base em 30 dias</p>
             </div>
           </div>
 
-          <div className="table-card">
-            <div className="table-header">
-              <h3>Atendimentos Recentes</h3>
+          {/* GRID */}
+          <div className="financeiro-grid">
+            <div className="pagamentos-card">
+              <div className="pagamentos-header">
+                <h3>Atualizar Pagamentos</h3>
 
-              <div className="table-actions">
-                <button>
-                  <Filter size={15} />
-                  Filtrar
+                <Plus size={18} />
+              </div>
+
+              <div className="pagamentos-body">
+                <button className="btn-update">
+                  <Check size={18} />
+                  Atualizar
                 </button>
 
-                <button>
-                  <Download size={15} />
-                  Exportar
-                </button>
+                <button className="btn-cancel">Cancelar</button>
               </div>
             </div>
 
-            <table>
-              <thead>
-                <tr>
-                  <th>HORÁRIO</th>
-                  <th>CLIENTE</th>
-                  <th>SERVIÇO</th>
-                  <th>VALOR</th>
-                  <th>STATUS</th>
-                </tr>
-              </thead>
+            <div className="table-card">
+              <div className="table-header">
+                <h3>Atendimentos Recentes</h3>
 
-              <tbody>
-                {atendimentos.map((item) => (
-                  <tr key={item.horario}>
-                    <td>{item.horario}</td>
+                <div className="table-actions">
+                  <button>
+                    <Filter size={15} />
+                    Filtrar
+                  </button>
 
-                    <td className="cliente-name">
-                      {item.cliente}
-                    </td>
+                  <button>
+                    <Download size={15} />
+                    Exportar
+                  </button>
+                </div>
+              </div>
 
-                    <td>{item.servico}</td>
-
-                    <td className="valor-cell">
-                      {item.valor}
-                    </td>
-
-                    <td>
-                      <span
-                        className={`status ${
-                          item.status === 'Concluído'
-                            ? 'done'
-                            : 'scheduled'
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
+              <table>
+                <thead>
+                  <tr>
+                    <th>HORÁRIO</th>
+                    <th>CLIENTE</th>
+                    <th>SERVIÇO</th>
+                    <th>VALOR</th>
+                    <th>STATUS</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
 
-            <div className="table-footer">
-              <span>
-                Mostrando 5 de 12 registros
-              </span>
+                <tbody>
+                  {atendimentos.map((item) => (
+                    <tr key={item.horario}>
+                      <td>{item.horario}</td>
 
-              <div className="pagination">
-                <button>
-                  <ChevronLeft size={16} />
-                </button>
+                      <td className="cliente-name">{item.cliente}</td>
 
-                <button className="active-page">
-                  1
-                </button>
+                      <td>{item.servico}</td>
 
-                <button>2</button>
+                      <td className="valor-cell">{item.valor}</td>
 
-                <button>
-                  <ChevronRight size={16} />
-                </button>
+                      <td>
+                        <span
+                          className={`status ${
+                            item.status === "Concluído" ? "done" : "scheduled"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="table-footer">
+                <span>Mostrando 5 de 12 registros</span>
+
+                <div className="pagination">
+                  <button>
+                    <ChevronLeft size={16} />
+                  </button>
+
+                  <button className="active-page">1</button>
+
+                  <button>2</button>
+
+                  <button>
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* GRÁFICO */}
-        <div className="chart-card">
-          <div className="chart-header">
-            <h3>Evolução de Receita (Semanal)</h3>
+          {/* GRÁFICO */}
+          <div className="chart-card">
+            <div className="chart-header">
+              <h3>
+                Evolução de Receita (
+                {periodo === "semana" ? "Semanal" : "Mensal"})
+              </h3>
 
-            <select>
-              <option>Esta Semana</option>
-              <option>Último Mês</option>
-            </select>
+              <select
+                value={periodo}
+                onChange={(e) => setPeriodo(e.target.value)}
+              >
+                <option value="semana">Esta Semana</option>
+
+                <option value="mes">Último Mês</option>
+              </select>
+            </div>
+
+            <div className="chart-wrapper">
+              <GraficoFinanceiro />
+            </div>
           </div>
-
-          <div className="chart-wrapper">
-            <GraficoFinanceiro />
-          </div>
         </div>
-
       </div>
-    </div>
-    <Footer/>
+      <Footer />
     </>
   );
 };
