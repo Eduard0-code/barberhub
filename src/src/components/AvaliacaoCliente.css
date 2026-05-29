@@ -1,0 +1,246 @@
+/* pages/AvaliacaoCliente.css */
+
+.avaliacao-container {
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding-top: 70px;
+}
+
+.servico-card {
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto 36px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 34px 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ margin-top: 36px;
+}
+
+.servico-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #9ca3af;
+}
+
+.servico-card h1 {
+  margin-top: 12px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.servico-info {
+  margin-top: 22px;
+  display: flex;
+  gap: 34px;
+  flex-wrap: wrap;
+}
+
+.servico-info span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.valor-total {
+  text-align: right;
+}
+
+.valor-total span {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.valor-total h2 {
+  margin-top: 18px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.avaliacao-content {
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.avaliacao-form-card {
+  flex: 1;
+  background: white;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 40px;
+  margin-bottom: 82px;
+}
+
+.avaliacao-form-card h2 {
+  font-size: 24px;
+  color: #111827;
+}
+
+.avaliacao-form-card p {
+  margin-top: 14px;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.divider {
+  margin: 28px 0;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.campo-avaliacao label,
+.campo-comentario label {
+  display: block;
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.stars-box {
+  display: flex;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.star-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.campo-comentario {
+  margin-top: 34px;
+}
+
+.campo-comentario textarea {
+  width: 100%;
+  height: 220px;
+  border-radius: 16px;
+  border: 2px solid #111827;
+  padding: 22px;
+  resize: none;
+  font-size: 1rem;
+  outline: none;
+}
+
+.btn-enviar {
+  width: 100%;
+  margin-top: 42px;
+  height: 52px;
+  border-radius: 999px;
+  border: none;
+  background: black;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.avaliacao-existente-card {
+  width: 360px;
+  border: 2px dashed #9ca3af;
+  border-radius: 18px;
+  padding: 28px;
+  background: white;
+  position: relative;
+}
+
+.existing-label {
+  position: absolute;
+  top: -12px;
+  left: 22px;
+  background: #f5f5f5;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.existing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.existing-header h3 {
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.existing-header p {
+  margin-top: 12px;
+  font-size: 18px;
+  color: #374151;
+}
+
+.nota-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid #6b7280;
+  border-radius: 999px;
+  padding: 10px 16px;
+}
+
+.stars-mini {
+  display: flex;
+  gap: 3px;
+}
+
+.nota-box span {
+  font-weight: 700;
+}
+
+.comentario-box {
+  margin-top: 26px;
+  border: 2px solid #6b7280;
+  border-radius: 16px;
+  padding: 28px;
+  min-height: 220px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #111827;
+}
+
+.acoes-avaliacao {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.btn-editar {
+  flex: 1;
+  height: 64px;
+  border-radius: 999px;
+  border: 2px solid #111827;
+  background: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-excluir {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}

@@ -58,8 +58,9 @@ const AgendamentoCliente = () => {
   const [etapaAtual, setEtapaAtual] = useState(1);
   const [servicoSelecionado, setServicoSelecionado] = useState(servicos[1]);
   const [diaSelecionado, setDiaSelecionado] = useState(
-    new Date(2026, 10, 10)
+    new Date()
   );
+  const [month, setMonth] = useState(new Date());
   const [horarioSelecionado, setHorarioSelecionado] = useState('14:00');
 
   const total = useMemo(() => servicoSelecionado.preco, [servicoSelecionado]);
@@ -192,7 +193,8 @@ const AgendamentoCliente = () => {
                   mode="single"
                   selected={diaSelecionado?.toLocaleDateString('pt-BR')}
                   onSelect={setDiaSelecionado}
-                  month={new Date(2026, 10)}
+                  month={month}
+                  onMonthChange={setMonth}
                   showOutsideDays
                   className="custom-calendar"
                 />

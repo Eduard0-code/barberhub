@@ -26,63 +26,58 @@ Toda a comunicação acontece de forma segura, e a arquitetura foi organizada pa
 # Agendamento Cliente 
 ![Wireframe](./images/wireframeAgendamento.png)
 # Código 
-[Cadastro-Login](../src/src/components/AgendamentoCliente.jsx)
+[Agendamento-Cliente](../src/src/components/AgendamentoCliente.jsx)
 
 # Agendamento Barbeiro
 ![Wireframe](./images/wireframeAgendamento2.png)
 # Código 
-[Cadastro-Login](../src/src/components/AgendamentoBarbeiro.jsx)
+[Agendamento-Barbeiro](../src/src/components/AgendamentoBarbeiro.jsx)
 
 # Agendamento Visualização Barbeiro
 ![Wireframe](./images/wireframeAgendamento3.png)
 # Código 
-[Cadastro-Login](../src/src/components/VisualizacaoBarbeiro.jsx)
+[Visualização-Barbeiro](../src/src/components/VisualizacaoBarbeiro.jsx)
+
+# Avaliação Cliente
+![Wireframe](./images/wireframeAvaliacaoCliente.png)
+# Código 
+[Avaliação-Cliente](../src/src/components/AvaliacaoCliente.jsx)
+
+# Avaliação Barbeiro
+![Wireframe](./images/wireframeAvaliacao.png)
+# Código 
+[Avaliação-Barbeiro](../src/src/components/AvaliacaoBarbeiro.jsx)
+
+# Financeiro
+![Wireframe](./images/wireframeFinanceiro.png)
+# Código 
+[Financeiro](../src/src/components/GestaoFinanceira.jsx)
+
 
 
 
 ## Diagrama de Classes
 
-O diagrama de classes ilustra graficamente como será a estrutura do software, e como cada uma das classes da sua estrutura estarão interligadas. Essas classes servem de modelo para materializar os objetos que executarão na memória.
-
-As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de Classes”.
-
-> - [Diagramas de Classes - Documentação da IBM](https://www.ibm.com/docs/pt-br/rational-soft-arch/9.6.1?topic=diagrams-class)
-> - [O que é um diagrama de classe UML? | Lucidchart](https://www.lucidchart.com/pages/pt/o-que-e-diagrama-de-classe-uml)
-
-## Modelo ER
-
-O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.]
-
-As referências abaixo irão auxiliá-lo na geração do artefato “Modelo ER”.
-
-> - [Como fazer um diagrama entidade relacionamento | Lucidchart](https://www.lucidchart.com/pages/pt/como-fazer-um-diagrama-entidade-relacionamento)
-
 
 ### 4.3. Modelo de dados
 
-O desenvolvimento da solução proposta requer a existência de bases de dados que permitam efetuar os cadastros de dados e controles associados aos processos identificados, assim como recuperações.
-Utilizando a notação do DER (Diagrama Entidade e Relacionamento), elaborem um modelo, na ferramenta visual indicada na disciplina, que contemple todas as entidades e atributos associados às atividades dos processos identificados. Deve ser gerado um único DER que suporte todos os processos escolhidos, visando, assim, uma base de dados integrada. O modelo deve contemplar, também, o controle de acesso de usuários (partes interessadas dos processos) de acordo com os papéis definidos nos modelos do processo de negócio.
-_Apresente o modelo de dados por meio de um modelo relacional que contemple todos os conceitos e atributos apresentados na modelagem dos processos._
-
 #### 4.3.1 Modelo ER
 
+<<<<<<< HEAD
 O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.
 
-![Diagrama ER](images/DIagrama%20ER.png)
+![Diagrama ER](images/Modelo-ER.png)
 
-![esquema relacional](images/esquema%20relacional.png)
+![esquema relacional](images/Esquema-Relacional.png)
 
-As referências abaixo irão auxiliá-lo na geração do artefato “Modelo ER”.
 
-> - [Como fazer um diagrama entidade relacionamento | Lucidchart](https://www.lucidchart.com/pages/pt/como-fazer-um-diagrama-entidade-relacionamento)
+
 
 #### 4.3.2 Esquema Relacional
 
 O Esquema Relacional corresponde à representação dos dados em tabelas juntamente com as restrições de integridade e chave primária.
  
-As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Relacional”.
 
-> - [Criando um modelo relacional - Documentação da IBM](https://www.ibm.com/docs/pt-br/cognos-analytics/10.2.2?topic=designer-creating-relational-model)
 
 ![Tabela Relacional](images/Tabela-Relacional.png)
 ---
@@ -91,52 +86,78 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Rel
 #### 4.3.3 Modelo Físico
 
 <code>
-
- -- Tabela Clientes: 
-CREATE TABLE Clientes (
-    CliCodigo INTEGER PRIMARY KEY,
-    CliNome VARCHAR(50),
-    CliEmail VARCHAR(100),
-    CliTelefone VARCHAR(15),
-    CliSenha VARCHAR(20),
-    CliCriado DATETIME
+-- Tabela de Barbeiros
+CREATE TABLE Barbeiro (
+    BarCodigo INTEGER PRIMARY KEY,
+    BarNome VARCHAR(50),
+    BarTelefone VARCHAR(15),
+    BarEmail VARCHAR(100),
+    BarEspecialidade VARCHAR(100),
+    BarAtivo BOOLEAN
 );
 
--- Tabela Servico: 
+-- Tabela de Serviços
 CREATE TABLE Servico (
     SrvCodigo INTEGER PRIMARY KEY,
-    SrvNome VARCHAR(100)
+    SrvNome VARCHAR(100),
+    SrvPreco DECIMAL(10,2)
 );
 
--- Tabela Configuracao_Agenda: 
+-- Tabela de Regras de Agenda
 CREATE TABLE Configuracao_Agenda (
     CfgCodigo INTEGER PRIMARY KEY,
+    BarCodigo INTEGER,
     CfgDias VARCHAR(50),
     CfgHorarioInicio TIME,
     CfgHorarioFim TIME,
-    CfgIntervalo INTEGER
+    CfgIntervalo INTEGER,
+    FOREIGN KEY (BarCodigo) REFERENCES Barbeiro(BarCodigo)
 );
 
--- Tabela Agendamento: 
+-- Tabela de Agendamentos
 CREATE TABLE Agendamento (
     AgdCodigo INTEGER PRIMARY KEY,
     CliCodigo INTEGER,
+    BarCodigo INTEGER,
     SrvCodigo INTEGER,
     AgdData DATE,
     AgdHorario TIME,
+    AgdPreco DECIMAL(10,2),
+    AgdStatus VARCHAR(20),
     FOREIGN KEY (CliCodigo) REFERENCES Clientes(CliCodigo),
+    FOREIGN KEY (BarCodigo) REFERENCES Barbeiro(BarCodigo),
     FOREIGN KEY (SrvCodigo) REFERENCES Servico(SrvCodigo)
+);
+
+-- Tabela de Avaliação de Serviço
+CREATE TABLE Avaliacao (
+    AvaCodigo INTEGER PRIMARY KEY,
+    AgdCodigo INTEGER UNIQUE, 
+    AvaNota INTEGER,
+    AvaComentario VARCHAR(500),
+    AvaData DATETIME,
+    FOREIGN KEY (AgdCodigo) REFERENCES Agendamento(AgdCodigo)
+);
+-- Tabela Gestão do Financeiro
+CREATE TABLE Financeiro (
+    FinCodigo        INTEGER PRIMARY KEY,
+    AgdCodigo        INTEGER,
+    FinValorPago     DECIMAL(10,2),
+    FinStatus        VARCHAR(20),
+    FinDataPagto     DATE,
+    FinTicketMedio   DECIMAL(10,2),
+    FinTotalRecebido DECIMAL(10,2),
+    FOREIGN KEY (AgdCodigo) REFERENCES Agendamento(AgdCodigo)
 );
 
 </code>
 
 
-### 4.4. Tecnologias
+### 4.4. Tecnologias.
 
-_Descreva qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas._
+Para o desenvolvimento do sistema de barbearia serão utilizadas tecnologias voltadas para frontend, backend, banco de dados e deploy da aplicação. O frontend será desenvolvido com React, HTML e CSS, responsáveis pela interface e interação do usuário. O backend utilizará Spring Boot para criação da API REST e regras de negócio. O armazenamento dos dados será realizado no MySQL. Já o deploy da aplicação será feito na plataforma Vercel.
 
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
-
+O funcionamento do sistema ocorrerá da seguinte forma: o usuário acessa o frontend pelo navegador, que envia requisições para a API Spring Boot. O backend processa as informações, realiza consultas no banco MySQL e retorna as respostas para o usuário.
 
 | **Dimensão**   | **Tecnologia**  |
 | ---            | ---             |
@@ -144,4 +165,4 @@ Apresente também uma figura explicando como as tecnologias estão relacionadas 
 | Front end      | HTML+CSS+React    |
 | Back end       | SpringBoot |
 | Deploy         | Versel    |
-
+| Versionamento  | GITHUB    |

@@ -68,7 +68,7 @@
 }
 
 .cliente-card {
-  width: 640px;
+  width: 840px;
   background: white;
   border-radius: 8px;
   border: 1px solid #e3e3e3;
@@ -224,7 +224,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
+  
 }
+
 
 .custom-calendar-wrapper {
   border: 1px solid #dddddd;
@@ -232,6 +234,9 @@
   padding: 16px;
   margin-top: 14px;
   background: white;
+  display: flex; 
+  justify-content: center;
+ 
 }
 
 .custom-calendar .rdp {
