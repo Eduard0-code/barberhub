@@ -54,8 +54,8 @@ const AvaliacaoCliente = () => {
   return (
     <>
     <Header />
-    <MenuLateral />
     <div className="avaliacao-container">
+    <MenuLateral />
       {/* TOPO */}
       <div className="servico-card">
         <div>

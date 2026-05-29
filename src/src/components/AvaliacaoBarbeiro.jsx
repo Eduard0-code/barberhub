@@ -172,8 +172,8 @@ const AvaliacaoBarbeiro = () => {
   return (
     <>
     <Header />
-    <MenuLateral />
     <div className="avaliacoes-container">
+    <MenuLateral />
       {/* TOPBAR */}
       <div className="avaliacoes-topbar">
         <h1>Avaliações</h1>
