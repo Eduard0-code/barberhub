@@ -1,16 +1,14 @@
 import { useState } from "react";
 import "./Cadastro-Login-Barber.css";
-import { Scissors,User,Lock,MailIcon,Phone } from "lucide-react";
-import { Link} from "react-router-dom";
+import { Scissors, User, Lock, MailIcon, Phone, BriefcaseBusiness } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { clienteApi, barbeiroApi, authApi } from "../services/api.js";
 
-
-
-// ── Header ─────────────────────────────────────────────────────────────────────
 const Header = () => (
   <div className="header">
     <div className="brand">
       <Scissors />
-      <span className="brand-name">Barber<br/>Hub</span>
+      <span className="brand-name">Barber<br />Hub</span>
     </div>
     <button className="avatar-btn" aria-label="Perfil">
       <User size={28} />
@@ -18,115 +16,289 @@ const Header = () => (
   </div>
 );
 
-// ── Login Screen ───────────────────────────────────────────────────────────────
-const LoginScreen = ({ onCadastro }) => (
-  
-  <div className="card">
-    <Header />
-    <div className="card-body">
-      <h1 className="page-title">Entrar em Barber Hub</h1>
-      <p className="page-subtitle">Preencha os dados abaixo para fazer login.</p>
+const LoginScreen = ({ onCadastro }) => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
-      <div className="form-group">
-        <label className="form-label">E-mail</label>
-        <div className="input-wrap">
-          <MailIcon  size={14} className="input-icon" />
-          <input className="form-input" type="email" placeholder="joao@exemplo.com" />
+  const fazerLogin = async () => {
+    setErro("");
+    if (!email || !senha) {
+      setErro("Preencha email e senha");
+      return;
+    }
+    setCarregando(true);
+    try {
+      const cliente = await authApi.login(email, senha);
+      localStorage.setItem("usuarioLogado", JSON.stringify(cliente));
+      navigate("/");
+    } catch (e) {
+      setErro(e.message || "Falha ao entrar");
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  return (
+    <div className="card">
+      <Header />
+      <div className="card-body">
+        <h1 className="page-title">Entrar em Barber Hub</h1>
+        <p className="page-subtitle">Preencha os dados abaixo para fazer login.</p>
+
+        <div className="form-group">
+          <label className="form-label">E-mail</label>
+          <div className="input-wrap">
+            <MailIcon size={14} className="input-icon" />
+            <input
+              className="form-input"
+              type="email"
+              placeholder="joao@exemplo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
         </div>
+
+        <div className="form-group">
+          <label className="form-label">Senha</label>
+          <div className="input-wrap">
+            <Lock size={14} className="input-icon" />
+            <input
+              className="form-input"
+              type="password"
+              placeholder="********"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {erro && <p className="form-erro">{erro}</p>}
       </div>
 
-      <div className="form-group">
-        <label className="form-label">Senha</label>
-        <div className="input-wrap">
-          <Lock size={14} className="input-icon" />
-          <input className="form-input" type="password" placeholder="••••••••" />
-        </div>
-      </div>
-    </div>
+      <div className="divider" />
 
-    <div className="divider" />
-
-    <div className="card-footer">
-    
-      <button className="btn btn-outline" onClick={onCadastro}>Cadastro</button>
-      <Link to='/'>
-       <button className="btn btn-solid" >Login</button>
-      </Link>
-    </div>
-  </div>
-);
-
-// ── Register Screen ────────────────────────────────────────────────────────────
-const RegisterScreen = ({ onCancelar }) => (
-  <div className="card">
-    <Header />
-    <div className="card-body">
-      <h1 className="page-title">Novo Cliente</h1>
-      <p className="page-subtitle">Preencha os dados abaixo para cadastrar um novo cliente no sistema.</p>
-
-      <div className="form-group">
-        <label className="form-label">Nome</label>
-        <div className="input-wrap">
-          <User  className="input-icon" />
-          <input className="form-input" type="text" placeholder="Ex: João da Silva" />
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">E-mail</label>
-        <div className="input-wrap">
-          <MailIcon  className="input-icon" />
-          <input className="form-input" type="email" placeholder="joao@exemplo.com" />
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Telefone</label>
-        <div className="input-wrap">
-          <Phone className="input-icon" />
-          <input className="form-input" type="tel" placeholder="(31) 99999-9999" />
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Senha</label>
-        <div className="input-wrap">
-          <Lock className="input-icon" />
-          <input className="form-input" type="password" placeholder="••••••••" />
-        </div>
-        <p className="form-hint">Mínimo de 8 caracteres.</p>
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Confirmar Senha</label>
-        <div className="input-wrap">
-          <Lock className="input-icon" />
-          <input className="form-input" type="password" placeholder="••••••••" />
-        </div>
+      <div className="card-footer">
+        <button className="btn btn-outline" onClick={onCadastro}>Cadastro</button>
+        <button className="btn btn-solid" onClick={fazerLogin} disabled={carregando}>
+          {carregando ? "Entrando..." : "Login"}
+        </button>
       </div>
     </div>
+  );
+};
 
-    <div className="divider" />
+const RegisterScreen = ({ onCancelar, aoCriar }) => {
+  const [tipo, setTipo] = useState("cliente");
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmar, setConfirmar] = useState("");
+  const [especialidade, setEspecialidade] = useState("");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
-    <div className="card-footer">
-      <button className="btn btn-outline" onClick={onCancelar}>Cancelar</button>
-      <button className="btn btn-solid">Cadastrar</button>
+  const cadastrar = async () => {
+    setErro("");
+
+    if (!nome || !email || !telefone) {
+      setErro("Preencha nome, email e telefone");
+      return;
+    }
+
+    if (tipo === "cliente") {
+      if (!senha || senha.length < 6) {
+        setErro("A senha precisa ter ao menos 6 caracteres");
+        return;
+      }
+      if (senha !== confirmar) {
+        setErro("As senhas nao conferem");
+        return;
+      }
+    }
+
+    setCarregando(true);
+    try {
+      if (tipo === "cliente") {
+        await clienteApi.criar({
+          cliNome: nome,
+          cliEmail: email,
+          cliTelefone: telefone,
+          cliSenha: senha,
+        });
+      } else {
+        await barbeiroApi.criar({
+          barNome: nome,
+          barEmail: email,
+          barTelefone: telefone,
+          barEspecialidade: especialidade || "Geral",
+          barAtivo: true,
+        });
+      }
+      aoCriar(tipo);
+    } catch (e) {
+      setErro(e.message || "Falha ao cadastrar");
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  return (
+    <div className="card">
+      <Header />
+      <div className="card-body">
+        <h1 className="page-title">Novo cadastro</h1>
+        <p className="page-subtitle">Escolha o tipo de cadastro e preencha os dados.</p>
+
+        <div className="tipo-toggle">
+          <button
+            type="button"
+            className={tipo === "cliente" ? "tipo-ativo" : ""}
+            onClick={() => setTipo("cliente")}
+          >
+            Cliente
+          </button>
+          <button
+            type="button"
+            className={tipo === "barbeiro" ? "tipo-ativo" : ""}
+            onClick={() => setTipo("barbeiro")}
+          >
+            Barbeiro
+          </button>
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Nome</label>
+          <div className="input-wrap">
+            <User className="input-icon" />
+            <input
+              className="form-input"
+              type="text"
+              placeholder="Ex: João da Silva"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">E-mail</label>
+          <div className="input-wrap">
+            <MailIcon className="input-icon" />
+            <input
+              className="form-input"
+              type="email"
+              placeholder="joao@exemplo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Telefone</label>
+          <div className="input-wrap">
+            <Phone className="input-icon" />
+            <input
+              className="form-input"
+              type="tel"
+              placeholder="(31) 99999-9999"
+              value={telefone}
+              onChange={(e) => setTelefone(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {tipo === "cliente" && (
+          <>
+            <div className="form-group">
+              <label className="form-label">Senha</label>
+              <div className="input-wrap">
+                <Lock className="input-icon" />
+                <input
+                  className="form-input"
+                  type="password"
+                  placeholder="********"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                />
+              </div>
+              <p className="form-hint">Mínimo de 6 caracteres.</p>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Confirmar Senha</label>
+              <div className="input-wrap">
+                <Lock className="input-icon" />
+                <input
+                  className="form-input"
+                  type="password"
+                  placeholder="********"
+                  value={confirmar}
+                  onChange={(e) => setConfirmar(e.target.value)}
+                />
+              </div>
+            </div>
+          </>
+        )}
+
+        {tipo === "barbeiro" && (
+          <div className="form-group">
+            <label className="form-label">Especialidade</label>
+            <div className="input-wrap">
+              <BriefcaseBusiness className="input-icon" />
+              <input
+                className="form-input"
+                type="text"
+                placeholder="Ex: Corte e Barba"
+                value={especialidade}
+                onChange={(e) => setEspecialidade(e.target.value)}
+              />
+            </div>
+          </div>
+        )}
+
+        {erro && <p className="form-erro">{erro}</p>}
+      </div>
+
+      <div className="divider" />
+
+      <div className="card-footer">
+        <button className="btn btn-outline" onClick={onCancelar} disabled={carregando}>Cancelar</button>
+        <button className="btn btn-solid" onClick={cadastrar} disabled={carregando}>
+          {carregando ? "Salvando..." : "Cadastrar"}
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
-// ── App ────────────────────────────────────────────────────────────────────────
 export default function BarberCadLog() {
   const [screen, setScreen] = useState("login");
-  
+  const [mensagem, setMensagem] = useState("");
+
+  const onCriado = (tipo) => {
+    setMensagem(
+      tipo === "cliente"
+        ? "Cliente cadastrado com sucesso. Faça login para continuar."
+        : "Barbeiro cadastrado com sucesso."
+    );
+    setScreen("login");
+  };
+
   return (
-    <>
-      <div className="app">
-        {screen === "login"
-          ? <LoginScreen onCadastro={() => setScreen("register")} />
-          : <RegisterScreen onCancelar={() => setScreen("login")} />
-        }
-      </div>
-    </>
+    <div className="app">
+      {mensagem && (
+        <div className="aviso-sucesso">{mensagem}</div>
+      )}
+      {screen === "login"
+        ? <LoginScreen onCadastro={() => { setMensagem(""); setScreen("register"); }} />
+        : <RegisterScreen onCancelar={() => { setMensagem(""); setScreen("login"); }} aoCriar={onCriado} />
+      }
+    </div>
   );
 }

@@ -1,64 +1,23 @@
-## Arquivo .sql
+## Scripts do banco de dados
 
--- Tabela de Clientes
-CREATE TABLE Clientes (
-    CliCodigo INTEGER PRIMARY KEY,
-    CliNome VARCHAR(50),
-    CliEmail VARCHAR(100),
-    CliTelefone VARCHAR(15),
-    CliSenha VARCHAR(20),
-    CliCriado DATETIME
-);
+Esta pasta contem os arquivos SQL do projeto Barber Hub para o MySQL.
 
--- Tabela de Barbeiros
-CREATE TABLE Barbeiro (
-    BarCodigo INTEGER PRIMARY KEY,
-    BarNome VARCHAR(50),
-    BarTelefone VARCHAR(15),
-    BarEmail VARCHAR(100),
-    BarEspecialidade VARCHAR(100),
-    BarAtivo BOOLEAN
-);
+- `schema.sql` cria o banco `db_barbearia` e todas as tabelas do sistema
+- `seed.sql` insere dados de exemplo para testar as telas e indicadores
 
--- Tabela de Serviços
-CREATE TABLE Servico (
-    SrvCodigo INTEGER PRIMARY KEY,
-    SrvNome VARCHAR(100),
-    SrvPreco DECIMAL(10,2)
-);
+### Como executar
 
--- Tabela de Regras de Agenda
-CREATE TABLE Configuracao_Agenda (
-    CfgCodigo INTEGER PRIMARY KEY,
-    BarCodigo INTEGER,
-    CfgDias VARCHAR(50),
-    CfgHorarioInicio TIME,
-    CfgHorarioFim TIME,
-    CfgIntervalo INTEGER,
-    FOREIGN KEY (BarCodigo) REFERENCES Barbeiro(BarCodigo)
-);
+No MySQL Workbench, abra cada arquivo na ordem abaixo e clique em executar:
 
--- Tabela de Agendamentos
-CREATE TABLE Agendamento (
-    AgdCodigo INTEGER PRIMARY KEY,
-    CliCodigo INTEGER,
-    BarCodigo INTEGER,
-    SrvCodigo INTEGER,
-    AgdData DATE,
-    AgdHorario TIME,
-    AgdPreco DECIMAL(10,2),
-    AgdStatus VARCHAR(20),
-    FOREIGN KEY (CliCodigo) REFERENCES Clientes(CliCodigo),
-    FOREIGN KEY (BarCodigo) REFERENCES Barbeiro(BarCodigo),
-    FOREIGN KEY (SrvCodigo) REFERENCES Servico(SrvCodigo)
-);
+1. `schema.sql`
+2. `seed.sql`
 
--- Tabela de Avaliação de Serviço
-CREATE TABLE Avaliacao (
-    AvaCodigo INTEGER PRIMARY KEY,
-    AgdCodigo INTEGER UNIQUE, -- Garante que cada agendamento receba apenas uma avaliação
-    AvaNota INTEGER,
-    AvaComentario VARCHAR(500),
-    AvaData DATETIME,
-    FOREIGN KEY (AgdCodigo) REFERENCES Agendamento(AgdCodigo)
-);
+### Tabelas
+
+- Clientes
+- Barbeiro
+- Servico
+- Configuracao_Agenda
+- Agendamento
+- Avaliacao
+- Financeiro

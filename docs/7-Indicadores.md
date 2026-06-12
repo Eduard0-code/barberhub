@@ -1,13 +1,36 @@
-## 7. Indicadores de desempenho
+## 7. Indicadores de desempenho e Relatórios
 
-_Apresente aqui os principais indicadores de desempenho e algumas metas para o processo. Atenção: as informações necessárias para gerar os indicadores devem estar contempladas no modelo relacional. Defina no mínimo 3 indicadores de desempenho._
+Nesta seção estão os principais indicadores definidos para acompanhar a operação da barbearia. Todas as informações usadas no cálculo dos indicadores estão presentes no modelo relacional do projeto.
 
-_Usar o seguinte modelo:_
+### 7.1 Indicadores
 
 | **Indicador** | **Objetivos** | **Descrição** | **Fonte de dados** | **Fórmula de cálculo** |
-| ---           | ---           | ---           | ---             | ---             |
-| Percentual de reclamações | Avaliar quantitativamente as reclamações | Percentual de reclamações em relação ao total de atendimentos | Tabela Reclamações | número total de reclamações / número total de atendimentos |
-| Taxa de requisições atendidas | Melhorar a prestação de serviços medindo a porcentagem de requisições atendidas| Mede a % de requisições atendidas na semana | Tabela Solicitações | (número de requisições atendidas / número total de requisições) * 100 |
-| Taxa de entrega de material | Manter controle sobre os materiais que estão sendo entregues | Mede % de material entregue dentro do mês | Tabela Pedidos | (número de pedidos entregues / número total de pedidos) * 100 |
+| --- | --- | --- | --- | --- |
+| Faturamento por período | Acompanhar quanto a barbearia está recebendo no dia, na semana e no mês | Soma dos valores pagos pelos clientes no período escolhido | Tabela Financeiro | SUM(FinValorPago) agrupado por data |
+| Ticket médio | Saber o valor médio gasto por cliente em cada atendimento | Média dos valores pagos por agendamento | Tabela Financeiro | SUM(FinValorPago) / COUNT(FinCodigo) |
+| Taxa de ocupação dos barbeiros | Medir o quanto cada barbeiro está sendo aproveitado na agenda | Percentual de horários ocupados em relação aos horários disponíveis | Tabelas Agendamento e Configuracao_Agenda | (horários agendados / horários disponíveis) * 100 |
+| Avaliação média dos serviços | Acompanhar a satisfação dos clientes com os atendimentos | Média das notas dadas pelos clientes nas avaliações | Tabela Avaliacao | AVG(AvaNota) |
+| Taxa de cancelamento | Identificar quantos agendamentos estão sendo cancelados | Percentual de agendamentos cancelados em relação ao total | Tabela Agendamento | (COUNT agendamentos cancelados / COUNT total) * 100 |
 
-_Obs.: todas as informações para gerar os indicadores devem estar no modelo relacional._
+### 7.2 Metas
+
+| **Indicador** | **Meta** |
+| --- | --- |
+| Faturamento mensal | Crescimento de 10% em relação ao mês anterior |
+| Ticket médio | Acima de R$ 55,00 |
+| Taxa de ocupação | Acima de 70% por barbeiro |
+| Avaliação média | Nota acima de 4,5 |
+| Taxa de cancelamento | Abaixo de 10% |
+
+### 7.3 Gráficos e Dashboards
+
+Os indicadores são apresentados na tela de **Indicadores** da aplicação, disponível pelo menu lateral. A tela mostra cartões com os valores atuais de cada indicador e gráficos para visualizar a evolução ao longo do tempo.
+
+Os gráficos utilizados são:
+
+- Gráfico de linha para faturamento por dia da semana
+- Gráfico de barras para comparar o desempenho dos barbeiros
+- Gráfico de rosca para distribuição dos serviços vendidos
+- Cartões numéricos para ticket médio, avaliação média e taxa de cancelamento
+
+A página é atualizada com os dados do banco MySQL conforme os agendamentos, pagamentos e avaliações são registrados no sistema.

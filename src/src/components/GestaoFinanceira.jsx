@@ -1,10 +1,8 @@
-// pages/GestaoFinanceira.jsx
-
 import "./GestaoFinanceira.css";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import MenuLateral from "../components/MenuLateral.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Wallet,
@@ -16,49 +14,70 @@ import {
   Download,
   ChevronLeft,
   ChevronRight,
+  RefreshCw,
 } from "lucide-react";
 
 import GraficoFinanceiro from "../components/GraficoFinanceiro";
+import { financeiroApi, kpiApi } from "../services/api.js";
+
+const resumoPadrao = {
+  totalRecebido: 0,
+  recebidoHoje: 0,
+  ticketMedio: 0,
+  pagamentosPagos: 0,
+  pagamentosPendentes: 0,
+};
+
+const formatarMoeda = (valor) =>
+  Number(valor || 0).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+
+const formatarHora = (hora) => {
+  if (!hora) return "--:--";
+  return String(hora).slice(0, 5);
+};
 
 const GestaoFinanceira = () => {
   const [periodo, setPeriodo] = useState("semana");
-  const atendimentos = [
-    {
-      horario: "14:30",
-      cliente: "João Silva",
-      servico: "Corte + Barba",
-      valor: "R$ 65,00",
-      status: "Concluído",
-    },
-    {
-      horario: "13:00",
-      cliente: "Marcos Pereira",
-      servico: "Corte de Cabelo",
-      valor: "R$ 40,00",
-      status: "Concluído",
-    },
-    {
-      horario: "11:45",
-      cliente: "Cliente Avulso",
-      servico: "Barba",
-      valor: "R$ 30,00",
-      status: "Concluído",
-    },
-    {
-      horario: "10:30",
-      cliente: "Carlos Eduardo",
-      servico: "Corte + Pigmentação",
-      valor: "R$ 80,00",
-      status: "Concluído",
-    },
-    {
-      horario: "15:30",
-      cliente: "Felipe Santos",
-      servico: "Corte de Cabelo",
-      valor: "R$ 40,00",
-      status: "Agendado",
-    },
-  ];
+  const [resumo, setResumo] = useState(resumoPadrao);
+  const [atendimentos, setAtendimentos] = useState([]);
+  const [grafico, setGrafico] = useState([]);
+  const [atualizando, setAtualizando] = useState(false);
+  const [origem, setOrigem] = useState("exemplo");
+
+  const carregar = () => {
+    setAtualizando(true);
+    return Promise.all([
+      financeiroApi.resumo(),
+      financeiroApi.recentes(),
+      kpiApi.faturamentoPorDia(),
+    ])
+      .then(([r, a, g]) => {
+        setResumo(r);
+        setAtendimentos(a);
+        setGrafico(g);
+        setOrigem("banco");
+      })
+      .catch(() => {
+        setOrigem("exemplo");
+      })
+      .finally(() => setAtualizando(false));
+  };
+
+  useEffect(() => {
+    carregar();
+
+    const aoFocar = () => carregar();
+    window.addEventListener("focus", aoFocar);
+    const intervalo = setInterval(carregar, 15000);
+
+    return () => {
+      window.removeEventListener("focus", aoFocar);
+      clearInterval(intervalo);
+    };
+  }, []);
 
   return (
     <>
@@ -67,61 +86,73 @@ const GestaoFinanceira = () => {
         <MenuLateral />
 
         <div className="financeiro-content">
-          {/* CARDS */}
+          <div className="financeiro-topo">
+            <h1>Gestão Financeira</h1>
+
+            <div className="financeiro-acoes-topo">
+              {origem === "exemplo" && (
+                <span className="badge-offline">Backend offline</span>
+              )}
+              <button
+                className="botao-atualizar"
+                onClick={carregar}
+                disabled={atualizando}
+              >
+                <RefreshCw size={15} className={atualizando ? "girando" : ""} />
+                {atualizando ? "Atualizando" : "Atualizar"}
+              </button>
+            </div>
+          </div>
+
           <div className="financeiro-cards">
             <div className="financeiro-card">
               <div className="card-icon">
                 <Wallet size={18} />
               </div>
-
               <span>Total Recebido (Hoje)</span>
-
-              <h2>R$ 450,00</h2>
-
-              <p>+12% em relação a ontem</p>
+              <h2>{formatarMoeda(resumo.recebidoHoje)}</h2>
+              <p>{formatarMoeda(resumo.totalRecebido)} no total</p>
             </div>
 
             <div className="financeiro-card">
               <div className="card-icon">
                 <Users size={18} />
               </div>
-
-              <span>Atendimentos (Hoje)</span>
-
-              <h2>12</h2>
-
-              <p>3 agendados para tarde</p>
+              <span>Atendimentos</span>
+              <h2>{(resumo.pagamentosPagos || 0) + (resumo.pagamentosPendentes || 0)}</h2>
+              <p>{resumo.pagamentosPendentes || 0} pendentes</p>
             </div>
 
             <div className="financeiro-card">
               <div className="card-icon">
                 <Receipt size={18} />
               </div>
-
               <span>Ticket Médio</span>
-
-              <h2>R$ 37,50</h2>
-
-              <p>Calculado com base em 30 dias</p>
+              <h2>{formatarMoeda(resumo.ticketMedio)}</h2>
+              <p>Calculado com base nos pagamentos</p>
             </div>
           </div>
 
-          {/* GRID */}
           <div className="financeiro-grid">
             <div className="pagamentos-card">
               <div className="pagamentos-header">
-                <h3>Atualizar Pagamentos</h3>
-
+                <h3>Resumo Rápido</h3>
                 <Plus size={18} />
               </div>
 
               <div className="pagamentos-body">
-                <button className="btn-update">
-                  <Check size={18} />
-                  Atualizar
-                </button>
-
-                <button className="btn-cancel">Cancelar</button>
+                <div className="resumo-linha">
+                  <span>Pagamentos confirmados</span>
+                  <strong>{resumo.pagamentosPagos || 0}</strong>
+                </div>
+                <div className="resumo-linha">
+                  <span>Pagamentos pendentes</span>
+                  <strong>{resumo.pagamentosPendentes || 0}</strong>
+                </div>
+                <div className="resumo-linha">
+                  <span>Total geral</span>
+                  <strong>{formatarMoeda(resumo.totalRecebido)}</strong>
+                </div>
               </div>
             </div>
 
@@ -154,23 +185,26 @@ const GestaoFinanceira = () => {
                 </thead>
 
                 <tbody>
+                  {atendimentos.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="tabela-vazia">
+                        Nenhum atendimento registrado ainda.
+                      </td>
+                    </tr>
+                  )}
                   {atendimentos.map((item) => (
-                    <tr key={item.horario}>
-                      <td>{item.horario}</td>
-
+                    <tr key={item.finCodigo}>
+                      <td>{formatarHora(item.horario)}</td>
                       <td className="cliente-name">{item.cliente}</td>
-
                       <td>{item.servico}</td>
-
-                      <td className="valor-cell">{item.valor}</td>
-
+                      <td className="valor-cell">{formatarMoeda(item.finValorPago)}</td>
                       <td>
                         <span
                           className={`status ${
-                            item.status === "Concluído" ? "done" : "scheduled"
+                            item.statusAgendamento === "Concluido" ? "done" : "scheduled"
                           }`}
                         >
-                          {item.status}
+                          {item.statusAgendamento || item.finStatus}
                         </span>
                       </td>
                     </tr>
@@ -179,7 +213,9 @@ const GestaoFinanceira = () => {
               </table>
 
               <div className="table-footer">
-                <span>Mostrando 5 de 12 registros</span>
+                <span>
+                  Mostrando {atendimentos.length} {atendimentos.length === 1 ? "registro" : "registros"}
+                </span>
 
                 <div className="pagination">
                   <button>
@@ -187,8 +223,6 @@ const GestaoFinanceira = () => {
                   </button>
 
                   <button className="active-page">1</button>
-
-                  <button>2</button>
 
                   <button>
                     <ChevronRight size={16} />
@@ -198,7 +232,6 @@ const GestaoFinanceira = () => {
             </div>
           </div>
 
-          {/* GRÁFICO */}
           <div className="chart-card">
             <div className="chart-header">
               <h3>
@@ -211,13 +244,12 @@ const GestaoFinanceira = () => {
                 onChange={(e) => setPeriodo(e.target.value)}
               >
                 <option value="semana">Esta Semana</option>
-
                 <option value="mes">Último Mês</option>
               </select>
             </div>
 
             <div className="chart-wrapper">
-              <GraficoFinanceiro />
+              <GraficoFinanceiro dados={grafico} />
             </div>
           </div>
         </div>

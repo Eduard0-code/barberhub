@@ -9,6 +9,7 @@ import {
   Settings,
   Users,
   DollarSign,
+  BarChart3,
 } from 'lucide-react';
 
 const MenuLateral = () => {
@@ -52,6 +53,10 @@ const MenuLateral = () => {
               <DollarSign size={18} />
               Financeiro
             </button>
+            <button className="menu-item" onClick={() => navigate("/indicadores")}>
+              <BarChart3 size={18} />
+              Indicadores
+            </button>
             <span className="menu-title">Configurações</span>
             <button className="menu-item">
               <Settings size={18} />
@@ -60,17 +65,6 @@ const MenuLateral = () => {
           </nav>
         </div>
       </div>
-
-      {/* <div className="menu-user">
-        <div className="user-avatar">
-          <User size={18} />
-        </div>
-
-        <div>
-          <strong>João</strong>
-          <span>Sair</span>
-        </div>
-      </div> */}
     </aside>
   );
 };

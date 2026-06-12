@@ -1,72 +1,44 @@
-// components/GraficoFinanceiro.jsx
-
 import Chart from 'react-apexcharts';
 
-const GraficoFinanceiro = () => {
+const dadosPadrao = [
+  { rotulo: 'Seg', valor: 120 },
+  { rotulo: 'Ter', valor: 150 },
+  { rotulo: 'Qua', valor: 180 },
+  { rotulo: 'Qui', valor: 140 },
+  { rotulo: 'Sex', valor: 250 },
+  { rotulo: 'Sáb', valor: 450 },
+  { rotulo: 'Dom', valor: 300 },
+];
+
+const GraficoFinanceiro = ({ dados }) => {
+  const pontos = dados && dados.length ? dados : dadosPadrao;
+
   const chartData = {
     series: [
       {
         name: 'Receita',
-        data: [120, 150, 180, 140, 250, 450, 300],
+        data: pontos.map((p) => Number(p.valor)),
       },
     ],
-
     options: {
       chart: {
-        toolbar: {
-          show: false,
-        },
-
-        zoom: {
-          enabled: false,
-        },
+        toolbar: { show: false },
+        zoom: { enabled: false },
       },
-
-      stroke: {
-        curve: 'smooth',
-        width: 3,
-      },
-
-      dataLabels: {
-        enabled: false,
-      },
-
-      grid: {
-        borderColor: '#ececec',
-      },
-
+      stroke: { curve: 'smooth', width: 3 },
+      dataLabels: { enabled: false },
+      grid: { borderColor: '#ececec' },
       xaxis: {
-        categories: [
-          'Seg',
-          'Ter',
-          'Qua',
-          'Qui',
-          'Sex',
-          'Sáb',
-          'Dom',
-        ],
-
-        labels: {
-          style: {
-            colors: '#6b7280',
-            fontSize: '13px',
-          },
-        },
+        categories: pontos.map((p) => p.rotulo),
+        labels: { style: { colors: '#6b7280', fontSize: '13px' } },
       },
-
       yaxis: {
         labels: {
-          style: {
-            colors: '#6b7280',
-            fontSize: '13px',
-          },
+          formatter: (val) => 'R$ ' + val,
+          style: { colors: '#6b7280', fontSize: '13px' },
         },
       },
-
-      tooltip: {
-        theme: 'light',
-      },
-
+      tooltip: { theme: 'light' },
       colors: ['#1f2937'],
     },
   };

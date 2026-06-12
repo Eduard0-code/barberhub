@@ -1,0 +1,70 @@
+CREATE DATABASE IF NOT EXISTS db_barbearia;
+USE db_barbearia;
+
+CREATE TABLE Clientes (
+    CliCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
+    CliNome VARCHAR(50),
+    CliEmail VARCHAR(100),
+    CliTelefone VARCHAR(15),
+    CliSenha VARCHAR(20),
+    CliCriado DATETIME
+);
+
+CREATE TABLE Barbeiro (
+    BarCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
+    BarNome VARCHAR(50),
+    BarTelefone VARCHAR(15),
+    BarEmail VARCHAR(100),
+    BarEspecialidade VARCHAR(100),
+    BarAtivo BOOLEAN
+);
+
+CREATE TABLE Servico (
+    SrvCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
+    SrvNome VARCHAR(100),
+    SrvPreco DECIMAL(10,2)
+);
+
+CREATE TABLE Configuracao_Agenda (
+    CfgCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
+    BarCodigo INTEGER,
+    CfgDias VARCHAR(50),
+    CfgHorarioInicio TIME,
+    CfgHorarioFim TIME,
+    CfgIntervalo INTEGER,
+    FOREIGN KEY (BarCodigo) REFERENCES Barbeiro(BarCodigo)
+);
+
+CREATE TABLE Agendamento (
+    AgdCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
+    CliCodigo INTEGER,
+    BarCodigo INTEGER,
+    SrvCodigo INTEGER,
+    AgdData DATE,
+    AgdHorario TIME,
+    AgdPreco DECIMAL(10,2),
+    AgdStatus VARCHAR(20),
+    FOREIGN KEY (CliCodigo) REFERENCES Clientes(CliCodigo),
+    FOREIGN KEY (BarCodigo) REFERENCES Barbeiro(BarCodigo),
+    FOREIGN KEY (SrvCodigo) REFERENCES Servico(SrvCodigo)
+);
+
+CREATE TABLE Avaliacao (
+    AvaCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
+    AgdCodigo INTEGER UNIQUE,
+    AvaNota INTEGER,
+    AvaComentario VARCHAR(500),
+    AvaData DATETIME,
+    FOREIGN KEY (AgdCodigo) REFERENCES Agendamento(AgdCodigo)
+);
+
+CREATE TABLE Financeiro (
+    FinCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
+    AgdCodigo INTEGER,
+    FinValorPago DECIMAL(10,2),
+    FinStatus VARCHAR(20),
+    FinDataPagto DATE,
+    FinTicketMedio DECIMAL(10,2),
+    FinTotalRecebido DECIMAL(10,2),
+    FOREIGN KEY (AgdCodigo) REFERENCES Agendamento(AgdCodigo)
+);
