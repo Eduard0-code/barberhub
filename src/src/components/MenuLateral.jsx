@@ -58,7 +58,7 @@ const MenuLateral = () => {
               Indicadores
             </button>
             <span className="menu-title">Configurações</span>
-            <button className="menu-item">
+            <button className="menu-item" onClick={() => navigate("/ajustes")}>
               <Settings size={18} />
               Ajustes
             </button>

@@ -70,6 +70,13 @@ export const authApi = {
   login: (email, senha) => enviar("/auth/login", { email, senha }),
 };
 
+export const configuracaoAgendaApi = {
+  listar: () => buscar("/configuracao-agenda"),
+  porBarbeiro: (barCodigo) => buscar("/configuracao-agenda/barbeiro/" + barCodigo),
+  salvar: (dados) => enviar("/configuracao-agenda", dados),
+};
+
+
 export function usuarioLogado() {
   const dados = localStorage.getItem("usuarioLogado");
   return dados ? JSON.parse(dados) : null;

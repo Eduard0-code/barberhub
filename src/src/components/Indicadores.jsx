@@ -2,7 +2,7 @@ import "./Indicadores.css";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import MenuLateral from "../components/MenuLateral.jsx";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Chart from "react-apexcharts";
 import {
   Wallet,
@@ -15,60 +15,40 @@ import {
 } from "lucide-react";
 import { kpiApi } from "../services/api.js";
 
-const resumoMock = {
-  faturamentoTotal: 12450,
-  ticketMedio: 58.3,
-  avaliacaoMedia: 4.7,
-  taxaCancelamento: 8.3,
-};
-
-const faturamentoMock = [
-  { rotulo: "Seg", valor: 320 },
-  { rotulo: "Ter", valor: 410 },
-  { rotulo: "Qua", valor: 380 },
-  { rotulo: "Qui", valor: 520 },
-  { rotulo: "Sex", valor: 610 },
-  { rotulo: "Sáb", valor: 780 },
-  { rotulo: "Dom", valor: 540 },
-];
-
-const barbeirosMock = [
-  { rotulo: "Rafael Souza", valor: 42 },
-  { rotulo: "Lucas Mendes", valor: 35 },
-  { rotulo: "Pedro Alves", valor: 28 },
-];
-
-const servicosMock = [
-  { rotulo: "Corte de Cabelo", valor: 38 },
-  { rotulo: "Corte + Barba", valor: 24 },
-  { rotulo: "Barba Completa", valor: 18 },
-  { rotulo: "Sobrancelha", valor: 12 },
-  { rotulo: "Corte + Pigmentação", valor: 8 },
-];
-
-const ocupacaoMock = [
-  { rotulo: "Rafael Souza", valor: 82 },
-  { rotulo: "Lucas Mendes", valor: 67 },
-  { rotulo: "Pedro Alves", valor: 54 },
-];
-
 const formatarMoeda = (valor) =>
   Number(valor).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
 
+const formatarDiaMes = (rotulo) => {
+  const data = new Date(rotulo);
+  if (Number.isNaN(data.getTime())) return rotulo;
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  return `${dia}/${mes}`;
+};
+
+const janelaPeriodo = { semana: 7, mes: 30, ano: 365 };
+
 const Indicadores = () => {
   const [periodo, setPeriodo] = useState("semana");
-  const [origem, setOrigem] = useState("exemplo");
+  const [origem, setOrigem] = useState("banco");
   const [atualizando, setAtualizando] = useState(false);
   const [ultimaAtualizacao, setUltimaAtualizacao] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(false);
 
-  const [resumo, setResumo] = useState(resumoMock);
-  const [faturamento, setFaturamento] = useState(faturamentoMock);
-  const [barbeiros, setBarbeiros] = useState(barbeirosMock);
-  const [servicos, setServicos] = useState(servicosMock);
-  const [ocupacao, setOcupacao] = useState(ocupacaoMock);
+  const [resumo, setResumo] = useState({
+    faturamentoTotal: 0,
+    ticketMedio: 0,
+    avaliacaoMedia: 0,
+    taxaCancelamento: 0,
+  });
+  const [faturamento, setFaturamento] = useState([]);
+  const [barbeiros, setBarbeiros] = useState([]);
+  const [servicos, setServicos] = useState([]);
+  const [ocupacao, setOcupacao] = useState([]);
 
   const carregar = () => {
     setAtualizando(true);
@@ -81,18 +61,20 @@ const Indicadores = () => {
     ])
       .then(([r, f, b, s, o]) => {
         setResumo(r);
-        setFaturamento(f.length ? f : faturamentoMock);
-        setBarbeiros(b.length ? b : barbeirosMock);
-        setServicos(s.length ? s : servicosMock);
-        setOcupacao(o.length ? o : ocupacaoMock);
+        setFaturamento(f);
+        setBarbeiros(b);
+        setServicos(s);
+        setOcupacao(o);
         setOrigem("banco");
+        setErro(false);
         setUltimaAtualizacao(new Date());
       })
       .catch(() => {
-        setOrigem("exemplo");
+        setErro(true);
       })
       .finally(() => {
         setAtualizando(false);
+        setCarregando(false);
       });
   };
 
@@ -109,6 +91,17 @@ const Indicadores = () => {
       clearInterval(intervalo);
     };
   }, []);
+
+  const faturamentoFiltrado = useMemo(() => {
+    const dias = janelaPeriodo[periodo] ?? janelaPeriodo.semana;
+    const limite = new Date();
+    limite.setHours(0, 0, 0, 0);
+    limite.setDate(limite.getDate() - (dias - 1));
+    return faturamento.filter((p) => {
+      const data = new Date(p.rotulo);
+      return !Number.isNaN(data.getTime()) && data >= limite;
+    });
+  }, [faturamento, periodo]);
 
   const cards = [
     {
@@ -138,14 +131,16 @@ const Indicadores = () => {
   ];
 
   const graficoFaturamento = {
-    series: [{ name: "Receita", data: faturamento.map((p) => Number(p.valor)) }],
+    series: [
+      { name: "Receita", data: faturamentoFiltrado.map((p) => Number(p.valor)) },
+    ],
     options: {
       chart: { toolbar: { show: false }, zoom: { enabled: false } },
       stroke: { curve: "smooth", width: 3 },
       dataLabels: { enabled: false },
       grid: { borderColor: "#ececec" },
       xaxis: {
-        categories: faturamento.map((p) => p.rotulo),
+        categories: faturamentoFiltrado.map((p) => formatarDiaMes(p.rotulo)),
         labels: { style: { colors: "#6b7280", fontSize: "13px" } },
       },
       yaxis: {
@@ -192,6 +187,12 @@ const Indicadores = () => {
     },
   };
 
+  const semDados =
+    !faturamento.length &&
+    !barbeiros.length &&
+    !servicos.length &&
+    !ocupacao.length;
+
   return (
     <>
       <Header />
@@ -202,14 +203,7 @@ const Indicadores = () => {
           <div className="indicadores-topo">
             <div>
               <h1>Indicadores e Relatórios</h1>
-              <p>
-                Visão geral do desempenho da barbearia
-                {origem === "exemplo" && (
-                  <span className="badge-exemplo">
-                    Dados de exemplo (backend offline)
-                  </span>
-                )}
-              </p>
+              <p>Visão geral do desempenho da barbearia</p>
             </div>
 
             <div className="indicadores-acoes">
@@ -235,7 +229,18 @@ const Indicadores = () => {
             </div>
           </div>
 
-          {ultimaAtualizacao && origem === "banco" && (
+          {carregando && semDados && (
+            <p className="ultima-atualizacao">Carregando indicadores...</p>
+          )}
+
+          {erro && semDados && (
+            <p className="ultima-atualizacao">
+              Não foi possível carregar os indicadores. Verifique se o servidor
+              está ativo.
+            </p>
+          )}
+
+          {ultimaAtualizacao && origem === "banco" && !erro && (
             <p className="ultima-atualizacao">
               Última leitura do banco às{" "}
               {ultimaAtualizacao.toLocaleTimeString("pt-BR")}
@@ -260,12 +265,16 @@ const Indicadores = () => {
                 <span>Últimos dias</span>
               </div>
               <div className="bloco-body">
-                <Chart
-                  options={graficoFaturamento.options}
-                  series={graficoFaturamento.series}
-                  type="line"
-                  height={300}
-                />
+                {faturamentoFiltrado.length ? (
+                  <Chart
+                    options={graficoFaturamento.options}
+                    series={graficoFaturamento.series}
+                    type="line"
+                    height={300}
+                  />
+                ) : (
+                  <p className="sem-dados">Sem dados para exibir.</p>
+                )}
               </div>
             </div>
 
@@ -275,12 +284,16 @@ const Indicadores = () => {
                 <span>Total no período</span>
               </div>
               <div className="bloco-body">
-                <Chart
-                  options={graficoBarbeiros.options}
-                  series={graficoBarbeiros.series}
-                  type="bar"
-                  height={300}
-                />
+                {barbeiros.length ? (
+                  <Chart
+                    options={graficoBarbeiros.options}
+                    series={graficoBarbeiros.series}
+                    type="bar"
+                    height={300}
+                  />
+                ) : (
+                  <p className="sem-dados">Sem dados para exibir.</p>
+                )}
               </div>
             </div>
           </div>
@@ -292,12 +305,16 @@ const Indicadores = () => {
                 <span>Distribuição</span>
               </div>
               <div className="bloco-body">
-                <Chart
-                  options={graficoServicos.options}
-                  series={graficoServicos.series}
-                  type="donut"
-                  height={320}
-                />
+                {servicos.length ? (
+                  <Chart
+                    options={graficoServicos.options}
+                    series={graficoServicos.series}
+                    type="donut"
+                    height={320}
+                  />
+                ) : (
+                  <p className="sem-dados">Sem dados para exibir.</p>
+                )}
               </div>
             </div>
 
@@ -307,23 +324,27 @@ const Indicadores = () => {
                 <span>Por barbeiro</span>
               </div>
               <div className="bloco-body lista-ocupacao">
-                {ocupacao.map((item) => (
-                  <div className="linha-ocupacao" key={item.rotulo}>
-                    <div className="linha-info">
-                      <div className="linha-titulo">
-                        <Users size={15} />
-                        <strong>{item.rotulo}</strong>
+                {ocupacao.length ? (
+                  ocupacao.map((item) => (
+                    <div className="linha-ocupacao" key={item.rotulo}>
+                      <div className="linha-info">
+                        <div className="linha-titulo">
+                          <Users size={15} />
+                          <strong>{item.rotulo}</strong>
+                        </div>
+                        <span>{Number(item.valor).toFixed(1)}%</span>
                       </div>
-                      <span>{Number(item.valor).toFixed(1)}%</span>
+                      <div className="barra-fora">
+                        <div
+                          className="barra-dentro"
+                          style={{ width: Number(item.valor) + "%" }}
+                        />
+                      </div>
                     </div>
-                    <div className="barra-fora">
-                      <div
-                        className="barra-dentro"
-                        style={{ width: Number(item.valor) + "%" }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="sem-dados">Sem dados para exibir.</p>
+                )}
 
                 <div className="lista-rodape">
                   <Scissors size={14} />

@@ -99,6 +99,15 @@
   margin: -16px 0 16px 0;
 }
 
+.sem-dados {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
 .indicadores-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

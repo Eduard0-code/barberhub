@@ -1,6 +1,8 @@
 package com.barberhub.controller;
 
+import com.barberhub.entity.Barbeiro;
 import com.barberhub.entity.Cliente;
+import com.barberhub.repository.BarbeiroRepository;
 import com.barberhub.repository.ClienteRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +15,11 @@ import java.util.Optional;
 public class AuthController {
 
     private final ClienteRepository clienteRepo;
+    private final BarbeiroRepository barbeiroRepo;
 
-    public AuthController(ClienteRepository clienteRepo) {
+    public AuthController(ClienteRepository clienteRepo, BarbeiroRepository barbeiroRepo) {
         this.clienteRepo = clienteRepo;
+        this.barbeiroRepo = barbeiroRepo;
     }
 
     @PostMapping("/login")
@@ -28,10 +32,15 @@ public class AuthController {
         }
 
         Optional<Cliente> cliente = clienteRepo.findByCliEmailAndCliSenha(email, senha);
-        if (cliente.isEmpty()) {
-            return ResponseEntity.status(401).body(Map.of("erro", "Email ou senha invalidos"));
+        if (cliente.isPresent()) {
+            return ResponseEntity.ok(cliente.get());
         }
 
-        return ResponseEntity.ok(cliente.get());
+        Optional<Barbeiro> barbeiro = barbeiroRepo.findByBarEmailAndBarSenha(email, senha);
+        if (barbeiro.isPresent()) {
+            return ResponseEntity.ok(barbeiro.get());
+        }
+
+        return ResponseEntity.status(401).body(Map.of("erro", "Email ou senha invalidos"));
     }
 }

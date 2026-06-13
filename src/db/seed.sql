@@ -7,10 +7,10 @@ INSERT INTO Clientes (CliNome, CliEmail, CliTelefone, CliSenha, CliCriado) VALUE
 ('Felipe Santos', 'felipe@email.com', '31988884444', 'senha123', NOW()),
 ('Andre Lima', 'andre@email.com', '31988883333', 'senha123', NOW());
 
-INSERT INTO Barbeiro (BarNome, BarTelefone, BarEmail, BarEspecialidade, BarAtivo) VALUES
-('Rafael Souza', '31999990001', 'rafael@barberhub.com', 'Corte e Barba', TRUE),
-('Lucas Mendes', '31999990002', 'lucas@barberhub.com', 'Corte Infantil', TRUE),
-('Pedro Alves', '31999990003', 'pedro@barberhub.com', 'Barba e Sobrancelha', TRUE);
+INSERT INTO Barbeiro (BarNome, BarTelefone, BarEmail, BarEspecialidade, BarSenha, BarAtivo) VALUES
+('Rafael Souza', '31999990001', 'rafael@barberhub.com', 'Corte e Barba', 'senha123', TRUE),
+('Lucas Mendes', '31999990002', 'lucas@barberhub.com', 'Corte Infantil', 'senha123', TRUE),
+('Pedro Alves', '31999990003', 'pedro@barberhub.com', 'Barba e Sobrancelha', 'senha123', TRUE);
 
 INSERT INTO Servico (SrvNome, SrvPreco) VALUES
 ('Corte de Cabelo', 45.00),

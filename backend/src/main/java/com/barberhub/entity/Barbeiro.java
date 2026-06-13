@@ -23,6 +23,9 @@ public class Barbeiro {
     @Column(name = "BarEspecialidade")
     private String barEspecialidade;
 
+    @Column(name = "BarSenha")
+    private String barSenha;
+
     @Column(name = "BarAtivo")
     private Boolean barAtivo;
 
@@ -40,6 +43,9 @@ public class Barbeiro {
 
     public String getBarEspecialidade() { return barEspecialidade; }
     public void setBarEspecialidade(String barEspecialidade) { this.barEspecialidade = barEspecialidade; }
+
+    public String getBarSenha() { return barSenha; }
+    public void setBarSenha(String barSenha) { this.barSenha = barSenha; }
 
     public Boolean getBarAtivo() { return barAtivo; }
     public void setBarAtivo(Boolean barAtivo) { this.barAtivo = barAtivo; }

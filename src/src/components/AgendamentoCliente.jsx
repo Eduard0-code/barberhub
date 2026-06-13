@@ -18,6 +18,7 @@ import {
   barbeiroApi,
   agendamentoApi,
   clienteApi,
+  configuracaoAgendaApi,
   usuarioLogado,
 } from '../services/api.js';
 
@@ -28,10 +29,28 @@ const servicosFallback = [
   { srvCodigo: 4, srvNome: 'Sobrancelha', srvPreco: 15 },
 ];
 
-const horarios = [
+const horariosFallback = [
   '09:00', '09:30', '10:00', '10:30', '11:00',
   '14:00', '14:30', '15:00', '15:30', '16:00',
 ];
+
+const DIAS_JS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+
+function gerarSlots(inicio, fim, intervalo) {
+  const slots = [];
+  const [hI, mI] = String(inicio).slice(0, 5).split(':').map(Number);
+  const [hF, mF] = String(fim).slice(0, 5).split(':').map(Number);
+  let cur = hI * 60 + mI;
+  const end = hF * 60 + mF;
+  const step = Number(intervalo) || 30;
+  while (cur < end) {
+    const h = String(Math.floor(cur / 60)).padStart(2, '0');
+    const m = String(cur % 60).padStart(2, '0');
+    slots.push(`${h}:${m}`);
+    cur += step;
+  }
+  return slots;
+}
 
 const formatarMoeda = (valor) =>
   Number(valor).toLocaleString('pt-BR', {
@@ -48,6 +67,7 @@ const AgendamentoCliente = () => {
   const [diaSelecionado, setDiaSelecionado] = useState(new Date());
   const [month, setMonth] = useState(new Date());
   const [horarioSelecionado, setHorarioSelecionado] = useState('14:00');
+  const [horariosDisponiveis, setHorariosDisponiveis] = useState(horariosFallback);
   const [carregando, setCarregando] = useState(false);
   const [mensagem, setMensagem] = useState('');
   const [erro, setErro] = useState('');
@@ -75,6 +95,22 @@ const AgendamentoCliente = () => {
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!barbeiroSelecionado) return;
+    configuracaoAgendaApi
+      .porBarbeiro(barbeiroSelecionado.barCodigo)
+      .then((cfg) => {
+        const diaSemana = DIAS_JS[diaSelecionado?.getDay() ?? new Date().getDay()];
+        const diasConfig = cfg.cfgDias ? cfg.cfgDias.split(',').map((d) => d.trim()) : [];
+        if (diasConfig.length && !diasConfig.includes(diaSemana)) {
+          setHorariosDisponiveis([]);
+        } else {
+          setHorariosDisponiveis(gerarSlots(cfg.cfgHorarioInicio, cfg.cfgHorarioFim, cfg.cfgIntervalo));
+        }
+      })
+      .catch(() => setHorariosDisponiveis(horariosFallback));
+  }, [barbeiroSelecionado, diaSelecionado]);
 
   const total = useMemo(
     () => formatarMoeda(servicoSelecionado?.srvPreco || 0),
@@ -300,15 +336,21 @@ const AgendamentoCliente = () => {
                   </span>
 
                   <div className="hours-grid">
-                    {horarios.map((horario) => (
-                      <button
-                        key={horario}
-                        className={horarioSelecionado === horario ? 'selected-hour' : ''}
-                        onClick={() => setHorarioSelecionado(horario)}
-                      >
-                        {horario}
-                      </button>
-                    ))}
+                    {horariosDisponiveis.length === 0 ? (
+                      <p style={{ color: '#6b7280', fontSize: '13px', padding: '8px 0' }}>
+                        Barbeiro não atende neste dia.
+                      </p>
+                    ) : (
+                      horariosDisponiveis.map((horario) => (
+                        <button
+                          key={horario}
+                          className={horarioSelecionado === horario ? 'selected-hour' : ''}
+                          onClick={() => setHorarioSelecionado(horario)}
+                        >
+                          {horario}
+                        </button>
+                      ))
+                    )}
                   </div>
                 </div>
               </div>

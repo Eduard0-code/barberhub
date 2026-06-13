@@ -110,15 +110,13 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
       return;
     }
 
-    if (tipo === "cliente") {
-      if (!senha || senha.length < 6) {
-        setErro("A senha precisa ter ao menos 6 caracteres");
-        return;
-      }
-      if (senha !== confirmar) {
-        setErro("As senhas nao conferem");
-        return;
-      }
+    if (!senha || senha.length < 6) {
+      setErro("A senha precisa ter ao menos 6 caracteres");
+      return;
+    }
+    if (senha !== confirmar) {
+      setErro("As senhas nao conferem");
+      return;
     }
 
     setCarregando(true);
@@ -136,6 +134,7 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
           barEmail: email,
           barTelefone: telefone,
           barEspecialidade: especialidade || "Geral",
+          barSenha: senha,
           barAtivo: true,
         });
       }
@@ -213,39 +212,6 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
           </div>
         </div>
 
-        {tipo === "cliente" && (
-          <>
-            <div className="form-group">
-              <label className="form-label">Senha</label>
-              <div className="input-wrap">
-                <Lock className="input-icon" />
-                <input
-                  className="form-input"
-                  type="password"
-                  placeholder="********"
-                  value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
-                />
-              </div>
-              <p className="form-hint">Mínimo de 6 caracteres.</p>
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Confirmar Senha</label>
-              <div className="input-wrap">
-                <Lock className="input-icon" />
-                <input
-                  className="form-input"
-                  type="password"
-                  placeholder="********"
-                  value={confirmar}
-                  onChange={(e) => setConfirmar(e.target.value)}
-                />
-              </div>
-            </div>
-          </>
-        )}
-
         {tipo === "barbeiro" && (
           <div className="form-group">
             <label className="form-label">Especialidade</label>
@@ -261,6 +227,35 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
             </div>
           </div>
         )}
+
+        <div className="form-group">
+          <label className="form-label">Senha</label>
+          <div className="input-wrap">
+            <Lock className="input-icon" />
+            <input
+              className="form-input"
+              type="password"
+              placeholder="********"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
+          </div>
+          <p className="form-hint">Mínimo de 6 caracteres.</p>
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Confirmar Senha</label>
+          <div className="input-wrap">
+            <Lock className="input-icon" />
+            <input
+              className="form-input"
+              type="password"
+              placeholder="********"
+              value={confirmar}
+              onChange={(e) => setConfirmar(e.target.value)}
+            />
+          </div>
+        </div>
 
         {erro && <p className="form-erro">{erro}</p>}
       </div>

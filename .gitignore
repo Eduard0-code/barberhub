@@ -4,3 +4,7 @@
 .claude/
 .vscode/
 .idea/
+
+# Artefatos locais / execução
+backend-log.txt
+start-backend.bat

@@ -6,6 +6,7 @@ import GestaoFinanceira from "./components/GestaoFinanceira.jsx";
 import AvaliacaoCliente from "./components/AvaliacaoCliente.jsx";
 import AvaliacaoBarbeiro from "./components/AvaliacaoBarbeiro.jsx";
 import Indicadores from "./components/Indicadores.jsx";
+import Ajustes from "./components/Ajustes.jsx";
 import Home from './components/Home.jsx';
 import { Routes, Route } from 'react-router-dom';
 import "./App.css";
@@ -24,6 +25,7 @@ function App() {
       <Route path="/avaliacao-cliente" element={<AvaliacaoCliente />} />
       <Route path="/avaliacao-barbeiro" element={<AvaliacaoBarbeiro />} />
       <Route path="/indicadores" element={<Indicadores />} />
+      <Route path="/ajustes" element={<Ajustes />} />
     </Routes>
   );
 }
