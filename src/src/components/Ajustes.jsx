@@ -17,6 +17,7 @@ import {
   barbeiroApi,
   configuracaoAgendaApi,
 } from "../services/api.js";
+import { formatarTelefone, apenasNumeros } from "../utils/formatadores.js";
 
 const DIAS_SEMANA = [
   { id: "Seg", label: "Segunda" },
@@ -171,7 +172,7 @@ const AbaEquipe = () => {
       await barbeiroApi.criar({
         barNome: nome.trim(),
         barEmail: email.trim(),
-        barTelefone: telefone.trim(),
+        barTelefone: apenasNumeros(telefone),
         barEspecialidade: especialidade.trim() || "Geral",
         barAtivo: true,
       });
@@ -237,7 +238,7 @@ const AbaEquipe = () => {
           </div>
           <div className="ajustes-campo">
             <label>Telefone</label>
-            <input type="tel" placeholder="(31) 99999-9999" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+            <input type="tel" placeholder="(31) 99999-9999" value={telefone} maxLength={16} onChange={(e) => setTelefone(formatarTelefone(e.target.value))} />
           </div>
           <div className="ajustes-campo">
             <label>Especialidade</label>

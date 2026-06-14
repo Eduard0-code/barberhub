@@ -483,3 +483,83 @@
   color: #166534;
   background: rgba(22, 101, 52, 0.08);
 }
+
+@media (max-width: 1024px) {
+  .cliente-main {
+    padding: 22px 16px 40px;
+  }
+
+  .cliente-card {
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .steps-container,
+  .clickable-step {
+    width: 100%;
+    max-width: 640px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cliente-page {
+    padding-top: 60px;
+  }
+
+  .cliente-main {
+    padding: 16px 12px 40px;
+    gap: 22px;
+  }
+
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cliente-card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .cliente-card-footer .dark-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .confirmation-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .policy-text {
+    width: 100%;
+  }
+
+  .confirm-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .summary-item {
+    flex-wrap: wrap;
+  }
+
+  .hours-grid {
+    grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .step span {
+    font-size: 12px;
+  }
+
+  .cliente-card h1 {
+    font-size: 18px;
+  }
+}

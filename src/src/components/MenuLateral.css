@@ -1,56 +1,53 @@
-/* components/MenuLateral.css */
-
 .menu-lateral {
   width: 245px;
-  min-height: 100vh;
+  height: calc(100vh - 72px);
   background: #fff;
   border-right: 1px solid #dcdcdc;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding-top: 40px;
+  padding-top: 16px;
   position: fixed;
+  top: 72px;
+  left: 0;
+  transition: width 0.25s ease, transform 0.25s ease;
+  z-index: 90;
+  overflow-y: auto;
 }
 
-.menu-logo {
-  height: 168px;
-  padding: 24px;
-  border-bottom: 1px solid #e4e4e4;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.logo-icon {
-  font-size: 72px;
-  font-weight: bold;
-}
-
-.menu-logo h1 {
-  font-size: 28px;
-  line-height: 1.1;
-  color: #000;
+.menu-colapsado {
+  width: 72px;
 }
 
 .menu-section {
-  padding: 12px 20px;
+  padding: 12px 16px;
 }
 
 .menu-title {
-  font-size: 14px;
+  font-size: 13px;
   color: #9a9a9a;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.menu-colapsado .menu-title {
+  visibility: hidden;
+  height: 16px;
 }
 
 .menu-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+  margin-bottom: 18px;
 }
 
 .menu-item {
-  height: 48px;
+  height: 44px;
+  width: 100%;
   border: none;
   background: transparent;
   border-radius: 10px;
@@ -58,41 +55,107 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
   color: #111;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background 0.15s ease;
 }
 
-.active-item {
+.menu-item:hover {
   background: #f3f3f3;
 }
 
-.menu-user {
-  height: 92px;
-  border-top: 1px solid #e6e6e6;
-  padding: 0 26px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.active-item {
+  background: #1a1a1a;
+  color: #fff;
 }
 
-.user-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #efefef;
-  display: flex;
+.active-item:hover {
+  background: #1a1a1a;
+}
+
+.menu-rotulo {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-colapsado .menu-rotulo {
+  display: none;
+}
+
+.menu-colapsado .menu-item {
+  justify-content: center;
+  padding: 0;
+}
+
+.botao-fechar-mobile {
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
   align-items: center;
   justify-content: center;
 }
 
-.menu-user strong {
-  display: block;
-  font-size: 15px;
+.botao-fechar-mobile:hover {
+  background: #f3f3f3;
 }
 
-.menu-user span {
-  font-size: 14px;
-  color: #555;
+.menu-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-lateral {
+    width: 260px;
+    transform: translateX(-100%);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+    top: 60px;
+    height: calc(100vh - 60px);
+  }
+
+  .menu-aberto-mobile {
+    transform: translateX(0);
+  }
+
+  .menu-colapsado {
+    width: 260px;
+  }
+
+  .menu-colapsado .menu-rotulo {
+    display: block;
+  }
+
+  .menu-colapsado .menu-title {
+    visibility: visible;
+    height: auto;
+  }
+
+  .menu-colapsado .menu-item {
+    justify-content: flex-start;
+    padding: 0 12px;
+  }
+
+  .botao-fechar-mobile {
+    display: flex;
+  }
+
+  .menu-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 80;
+  }
 }

@@ -295,14 +295,33 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .home-container {
+    padding-top: 60px;
+  }
+
+  .home-content {
+    padding: 18px 12px 60px;
+  }
+
   .home-cards {
     grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 
   .home-topo {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .home-atalho {
+    min-width: 100%;
   }
 }

@@ -261,3 +261,16 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+@media (max-width: 1024px) {
+  .filtros-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .filtros-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

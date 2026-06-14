@@ -3,6 +3,7 @@ import "./Cadastro-Login-Barber.css";
 import { Scissors, User, Lock, MailIcon, Phone, BriefcaseBusiness } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { clienteApi, barbeiroApi, authApi } from "../services/api.js";
+import { formatarTelefone, apenasNumeros } from "../utils/formatadores.js";
 
 const Header = () => (
   <div className="header">
@@ -119,20 +120,26 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
       return;
     }
 
+    const numeroTelefone = apenasNumeros(telefone);
+    if (numeroTelefone.length < 10) {
+      setErro("Telefone incompleto");
+      return;
+    }
+
     setCarregando(true);
     try {
       if (tipo === "cliente") {
         await clienteApi.criar({
           cliNome: nome,
           cliEmail: email,
-          cliTelefone: telefone,
+          cliTelefone: numeroTelefone,
           cliSenha: senha,
         });
       } else {
         await barbeiroApi.criar({
           barNome: nome,
           barEmail: email,
-          barTelefone: telefone,
+          barTelefone: numeroTelefone,
           barEspecialidade: especialidade || "Geral",
           barSenha: senha,
           barAtivo: true,
@@ -207,7 +214,8 @@ const RegisterScreen = ({ onCancelar, aoCriar }) => {
               type="tel"
               placeholder="(31) 99999-9999"
               value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
+              maxLength={16}
+              onChange={(e) => setTelefone(formatarTelefone(e.target.value))}
             />
           </div>
         </div>

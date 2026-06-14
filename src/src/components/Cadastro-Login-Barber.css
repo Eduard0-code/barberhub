@@ -283,3 +283,53 @@
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  @media (max-width: 600px) {
+    .app {
+      padding: 0;
+      align-items: stretch;
+    }
+
+    .card {
+      max-width: 100%;
+      border-radius: 0;
+      border: none;
+      min-height: 100vh;
+    }
+
+    .header {
+      padding: 16px 20px;
+    }
+
+    .card-body {
+      padding: 24px 18px;
+    }
+
+    .card-footer {
+      flex-direction: column-reverse;
+      padding: 0 18px 24px;
+      gap: 10px;
+    }
+
+    .card-footer .btn {
+      width: 100%;
+    }
+
+    .page-title {
+      font-size: 22px;
+    }
+
+    .aviso-sucesso {
+      width: calc(100% - 24px);
+      max-width: 420px;
+      font-size: 13px;
+      padding: 10px 16px;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .form-input {
+      font-size: 13px;
+    }
+  }
