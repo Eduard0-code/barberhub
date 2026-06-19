@@ -2,7 +2,7 @@
 setlocal
 
 if not defined JAVA_HOME (
-    set "JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.19.10-hotspot"
+    set "JAVA_HOME=C:\Program Files\Java\jdk-17"
 )
 
 set "MAVEN_BIN=%USERPROFILE%\.barberhub-maven\apache-maven-3.9.6\bin\mvn.cmd"

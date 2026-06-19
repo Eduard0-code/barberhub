@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "http://localhost:8081/api";
 
 async function buscar(caminho) {
   const resposta = await fetch(BASE_URL + caminho);
