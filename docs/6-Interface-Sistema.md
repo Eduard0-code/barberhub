@@ -41,4 +41,10 @@ Também estão disponíveis filtros de busca e a área de alertas de estoque bai
 
 ![Wireframe da tela de estoque](images/wireframeEstoque.png)
 
+## 6.5. Tela de Indicadores
+
+A tela de indicadores apresenta a visão consolidada do desempenho da barbearia, com cartões de faturamento, ticket médio, avaliação média e taxa de cancelamento, além de gráficos que ajudam no acompanhamento da operação.
+
+![Wireframe da tela de indicadores](images/wireframeIndicadores.png)
+
 
