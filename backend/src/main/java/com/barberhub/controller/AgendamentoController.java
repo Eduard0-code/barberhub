@@ -6,13 +6,18 @@ import com.barberhub.entity.Servico;
 import com.barberhub.repository.AgendamentoRepository;
 import com.barberhub.repository.FinanceiroRepository;
 import com.barberhub.repository.ServicoRepository;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/agendamentos")
@@ -45,10 +50,34 @@ public class AgendamentoController {
         return repo.findByCliCodigoOrderByAgdDataDescAgdHorarioDesc(cliCodigo);
     }
 
+    @GetMapping("/por-barbeiro/{barCodigo}")
+    public List<Agendamento> porBarbeiro(@PathVariable Integer barCodigo) {
+        return repo.findByBarCodigoOrderByAgdDataDescAgdHorarioDesc(barCodigo);
+    }
+
+    /** Horarios ja ocupados (nao cancelados) de um barbeiro numa data. */
+    @GetMapping("/disponibilidade")
+    public List<String> disponibilidade(@RequestParam Integer barCodigo,
+                                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+        return repo.findByBarCodigoAndAgdData(barCodigo, data).stream()
+                .filter(a -> !"Cancelado".equalsIgnoreCase(a.getAgdStatus()))
+                .map(Agendamento::getAgdHorario)
+                .filter(h -> h != null)
+                .map(LocalTime::toString)
+                .collect(Collectors.toList());
+    }
+
     @PostMapping
-    public ResponseEntity<Agendamento> criar(@RequestBody Agendamento agendamento) {
+    @Transactional
+    public ResponseEntity<?> criar(@RequestBody Agendamento agendamento) {
         if (agendamento.getAgdStatus() == null) {
             agendamento.setAgdStatus("Agendado");
+        }
+
+        if (estaOcupado(agendamento.getBarCodigo(), agendamento.getAgdData(),
+                agendamento.getAgdHorario(), null)) {
+            return ResponseEntity.status(409)
+                    .body(Map.of("erro", "Este horario ja esta ocupado para o barbeiro selecionado"));
         }
 
         if (agendamento.getAgdPreco() == null && agendamento.getSrvCodigo() != null) {
@@ -63,20 +92,62 @@ public class AgendamentoController {
         fin.setFinValorPago(salvo.getAgdPreco() != null ? salvo.getAgdPreco() : BigDecimal.ZERO);
         fin.setFinStatus("Pendente");
         fin.setFinDataPagto(salvo.getAgdData() != null ? salvo.getAgdData() : LocalDate.now());
-        fin.setFinTicketMedio(salvo.getAgdPreco() != null ? salvo.getAgdPreco() : BigDecimal.ZERO);
-        fin.setFinTotalRecebido(BigDecimal.ZERO);
         financeiroRepo.save(fin);
 
         return ResponseEntity.ok(salvo);
     }
 
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> reagendar(@PathVariable Integer id, @RequestBody Agendamento dados) {
+        Optional<Agendamento> existente = repo.findById(id);
+        if (existente.isEmpty()) return ResponseEntity.notFound().build();
+
+        Agendamento atual = existente.get();
+
+        Integer barCodigo = dados.getBarCodigo() != null ? dados.getBarCodigo() : atual.getBarCodigo();
+        LocalDate data = dados.getAgdData() != null ? dados.getAgdData() : atual.getAgdData();
+        LocalTime horario = dados.getAgdHorario() != null ? dados.getAgdHorario() : atual.getAgdHorario();
+
+        if (estaOcupado(barCodigo, data, horario, id)) {
+            return ResponseEntity.status(409)
+                    .body(Map.of("erro", "Este horario ja esta ocupado para o barbeiro selecionado"));
+        }
+
+        atual.setBarCodigo(barCodigo);
+        atual.setAgdData(data);
+        atual.setAgdHorario(horario);
+        if (dados.getSrvCodigo() != null) atual.setSrvCodigo(dados.getSrvCodigo());
+        if (dados.getAgdPreco() != null) atual.setAgdPreco(dados.getAgdPreco());
+        if (dados.getAgdStatus() != null) atual.setAgdStatus(dados.getAgdStatus());
+
+        return ResponseEntity.ok(repo.save(atual));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> remover(@PathVariable Integer id) {
+        if (!repo.existsById(id)) return ResponseEntity.notFound().build();
+        financeiroRepo.deleteAll(financeiroRepo.findByAgdCodigo(id));
+        repo.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/{id}/status")
-    public ResponseEntity<Agendamento> alterarStatus(@PathVariable Integer id, @RequestBody java.util.Map<String, String> dados) {
+    public ResponseEntity<Agendamento> alterarStatus(@PathVariable Integer id, @RequestBody Map<String, String> dados) {
         Optional<Agendamento> agd = repo.findById(id);
         if (agd.isEmpty()) return ResponseEntity.notFound().build();
 
         Agendamento atual = agd.get();
         atual.setAgdStatus(dados.get("status"));
         return ResponseEntity.ok(repo.save(atual));
+    }
+
+    /** true se o barbeiro ja possui agendamento nao cancelado no mesmo dia/horario (ignorando idIgnorar). */
+    private boolean estaOcupado(Integer barCodigo, LocalDate data, LocalTime horario, Integer idIgnorar) {
+        if (barCodigo == null || data == null || horario == null) return false;
+        return repo.findByBarCodigoAndAgdDataAndAgdHorario(barCodigo, data, horario).stream()
+                .filter(a -> !"Cancelado".equalsIgnoreCase(a.getAgdStatus()))
+                .anyMatch(a -> idIgnorar == null || !a.getAgdCodigo().equals(idIgnorar));
     }
 }

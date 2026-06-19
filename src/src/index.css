@@ -20,6 +20,9 @@ html, body {
 .indicadores-container,
 .cliente-page,
 .avaliacao-container,
+.avaliacoes-container,
+.visualizacao-page,
+.estoque-page,
 .ajustes-container {
   padding-left: var(--sidebar-largura);
   transition: padding-left 0.25s ease;

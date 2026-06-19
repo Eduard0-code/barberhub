@@ -1,12 +1,20 @@
 
 # Apresentação
 
-<span style="color:red">Pré-requisitos: Todos os demais artefatos</span>
+<span style="color:red">Pré-requisitos: todos os artefatos da pasta docs</span>
 
 
-> Conjunto de slides em um arquivo PowerPoint ou PDF
-> com a apresentação do projeto contemplando todos os
-> itens trabalhados nos demais artefatos. 
+Conjunto de slides em arquivo PowerPoint ou PDF, contemplando os principais itens do projeto.
+
+Conteúdo mínimo recomendado:
+- Contexto e problema
+- Personas e requisitos principais
+- Modelagem dos processos (AS IS e TO BE)
+- Arquitetura da solução
+- Demonstração das telas
+- Indicadores e resultados esperados
+- Conclusões e próximos passos
+
 > **Links Úteis**:
 > - [10 dicas de design para slides](https://rockcontent.com/blog/design-para-slides/)
 > - [7 dicas de design para criar apresentações de PowerPoint incríveis e eficientes](https://www.shutterstock.com/pt/blog/7-dicas-de-design-para-criar-apresentacoes-de-powerpoint-incriveis-e-eficientes)
@@ -17,8 +25,8 @@
 
 ## Slides
 
-Coloque aqui os slides da apresentação
+Inserir neste diretório o arquivo final da apresentação.
 
 ## Vídeo
 
-No caso de apresentação gravada, insira aqui o link do vídeo de apresentação.
+No caso de apresentação gravada, incluir aqui o link do vídeo final.

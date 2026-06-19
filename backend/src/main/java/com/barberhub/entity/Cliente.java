@@ -1,5 +1,6 @@
 package com.barberhub.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -21,6 +22,7 @@ public class Cliente {
     @Column(name = "CliTelefone")
     private String cliTelefone;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "CliSenha")
     private String cliSenha;
 

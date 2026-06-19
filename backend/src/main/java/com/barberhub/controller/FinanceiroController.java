@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/financeiro")
@@ -55,17 +56,29 @@ public class FinanceiroController {
             nomesServicos.put(s.getSrvCodigo(), s.getSrvNome());
         }
 
+        List<Financeiro> financeiros = repo.findTop15ByOrderByFinDataPagtoDesc();
+
+        // Carrega todos os agendamentos referenciados de uma vez (evita N+1)
+        List<Integer> agdCodigos = financeiros.stream()
+                .map(Financeiro::getAgdCodigo)
+                .filter(c -> c != null)
+                .distinct()
+                .collect(Collectors.toList());
+        Map<Integer, Agendamento> agendamentos = new HashMap<>();
+        for (Agendamento a : agendamentoRepo.findAllById(agdCodigos)) {
+            agendamentos.put(a.getAgdCodigo(), a);
+        }
+
         List<Map<String, Object>> resposta = new ArrayList<>();
-        for (Financeiro f : repo.findTop15ByOrderByFinDataPagtoDesc()) {
+        for (Financeiro f : financeiros) {
             Map<String, Object> item = new HashMap<>();
             item.put("finCodigo", f.getFinCodigo());
             item.put("finValorPago", f.getFinValorPago());
             item.put("finStatus", f.getFinStatus());
             item.put("finDataPagto", f.getFinDataPagto());
 
-            Optional<Agendamento> agd = agendamentoRepo.findById(f.getAgdCodigo() != null ? f.getAgdCodigo() : -1);
-            if (agd.isPresent()) {
-                Agendamento a = agd.get();
+            Agendamento a = f.getAgdCodigo() != null ? agendamentos.get(f.getAgdCodigo()) : null;
+            if (a != null) {
                 item.put("horario", a.getAgdHorario());
                 item.put("cliente", nomesClientes.getOrDefault(a.getCliCodigo(), "Cliente avulso"));
                 item.put("servico", nomesServicos.getOrDefault(a.getSrvCodigo(), "Servico"));

@@ -2,7 +2,7 @@ import "./GestaoFinanceira.css";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import MenuLateral from "../components/MenuLateral.jsx";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Wallet,
@@ -28,6 +28,8 @@ const resumoPadrao = {
   pagamentosPendentes: 0,
 };
 
+const ITENS_POR_PAGINA = 5;
+
 const formatarMoeda = (valor) =>
   Number(valor || 0).toLocaleString("pt-BR", {
     style: "currency",
@@ -47,12 +49,15 @@ const GestaoFinanceira = () => {
   const [atualizando, setAtualizando] = useState(false);
   const [origem, setOrigem] = useState("exemplo");
 
+  const [filtroStatus, setFiltroStatus] = useState("todos");
+  const [pagina, setPagina] = useState(1);
+
   const carregar = () => {
     setAtualizando(true);
     return Promise.all([
       financeiroApi.resumo(),
       financeiroApi.recentes(),
-      kpiApi.faturamentoPorDia(),
+      kpiApi.faturamentoPorDia(periodo),
     ])
       .then(([r, a, g]) => {
         setResumo(r);
@@ -77,7 +82,55 @@ const GestaoFinanceira = () => {
       window.removeEventListener("focus", aoFocar);
       clearInterval(intervalo);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [periodo]);
+
+  const atendimentosFiltrados = useMemo(() => {
+    if (filtroStatus === "todos") return atendimentos;
+    return atendimentos.filter((a) => a.finStatus === filtroStatus);
+  }, [atendimentos, filtroStatus]);
+
+  const totalPaginas = Math.max(1, Math.ceil(atendimentosFiltrados.length / ITENS_POR_PAGINA));
+  const paginaAtual = Math.min(pagina, totalPaginas);
+  const atendimentosPagina = atendimentosFiltrados.slice(
+    (paginaAtual - 1) * ITENS_POR_PAGINA,
+    paginaAtual * ITENS_POR_PAGINA
+  );
+
+  useEffect(() => {
+    setPagina(1);
+  }, [filtroStatus, atendimentos.length]);
+
+  const marcarPago = async (finCodigo) => {
+    try {
+      await financeiroApi.marcarComoPago(finCodigo);
+      carregar();
+    } catch {
+      /* mantem estado atual em caso de falha */
+    }
+  };
+
+  const exportarCsv = () => {
+    const cabecalho = ["Horario", "Cliente", "Servico", "Valor", "Status"];
+    const linhas = atendimentosFiltrados.map((a) => [
+      formatarHora(a.horario),
+      a.cliente,
+      a.servico,
+      Number(a.finValorPago || 0).toFixed(2).replace(".", ","),
+      a.finStatus || a.statusAgendamento || "",
+    ]);
+    const csv = [cabecalho, ...linhas]
+      .map((linha) => linha.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(";"))
+      .join("\n");
+
+    const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `atendimentos-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <>
@@ -161,12 +214,20 @@ const GestaoFinanceira = () => {
                 <h3>Atendimentos Recentes</h3>
 
                 <div className="table-actions">
-                  <button>
+                  <div className="filtro-status">
                     <Filter size={15} />
-                    Filtrar
-                  </button>
+                    <select
+                      value={filtroStatus}
+                      onChange={(e) => setFiltroStatus(e.target.value)}
+                      aria-label="Filtrar por status"
+                    >
+                      <option value="todos">Todos</option>
+                      <option value="Pago">Pagos</option>
+                      <option value="Pendente">Pendentes</option>
+                    </select>
+                  </div>
 
-                  <button>
+                  <button onClick={exportarCsv} disabled={!atendimentosFiltrados.length}>
                     <Download size={15} />
                     Exportar
                   </button>
@@ -181,18 +242,19 @@ const GestaoFinanceira = () => {
                     <th>SERVIÇO</th>
                     <th>VALOR</th>
                     <th>STATUS</th>
+                    <th>AÇÃO</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {atendimentos.length === 0 && (
+                  {atendimentosPagina.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="tabela-vazia">
+                      <td colSpan={6} className="tabela-vazia">
                         Nenhum atendimento registrado ainda.
                       </td>
                     </tr>
                   )}
-                  {atendimentos.map((item) => (
+                  {atendimentosPagina.map((item) => (
                     <tr key={item.finCodigo}>
                       <td>{formatarHora(item.horario)}</td>
                       <td className="cliente-name">{item.cliente}</td>
@@ -201,11 +263,24 @@ const GestaoFinanceira = () => {
                       <td>
                         <span
                           className={`status ${
-                            item.statusAgendamento === "Concluido" ? "done" : "scheduled"
+                            item.finStatus === "Pago" ? "done" : "scheduled"
                           }`}
                         >
-                          {item.statusAgendamento || item.finStatus}
+                          {item.finStatus || item.statusAgendamento}
                         </span>
+                      </td>
+                      <td>
+                        {item.finStatus !== "Pago" ? (
+                          <button
+                            className="botao-marcar-pago"
+                            onClick={() => marcarPago(item.finCodigo)}
+                          >
+                            <Check size={14} />
+                            Marcar como Pago
+                          </button>
+                        ) : (
+                          <span className="status done">Pago</span>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -214,17 +289,26 @@ const GestaoFinanceira = () => {
 
               <div className="table-footer">
                 <span>
-                  Mostrando {atendimentos.length} {atendimentos.length === 1 ? "registro" : "registros"}
+                  Mostrando {atendimentosPagina.length} de {atendimentosFiltrados.length}{" "}
+                  {atendimentosFiltrados.length === 1 ? "registro" : "registros"}
                 </span>
 
                 <div className="pagination">
-                  <button>
+                  <button
+                    onClick={() => setPagina((p) => Math.max(1, p - 1))}
+                    disabled={paginaAtual <= 1}
+                  >
                     <ChevronLeft size={16} />
                   </button>
 
-                  <button className="active-page">1</button>
+                  <button className="active-page">
+                    {paginaAtual} / {totalPaginas}
+                  </button>
 
-                  <button>
+                  <button
+                    onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
+                    disabled={paginaAtual >= totalPaginas}
+                  >
                     <ChevronRight size={16} />
                   </button>
                 </div>

@@ -30,6 +30,14 @@ public class ClienteController {
         return cliente.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    /** Busca um cliente pelo e-mail (evita expor a lista inteira no front). */
+    @GetMapping("/por-email")
+    public ResponseEntity<Cliente> porEmail(@RequestParam String email) {
+        return repo.findByCliEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<Cliente> criar(@RequestBody Cliente cliente) {
         if (cliente.getCliCriado() == null) {
@@ -37,6 +45,21 @@ public class ClienteController {
         }
         Cliente salvo = repo.save(cliente);
         return ResponseEntity.ok(salvo);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> atualizar(@PathVariable Integer id, @RequestBody Cliente dados) {
+        Optional<Cliente> existente = repo.findById(id);
+        if (existente.isEmpty()) return ResponseEntity.notFound().build();
+
+        Cliente atual = existente.get();
+        if (dados.getCliNome() != null) atual.setCliNome(dados.getCliNome());
+        if (dados.getCliEmail() != null) atual.setCliEmail(dados.getCliEmail());
+        if (dados.getCliTelefone() != null) atual.setCliTelefone(dados.getCliTelefone());
+        if (dados.getCliSenha() != null && !dados.getCliSenha().isBlank()) {
+            atual.setCliSenha(dados.getCliSenha());
+        }
+        return ResponseEntity.ok(repo.save(atual));
     }
 
     @DeleteMapping("/{id}")

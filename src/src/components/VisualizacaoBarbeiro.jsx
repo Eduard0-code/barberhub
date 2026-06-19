@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import MenuLateral from "./MenuLateral";
-import { CalendarDays, RefreshCcw, ArrowLeft, Info } from "lucide-react";
-import { agendamentoApi, servicoApi, clienteApi } from "../services/api.js";
+import { CalendarDays, RefreshCcw, ArrowLeft, Info, Check, X } from "lucide-react";
+import { agendamentoApi, servicoApi, clienteApi, usuarioLogado } from "../services/api.js";
 
 const VisualizacaoBarbeiro = () => {
   const hoje = new Date().toISOString().slice(0, 10);
+  const logado = usuarioLogado();
+  const barbeiroLogado = logado?.barCodigo || null;
+
   const [dataSelecionada, setDataSelecionada] = useState(hoje);
   const [todosAgendamentos, setTodosAgendamentos] = useState([]);
   const [servicos, setServicos] = useState([]);
@@ -17,8 +20,13 @@ const VisualizacaoBarbeiro = () => {
 
   const carregarDados = () => {
     setCarregando(true);
+    // Barbeiro logado ve apenas a propria agenda; visao geral lista todos.
+    const fonteAgendamentos = barbeiroLogado
+      ? agendamentoApi.porBarbeiro(barbeiroLogado)
+      : agendamentoApi.listar();
+
     Promise.all([
-      agendamentoApi.listar(),
+      fonteAgendamentos,
       servicoApi.listar(),
       clienteApi.listar(),
     ])
@@ -33,7 +41,17 @@ const VisualizacaoBarbeiro = () => {
 
   useEffect(() => {
     carregarDados();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const alterarStatus = async (agdCodigo, status) => {
+    try {
+      await agendamentoApi.alterarStatus(agdCodigo, status);
+      carregarDados();
+    } catch {
+      /* mantem estado em caso de falha */
+    }
+  };
 
   const agendamentos = useMemo(() => {
     const mapaServico = {};
@@ -54,6 +72,7 @@ const VisualizacaoBarbeiro = () => {
       .filter((a) => normalizar(a.agdData) === dataSelecionada)
       .sort((a, b) => (String(a.agdHorario) > String(b.agdHorario) ? 1 : -1))
       .map((a) => ({
+        codigo: a.agdCodigo,
         horario: String(a.agdHorario).slice(0, 5),
         cliente: mapaCliente[a.cliCodigo] || "Cliente",
         servico: mapaServico[a.srvCodigo] || "Serviço",
@@ -125,13 +144,14 @@ const VisualizacaoBarbeiro = () => {
                   <th>Cliente</th>
                   <th>Serviço</th>
                   <th>Status</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
 
               <tbody>
                 {agendamentos.length === 0 ? (
                   <tr>
-                    <td colSpan={4} style={{ textAlign: "center", padding: "24px", color: "#6b7280" }}>
+                    <td colSpan={5} style={{ textAlign: "center", padding: "24px", color: "#6b7280" }}>
                       {carregando ? "Carregando..." : "Nenhum agendamento para esta data."}
                     </td>
                   </tr>
@@ -174,6 +194,32 @@ const VisualizacaoBarbeiro = () => {
                         >
                           {agendamento.status}
                         </span>
+                      </td>
+
+                      <td>
+                        {agendamento.status !== "Concluido" &&
+                        agendamento.status !== "Cancelado" ? (
+                          <div className="acoes-agenda">
+                            <button
+                              className="acao-concluir"
+                              onClick={() => alterarStatus(agendamento.codigo, "Concluido")}
+                              title="Marcar como concluído"
+                            >
+                              <Check size={14} />
+                              Concluir
+                            </button>
+                            <button
+                              className="acao-cancelar"
+                              onClick={() => alterarStatus(agendamento.codigo, "Cancelado")}
+                              title="Cancelar agendamento"
+                            >
+                              <X size={14} />
+                              Cancelar
+                            </button>
+                          </div>
+                        ) : (
+                          <span style={{ color: "#9ca3af", fontSize: "12px" }}>—</span>
+                        )}
                       </td>
                     </tr>
                   ))
