@@ -107,6 +107,16 @@
   color: inherit;
 }
 
+button.avatar-circle {
+  color: #444;
+  cursor: pointer;
+  padding: 0;
+}
+
+button.avatar-circle:hover {
+  background: #e5e5e5;
+}
+
 .dropdown-arrow {
   color: #888;
 }

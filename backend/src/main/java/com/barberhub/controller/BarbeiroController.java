@@ -38,6 +38,23 @@ public class BarbeiroController {
         return ResponseEntity.ok(salvo);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Barbeiro> atualizar(@PathVariable Integer id, @RequestBody Barbeiro dados) {
+        Optional<Barbeiro> existente = repo.findById(id);
+        if (existente.isEmpty()) return ResponseEntity.notFound().build();
+
+        Barbeiro atual = existente.get();
+        if (dados.getBarNome() != null) atual.setBarNome(dados.getBarNome());
+        if (dados.getBarEmail() != null) atual.setBarEmail(dados.getBarEmail());
+        if (dados.getBarTelefone() != null) atual.setBarTelefone(dados.getBarTelefone());
+        if (dados.getBarEspecialidade() != null) atual.setBarEspecialidade(dados.getBarEspecialidade());
+        if (dados.getBarAtivo() != null) atual.setBarAtivo(dados.getBarAtivo());
+        if (dados.getBarSenha() != null && !dados.getBarSenha().isBlank()) {
+            atual.setBarSenha(dados.getBarSenha());
+        }
+        return ResponseEntity.ok(repo.save(atual));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         if (!repo.existsById(id)) {

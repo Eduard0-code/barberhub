@@ -58,6 +58,7 @@ const AvaliacaoBarbeiro = () => {
             servico: nomeServico,
             nota: av.avaNota,
             comentario: av.avaComentario || '',
+            dataRaw: av.avaData ? new Date(av.avaData) : null,
             data: av.avaData
               ? new Date(av.avaData).toLocaleDateString('pt-BR')
               : '',
@@ -94,6 +95,16 @@ const AvaliacaoBarbeiro = () => {
   const avaliacoesFiltradas = useMemo(() => {
     let resultado = [...avaliacoes];
 
+    const diasPeriodo = { '7dias': 7, '30dias': 30, '90dias': 90 }[filtroPeriodo];
+    if (diasPeriodo) {
+      const limite = new Date();
+      limite.setHours(0, 0, 0, 0);
+      limite.setDate(limite.getDate() - (diasPeriodo - 1));
+      resultado = resultado.filter(
+        (item) => item.dataRaw && item.dataRaw >= limite
+      );
+    }
+
     if (filtroServico !== 'todos') {
       resultado = resultado.filter((item) => item.servico === filtroServico);
     }
@@ -111,10 +122,11 @@ const AvaliacaoBarbeiro = () => {
     }
 
     if (ordenacao === 'maior') resultado.sort((a, b) => b.nota - a.nota);
-    if (ordenacao === 'menor') resultado.sort((a, b) => a.nota - b.nota);
+    else if (ordenacao === 'menor') resultado.sort((a, b) => a.nota - b.nota);
+    else resultado.sort((a, b) => (b.dataRaw?.getTime() || 0) - (a.dataRaw?.getTime() || 0));
 
     return resultado;
-  }, [avaliacoes, filtroServico, filtroNota, busca, ordenacao]);
+  }, [avaliacoes, filtroPeriodo, filtroServico, filtroNota, busca, ordenacao]);
 
   return (
     <>
@@ -288,6 +300,7 @@ const AvaliacaoBarbeiro = () => {
             <button
               className="btn-filtrar"
               onClick={() => {
+                setFiltroPeriodo('30dias');
                 setFiltroServico('todos');
                 setFiltroNota('todas');
                 setBusca('');

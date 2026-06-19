@@ -1,7 +1,7 @@
-import { User, Menu, ChevronDown, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { LogOut, Menu, ChevronDown, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import './Header.css';
-import { Link } from 'react-router-dom';
-import { usuarioLogado } from '../services/api.js';
+import { useNavigate } from 'react-router-dom';
+import { usuarioLogado, logout } from '../services/api.js';
 import { useSidebar } from '../contexts/SidebarContext.jsx';
 
 const Header = () => {
@@ -9,6 +9,12 @@ const Header = () => {
   const nome = usuario?.cliNome || usuario?.barNome || 'Visitante';
   const tipo = usuario?.barNome ? 'Barbeiro' : usuario?.cliNome ? 'Cliente' : 'Convidado';
   const { colapsado, alternarColapsado, alternarAbertoMobile } = useSidebar();
+  const navigate = useNavigate();
+
+  const sair = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <header className="header-container">
@@ -40,11 +46,14 @@ const Header = () => {
           <span className="profile-name">{nome}</span>
           <span className="profile-badge">{tipo}</span>
         </div>
-        <div className="avatar-circle">
-          <Link to='/login'>
-            <User size={20} />
-          </Link>
-        </div>
+        <button
+          className="avatar-circle"
+          onClick={sair}
+          aria-label="Sair"
+          title="Sair"
+        >
+          <LogOut size={20} />
+        </button>
         <ChevronDown size={16} className="dropdown-arrow" />
       </div>
     </header>

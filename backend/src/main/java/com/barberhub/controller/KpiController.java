@@ -9,13 +9,17 @@ import com.barberhub.repository.AvaliacaoRepository;
 import com.barberhub.repository.BarbeiroRepository;
 import com.barberhub.repository.FinanceiroRepository;
 import com.barberhub.repository.ServicoRepository;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,20 +48,25 @@ public class KpiController {
     }
 
     @GetMapping("/resumo")
-    public ResumoKpiDTO resumo() {
-        BigDecimal faturamento = financeiroRepo.somaTotalRecebido();
+    public ResumoKpiDTO resumo(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+
+        BigDecimal faturamento = financeiroRepo.somaRecebidoPorPeriodo(inicio, fim);
         if (faturamento == null) faturamento = BigDecimal.ZERO;
 
-        BigDecimal ticket = financeiroRepo.ticketMedio();
+        BigDecimal ticket = financeiroRepo.ticketMedioPorPeriodo(inicio, fim);
         if (ticket == null) ticket = BigDecimal.ZERO;
         ticket = ticket.setScale(2, RoundingMode.HALF_UP);
 
-        Double avaliacao = avaliacaoRepo.mediaDasNotas();
+        LocalDateTime inicioDt = inicio != null ? inicio.atStartOfDay() : null;
+        LocalDateTime fimDt = fim != null ? fim.atTime(LocalTime.MAX) : null;
+        Double avaliacao = avaliacaoRepo.mediaDasNotasPorPeriodo(inicioDt, fimDt);
         if (avaliacao == null) avaliacao = 0.0;
         avaliacao = Math.round(avaliacao * 10.0) / 10.0;
 
-        long total = agendamentoRepo.count();
-        long cancelados = agendamentoRepo.countByAgdStatus("Cancelado");
+        long total = agendamentoRepo.countPorPeriodo(inicio, fim);
+        long cancelados = agendamentoRepo.countByStatusPorPeriodo("Cancelado", inicio, fim);
         double taxa = total == 0 ? 0.0 : (cancelados * 100.0) / total;
         taxa = Math.round(taxa * 10.0) / 10.0;
 
@@ -65,8 +74,10 @@ public class KpiController {
     }
 
     @GetMapping("/faturamento-por-dia")
-    public List<PontoGraficoDTO> faturamentoPorDia() {
-        List<Object[]> linhas = financeiroRepo.faturamentoPorDia();
+    public List<PontoGraficoDTO> faturamentoPorDia(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+        List<Object[]> linhas = financeiroRepo.faturamentoPorDia(inicio, fim);
         List<PontoGraficoDTO> resposta = new ArrayList<>();
         for (Object[] linha : linhas) {
             LocalDate data = (LocalDate) linha[0];
@@ -77,14 +88,16 @@ public class KpiController {
     }
 
     @GetMapping("/atendimentos-por-barbeiro")
-    public List<PontoGraficoDTO> atendimentosPorBarbeiro() {
+    public List<PontoGraficoDTO> atendimentosPorBarbeiro(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
         Map<Integer, String> nomes = new HashMap<>();
         for (Barbeiro b : barbeiroRepo.findAll()) {
             nomes.put(b.getBarCodigo(), b.getBarNome());
         }
 
         List<PontoGraficoDTO> resposta = new ArrayList<>();
-        for (Object[] linha : agendamentoRepo.countAgrupadoPorBarbeiro()) {
+        for (Object[] linha : agendamentoRepo.countAgrupadoPorBarbeiroPorPeriodo(inicio, fim)) {
             Integer codigo = (Integer) linha[0];
             Long quantidade = (Long) linha[1];
             String nome = nomes.getOrDefault(codigo, "Barbeiro " + codigo);
@@ -94,14 +107,16 @@ public class KpiController {
     }
 
     @GetMapping("/servicos-mais-vendidos")
-    public List<PontoGraficoDTO> servicosMaisVendidos() {
+    public List<PontoGraficoDTO> servicosMaisVendidos(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
         Map<Integer, String> nomes = new HashMap<>();
         for (Servico s : servicoRepo.findAll()) {
             nomes.put(s.getSrvCodigo(), s.getSrvNome());
         }
 
         List<PontoGraficoDTO> resposta = new ArrayList<>();
-        for (Object[] linha : agendamentoRepo.countAgrupadoPorServico()) {
+        for (Object[] linha : agendamentoRepo.countAgrupadoPorServicoPorPeriodo(inicio, fim)) {
             Integer codigo = (Integer) linha[0];
             Long quantidade = (Long) linha[1];
             String nome = nomes.getOrDefault(codigo, "Servico " + codigo);
@@ -111,13 +126,15 @@ public class KpiController {
     }
 
     @GetMapping("/ocupacao-barbeiros")
-    public List<PontoGraficoDTO> ocupacaoBarbeiros() {
+    public List<PontoGraficoDTO> ocupacaoBarbeiros(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
         List<PontoGraficoDTO> resposta = new ArrayList<>();
-        long totalGeral = agendamentoRepo.count();
+        long totalGeral = agendamentoRepo.countPorPeriodo(inicio, fim);
         if (totalGeral == 0) return resposta;
 
         for (Barbeiro b : barbeiroRepo.findAll()) {
-            long atendidos = agendamentoRepo.countByBarbeiro(b.getBarCodigo());
+            long atendidos = agendamentoRepo.countByBarbeiroPorPeriodo(b.getBarCodigo(), inicio, fim);
             double percentual = (atendidos * 100.0) / totalGeral;
             percentual = Math.round(percentual * 10.0) / 10.0;
             resposta.add(new PontoGraficoDTO(b.getBarNome(), percentual));

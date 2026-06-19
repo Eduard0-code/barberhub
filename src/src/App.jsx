@@ -7,25 +7,29 @@ import AvaliacaoCliente from "./components/AvaliacaoCliente.jsx";
 import AvaliacaoBarbeiro from "./components/AvaliacaoBarbeiro.jsx";
 import Indicadores from "./components/Indicadores.jsx";
 import Ajustes from "./components/Ajustes.jsx";
+import Estoque from "./components/Estoque.jsx";
 import Home from './components/Home.jsx';
-import { Routes, Route } from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute.jsx';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import "./App.css";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
       <Route path="/login" element={<BarberCadLog />} />
-      <Route path="/agendamento-barbeiro" element={<AgendamentoBarbeiro />} />
 
-      <Route path="/agendamento-cliente" element={<AgendamentoCliente />} />
+      <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+      <Route path="/agendamento-barbeiro" element={<PrivateRoute><AgendamentoBarbeiro /></PrivateRoute>} />
+      <Route path="/agendamento-cliente" element={<PrivateRoute><AgendamentoCliente /></PrivateRoute>} />
+      <Route path="/visualizacao-barbeiro" element={<PrivateRoute><VisualizacaoBarbeiro /></PrivateRoute>} />
+      <Route path="/gestao-financeira" element={<PrivateRoute><GestaoFinanceira /></PrivateRoute>} />
+      <Route path="/avaliacao-cliente" element={<PrivateRoute><AvaliacaoCliente /></PrivateRoute>} />
+      <Route path="/avaliacao-barbeiro" element={<PrivateRoute><AvaliacaoBarbeiro /></PrivateRoute>} />
+      <Route path="/indicadores" element={<PrivateRoute><Indicadores /></PrivateRoute>} />
+      <Route path="/estoque" element={<PrivateRoute><Estoque /></PrivateRoute>} />
+      <Route path="/ajustes" element={<PrivateRoute><Ajustes /></PrivateRoute>} />
 
-      <Route path="/visualizacao-barbeiro" element={<VisualizacaoBarbeiro />} />
-      <Route path="/gestao-financeira" element={<GestaoFinanceira />} />
-      <Route path="/avaliacao-cliente" element={<AvaliacaoCliente />} />
-      <Route path="/avaliacao-barbeiro" element={<AvaliacaoBarbeiro />} />
-      <Route path="/indicadores" element={<Indicadores />} />
-      <Route path="/ajustes" element={<Ajustes />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

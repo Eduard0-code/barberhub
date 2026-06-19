@@ -25,12 +25,6 @@ public class Financeiro {
     @Column(name = "FinDataPagto")
     private LocalDate finDataPagto;
 
-    @Column(name = "FinTicketMedio")
-    private BigDecimal finTicketMedio;
-
-    @Column(name = "FinTotalRecebido")
-    private BigDecimal finTotalRecebido;
-
     public Integer getFinCodigo() { return finCodigo; }
     public void setFinCodigo(Integer finCodigo) { this.finCodigo = finCodigo; }
 
@@ -45,10 +39,4 @@ public class Financeiro {
 
     public LocalDate getFinDataPagto() { return finDataPagto; }
     public void setFinDataPagto(LocalDate finDataPagto) { this.finDataPagto = finDataPagto; }
-
-    public BigDecimal getFinTicketMedio() { return finTicketMedio; }
-    public void setFinTicketMedio(BigDecimal finTicketMedio) { this.finTicketMedio = finTicketMedio; }
-
-    public BigDecimal getFinTotalRecebido() { return finTotalRecebido; }
-    public void setFinTotalRecebido(BigDecimal finTotalRecebido) { this.finTotalRecebido = finTotalRecebido; }
 }

@@ -31,29 +31,12 @@ const formatarHora = (hora) => {
   return String(hora).slice(0, 5);
 };
 
-const resumoMock = {
-  faturamentoTotal: 12450,
-  ticketMedio: 58.3,
-  avaliacaoMedia: 4.7,
-  taxaCancelamento: 8.3,
+const resumoVazio = {
+  faturamentoTotal: 0,
+  ticketMedio: 0,
+  avaliacaoMedia: 0,
+  taxaCancelamento: 0,
 };
-
-const faturamentoMock = [
-  { rotulo: "Seg", valor: 320 },
-  { rotulo: "Ter", valor: 410 },
-  { rotulo: "Qua", valor: 380 },
-  { rotulo: "Qui", valor: 520 },
-  { rotulo: "Sex", valor: 610 },
-  { rotulo: "Sáb", valor: 780 },
-  { rotulo: "Dom", valor: 540 },
-];
-
-const agendamentosMock = [
-  { agdCodigo: 1, agdHorario: "09:00", cliNome: "João Silva", srvNome: "Corte + Barba", agdStatus: "Concluído" },
-  { agdCodigo: 2, agdHorario: "10:30", cliNome: "Carlos Mendes", srvNome: "Corte de Cabelo", agdStatus: "Agendado" },
-  { agdCodigo: 3, agdHorario: "11:00", cliNome: "Pedro Costa", srvNome: "Barba Completa", agdStatus: "Agendado" },
-  { agdCodigo: 4, agdHorario: "14:00", cliNome: "Lucas Rocha", srvNome: "Corte + Pigmentação", agdStatus: "Cancelado" },
-];
 
 const statusClass = (status) => {
   if (status === "Concluído" || status === "Concluido") return "home-status-concluido";
@@ -63,9 +46,9 @@ const statusClass = (status) => {
 
 const Home = () => {
   const navigate = useNavigate();
-  const [resumo, setResumo] = useState(resumoMock);
-  const [faturamento, setFaturamento] = useState(faturamentoMock);
-  const [agendamentos, setAgendamentos] = useState(agendamentosMock);
+  const [resumo, setResumo] = useState(resumoVazio);
+  const [faturamento, setFaturamento] = useState([]);
+  const [agendamentos, setAgendamentos] = useState([]);
   const [finResumo, setFinResumo] = useState({ recebidoHoje: 0, pagamentosPagos: 0, pagamentosPendentes: 0 });
   const [atualizando, setAtualizando] = useState(false);
   const [origem, setOrigem] = useState("exemplo");
@@ -82,7 +65,7 @@ const Home = () => {
     ])
       .then(([r, f, a, fr, clientes, servicos]) => {
         setResumo(r);
-        setFaturamento(f && f.length ? f : faturamentoMock);
+        setFaturamento(f || []);
         setFinResumo(fr);
         setOrigem("banco");
 
@@ -98,7 +81,7 @@ const Home = () => {
           }));
           setAgendamentos(enriquecidos);
         } else {
-          setAgendamentos(agendamentosMock);
+          setAgendamentos([]);
         }
       })
       .catch(() => {
@@ -203,7 +186,7 @@ const Home = () => {
             </div>
             <div className="home-acoes-topo">
               {origem === "exemplo" && (
-                <span className="home-badge-offline">Dados de exemplo</span>
+                <span className="home-badge-offline">Backend offline</span>
               )}
               <button
                 className="home-botao-atualizar"

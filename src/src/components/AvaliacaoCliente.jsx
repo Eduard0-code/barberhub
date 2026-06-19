@@ -142,10 +142,27 @@ const AvaliacaoCliente = () => {
     setComentario(avaliacaoExistente.avaComentario || '');
   };
 
-  const excluirAvaliacao = () => {
-    setAvaliacaoExistente(null);
-    setNota(0);
-    setComentario('');
+  const excluirAvaliacao = async () => {
+    if (!avaliacaoExistente?.avaCodigo) {
+      setAvaliacaoExistente(null);
+      setNota(0);
+      setComentario('');
+      return;
+    }
+    setErro('');
+    setMensagem('');
+    setCarregando(true);
+    try {
+      await avaliacaoApi.remover(avaliacaoExistente.avaCodigo);
+      setAvaliacaoExistente(null);
+      setNota(0);
+      setComentario('');
+      setMensagem('Avaliação excluída');
+    } catch (e) {
+      setErro(e.message || 'Falha ao excluir avaliação');
+    } finally {
+      setCarregando(false);
+    }
   };
 
   const nomeServico = agendamento

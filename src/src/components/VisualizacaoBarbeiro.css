@@ -1,5 +1,43 @@
 /* pages/VisualizacaoBarbeiro.css */
 
+.acoes-agenda {
+  display: flex;
+  gap: 8px;
+}
+
+.acao-concluir,
+.acao-cancelar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.acao-concluir {
+  background: #16a34a;
+  color: #fff;
+  border-color: #16a34a;
+}
+
+.acao-concluir:hover {
+  background: #15803d;
+}
+
+.acao-cancelar {
+  background: #fff;
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+.acao-cancelar:hover {
+  background: #fee2e2;
+}
+
 .visualizacao-page {
   min-height: 100vh;
   background: #f5f5f5;
