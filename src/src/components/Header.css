@@ -48,21 +48,28 @@
 .menu-logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   padding: 0 4px;
 }
 
 .logo-icon {
-  line-height: 1;
-  transform: scale(0.7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a1a1a;
 }
 
 .logo-text {
   font-size: 1.4rem;
-  font-weight: bold;
-  color: #000;
+  font-weight: 700;
+  color: #111;
   line-height: 1;
   white-space: nowrap;
+}
+
+.botao-colapsar {
+  margin-left: 4px;
+  color: #6b7280;
 }
 
 .header-profile {
@@ -107,6 +114,16 @@
   color: inherit;
 }
 
+button.avatar-circle {
+  color: #444;
+  cursor: pointer;
+  padding: 0;
+}
+
+button.avatar-circle:hover {
+  background: #e5e5e5;
+}
+
 .dropdown-arrow {
   color: #888;
 }
@@ -117,8 +134,8 @@
   }
 
   .menu-logo {
-    padding: 16px;
-    gap: 10px;
+    padding: 0 4px;
+    gap: 8px;
   }
 
   .logo-text {
@@ -142,13 +159,9 @@
   }
 
   .menu-logo {
-    padding: 12px 0;
+    padding: 0;
     border: none;
     height: auto;
-  }
-
-  .logo-icon {
-    transform: scale(0.6);
   }
 
   .logo-text {

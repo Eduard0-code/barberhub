@@ -1,7 +1,7 @@
-import { User, Menu, ChevronDown, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { LogOut, Menu, ChevronDown, PanelLeftClose, PanelLeftOpen, Scissors } from 'lucide-react';
 import './Header.css';
-import { Link } from 'react-router-dom';
-import { usuarioLogado } from '../services/api.js';
+import { useNavigate } from 'react-router-dom';
+import { usuarioLogado, logout } from '../services/api.js';
 import { useSidebar } from '../contexts/SidebarContext.jsx';
 
 const Header = () => {
@@ -9,6 +9,12 @@ const Header = () => {
   const nome = usuario?.cliNome || usuario?.barNome || 'Visitante';
   const tipo = usuario?.barNome ? 'Barbeiro' : usuario?.cliNome ? 'Cliente' : 'Convidado';
   const { colapsado, alternarColapsado, alternarAbertoMobile } = useSidebar();
+  const navigate = useNavigate();
+
+  const sair = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <header className="header-container">
@@ -21,18 +27,21 @@ const Header = () => {
           <Menu size={22} />
         </button>
 
+        <div className="menu-logo">
+          <span className="logo-icon">
+            <Scissors size={26} strokeWidth={2.2} />
+          </span>
+          <span className="logo-text">Barber Hub</span>
+        </div>
+
         <button
           className="botao-colapsar"
           onClick={alternarColapsado}
-          aria-label="Recolher menu"
+          aria-label={colapsado ? 'Expandir menu' : 'Recolher menu'}
+          title={colapsado ? 'Expandir menu' : 'Recolher menu'}
         >
           {colapsado ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
         </button>
-
-        <div className="menu-logo">
-          <div className="logo-icon">✂</div>
-          <div className="logo-text">Barber Hub</div>
-        </div>
       </div>
 
       <div className="header-profile">
@@ -40,11 +49,14 @@ const Header = () => {
           <span className="profile-name">{nome}</span>
           <span className="profile-badge">{tipo}</span>
         </div>
-        <div className="avatar-circle">
-          <Link to='/login'>
-            <User size={20} />
-          </Link>
-        </div>
+        <button
+          className="avatar-circle"
+          onClick={sair}
+          aria-label="Sair"
+          title="Sair"
+        >
+          <LogOut size={20} />
+        </button>
         <ChevronDown size={16} className="dropdown-arrow" />
       </div>
     </header>

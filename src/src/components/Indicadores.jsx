@@ -53,11 +53,11 @@ const Indicadores = () => {
   const carregar = () => {
     setAtualizando(true);
     return Promise.all([
-      kpiApi.resumo(),
-      kpiApi.faturamentoPorDia(),
-      kpiApi.atendimentosPorBarbeiro(),
-      kpiApi.servicosMaisVendidos(),
-      kpiApi.ocupacaoBarbeiros(),
+      kpiApi.resumo(periodo),
+      kpiApi.faturamentoPorDia(periodo),
+      kpiApi.atendimentosPorBarbeiro(periodo),
+      kpiApi.servicosMaisVendidos(periodo),
+      kpiApi.ocupacaoBarbeiros(periodo),
     ])
       .then(([r, f, b, s, o]) => {
         setResumo(r);
@@ -90,7 +90,8 @@ const Indicadores = () => {
       window.removeEventListener("focus", aoFocar);
       clearInterval(intervalo);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [periodo]);
 
   const faturamentoFiltrado = useMemo(() => {
     const dias = janelaPeriodo[periodo] ?? janelaPeriodo.semana;

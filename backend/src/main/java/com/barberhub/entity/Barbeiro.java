@@ -1,5 +1,6 @@
 package com.barberhub.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -23,6 +24,7 @@ public class Barbeiro {
     @Column(name = "BarEspecialidade")
     private String barEspecialidade;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "BarSenha")
     private String barSenha;
 

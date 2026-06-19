@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Clientes (
     CliNome VARCHAR(50),
     CliEmail VARCHAR(100),
     CliTelefone VARCHAR(15),
-    CliSenha VARCHAR(20),
+    CliSenha VARCHAR(255),
     CliCriado DATETIME
 );
 
@@ -16,11 +16,9 @@ CREATE TABLE IF NOT EXISTS Barbeiro (
     BarTelefone VARCHAR(15),
     BarEmail VARCHAR(100),
     BarEspecialidade VARCHAR(100),
-    BarSenha VARCHAR(20),
+    BarSenha VARCHAR(255),
     BarAtivo BOOLEAN
 );
-
-ALTER TABLE Barbeiro ADD COLUMN IF NOT EXISTS BarSenha VARCHAR(20);
 
 CREATE TABLE IF NOT EXISTS Servico (
     SrvCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -67,7 +65,27 @@ CREATE TABLE IF NOT EXISTS Financeiro (
     FinValorPago DECIMAL(10,2),
     FinStatus VARCHAR(20),
     FinDataPagto DATE,
-    FinTicketMedio DECIMAL(10,2),
-    FinTotalRecebido DECIMAL(10,2),
     FOREIGN KEY (AgdCodigo) REFERENCES Agendamento(AgdCodigo)
+);
+
+CREATE TABLE IF NOT EXISTS Material (
+    MatCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
+    MatNome VARCHAR(100),
+    MatReferencia VARCHAR(30),
+    MatCategoria VARCHAR(50),
+    MatUnidade VARCHAR(10),
+    MatQuantidade DECIMAL(10,2),
+    MatQuantidadeMinima DECIMAL(10,2)
+);
+
+CREATE TABLE IF NOT EXISTS Movimentacao_Estoque (
+    MovCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
+    MatCodigo INTEGER,
+    MovTipo VARCHAR(20),
+    MovQuantidade DECIMAL(10,2),
+    MovObservacao VARCHAR(255),
+    MovFornecedor VARCHAR(100),
+    MovCusto DECIMAL(10,2),
+    MovData DATETIME,
+    FOREIGN KEY (MatCodigo) REFERENCES Material(MatCodigo)
 );

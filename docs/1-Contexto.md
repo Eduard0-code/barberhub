@@ -5,7 +5,7 @@ O projeto aborda a criação de uma plataforma de gestão e agendamento para a B
 Muitas barbearias ainda realizam seus processos administrativos de forma manual. Isso pode gerar diversos problemas operacionais, como:
 Dificuldade no controle de clientes cadastrados.
 Conflitos de horários nos agendamentos.
-Alta de controle financeiro organizado.
+Falta de controle financeiro organizado.
 Ausência de controle de estoque de produtos.
 Dificuldade em obter feedback dos clientes sobre os serviços.
 Essas limitações podem impactar negativamente na organização do negócio e na experiência do cliente.

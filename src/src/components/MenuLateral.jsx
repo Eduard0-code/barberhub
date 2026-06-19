@@ -1,6 +1,7 @@
 import './MenuLateral.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSidebar } from '../contexts/SidebarContext.jsx';
+import { ehBarbeiro } from '../services/api.js';
 
 import {
   House,
@@ -10,28 +11,35 @@ import {
   Users,
   DollarSign,
   BarChart3,
+  Boxes,
   X,
 } from 'lucide-react';
 
+// 'tipos' define quem ve cada item: 'cliente', 'barbeiro' ou ambos.
 const itens = [
-  { rota: '/', icone: House, rotulo: 'Home' },
-  { rota: '/agendamento-cliente', icone: CalendarDays, rotulo: 'Agendar' },
-  { rota: '/agendamento-barbeiro', icone: CalendarDays, rotulo: 'Agenda' },
-  { rota: '/visualizacao-barbeiro', icone: Users, rotulo: 'Clientes' },
-  { rota: '/avaliacao-cliente', icone: Star, rotulo: 'Avaliar' },
-  { rota: '/avaliacao-barbeiro', icone: Star, rotulo: 'Avaliações' },
-  { rota: '/gestao-financeira', icone: DollarSign, rotulo: 'Financeiro' },
-  { rota: '/indicadores', icone: BarChart3, rotulo: 'Indicadores' },
+  { rota: '/', icone: House, rotulo: 'Home', tipos: ['cliente', 'barbeiro'] },
+  { rota: '/agendamento-cliente', icone: CalendarDays, rotulo: 'Agendar', tipos: ['cliente'] },
+  { rota: '/agendamento-barbeiro', icone: CalendarDays, rotulo: 'Agenda', tipos: ['barbeiro'] },
+  { rota: '/visualizacao-barbeiro', icone: Users, rotulo: 'Clientes', tipos: ['barbeiro'] },
+  { rota: '/avaliacao-cliente', icone: Star, rotulo: 'Avaliar', tipos: ['cliente'] },
+  { rota: '/avaliacao-barbeiro', icone: Star, rotulo: 'Avaliações', tipos: ['barbeiro'] },
+  { rota: '/estoque', icone: Boxes, rotulo: 'Estoque', tipos: ['barbeiro'] },
+  { rota: '/gestao-financeira', icone: DollarSign, rotulo: 'Financeiro', tipos: ['barbeiro'] },
+  { rota: '/indicadores', icone: BarChart3, rotulo: 'Indicadores', tipos: ['barbeiro'] },
 ];
 
 const itensConfig = [
-  { rota: '/ajustes', icone: Settings, rotulo: 'Ajustes' },
+  { rota: '/ajustes', icone: Settings, rotulo: 'Ajustes', tipos: ['barbeiro'] },
 ];
 
 const MenuLateral = () => {
   const navigate = useNavigate();
   const local = useLocation();
   const { colapsado, abertoMobile, fecharMobile } = useSidebar();
+
+  const tipoAtual = ehBarbeiro() ? 'barbeiro' : 'cliente';
+  const visiveis = itens.filter((item) => item.tipos.includes(tipoAtual));
+  const visiveisConfig = itensConfig.filter((item) => item.tipos.includes(tipoAtual));
 
   const irPara = (rota) => {
     fecharMobile();
@@ -61,7 +69,7 @@ const MenuLateral = () => {
           <span className="menu-title">Menu</span>
 
           <nav className="menu-nav">
-            {itens.map((item) => {
+            {visiveis.map((item) => {
               const Icone = item.icone;
               const ativo = local.pathname === item.rota;
               return (
@@ -78,25 +86,29 @@ const MenuLateral = () => {
             })}
           </nav>
 
-          <span className="menu-title">Configurações</span>
+          {visiveisConfig.length > 0 && (
+            <>
+              <span className="menu-title">Configurações</span>
 
-          <nav className="menu-nav">
-            {itensConfig.map((item) => {
-              const Icone = item.icone;
-              const ativo = local.pathname === item.rota;
-              return (
-                <button
-                  key={item.rota}
-                  className={`menu-item ${ativo ? 'active-item' : ''}`}
-                  onClick={() => irPara(item.rota)}
-                  title={item.rotulo}
-                >
-                  <Icone size={18} />
-                  <span className="menu-rotulo">{item.rotulo}</span>
-                </button>
-              );
-            })}
-          </nav>
+              <nav className="menu-nav">
+                {visiveisConfig.map((item) => {
+                  const Icone = item.icone;
+                  const ativo = local.pathname === item.rota;
+                  return (
+                    <button
+                      key={item.rota}
+                      className={`menu-item ${ativo ? 'active-item' : ''}`}
+                      onClick={() => irPara(item.rota)}
+                      title={item.rotulo}
+                    >
+                      <Icone size={18} />
+                      <span className="menu-rotulo">{item.rotulo}</span>
+                    </button>
+                  );
+                })}
+              </nav>
+            </>
+          )}
         </div>
       </aside>
     </>

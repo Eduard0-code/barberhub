@@ -11,6 +11,9 @@ import {
   Check,
   Save,
   RefreshCw,
+  Pencil,
+  Trash2,
+  X,
 } from "lucide-react";
 import {
   servicoApi,
@@ -37,6 +40,7 @@ const AbaServicos = () => {
   const [servicos, setServicos] = useState([]);
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
+  const [editId, setEditId] = useState(null);
   const [salvando, setSalvando] = useState(false);
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState("");
@@ -48,7 +52,21 @@ const AbaServicos = () => {
     carregar();
   }, []);
 
-  const adicionar = async () => {
+  const limparForm = () => {
+    setNome("");
+    setPreco("");
+    setEditId(null);
+  };
+
+  const iniciarEdicao = (s) => {
+    setErro("");
+    setMensagem("");
+    setEditId(s.srvCodigo);
+    setNome(s.srvNome);
+    setPreco(String(s.srvPreco).replace(".", ","));
+  };
+
+  const salvarServico = async () => {
     setErro("");
     setMensagem("");
     if (!nome.trim()) { setErro("Informe o nome do serviço"); return; }
@@ -57,15 +75,33 @@ const AbaServicos = () => {
 
     setSalvando(true);
     try {
-      await servicoApi.criar({ srvNome: nome.trim(), srvPreco: precoNum });
-      setNome("");
-      setPreco("");
-      setMensagem("Serviço adicionado com sucesso");
+      if (editId) {
+        await servicoApi.atualizar(editId, { srvNome: nome.trim(), srvPreco: precoNum });
+        setMensagem("Serviço atualizado com sucesso");
+      } else {
+        await servicoApi.criar({ srvNome: nome.trim(), srvPreco: precoNum });
+        setMensagem("Serviço adicionado com sucesso");
+      }
+      limparForm();
       carregar();
     } catch {
-      setErro("Falha ao adicionar serviço");
+      setErro("Falha ao salvar serviço");
     } finally {
       setSalvando(false);
+    }
+  };
+
+  const excluir = async (s) => {
+    if (!window.confirm(`Excluir o serviço "${s.srvNome}"?`)) return;
+    setErro("");
+    setMensagem("");
+    try {
+      await servicoApi.remover(s.srvCodigo);
+      if (editId === s.srvCodigo) limparForm();
+      setMensagem("Serviço excluído");
+      carregar();
+    } catch {
+      setErro("Falha ao excluir serviço");
     }
   };
 
@@ -83,11 +119,12 @@ const AbaServicos = () => {
               <th>#</th>
               <th>Serviço</th>
               <th>Preço</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             {servicos.length === 0 && (
-              <tr><td colSpan={3} className="ajustes-vazio">Nenhum serviço cadastrado.</td></tr>
+              <tr><td colSpan={4} className="ajustes-vazio">Nenhum serviço cadastrado.</td></tr>
             )}
             {servicos.map((s) => (
               <tr key={s.srvCodigo}>
@@ -99,6 +136,16 @@ const AbaServicos = () => {
                     currency: "BRL",
                   })}
                 </td>
+                <td>
+                  <div className="ajustes-acoes-linha">
+                    <button className="ajustes-btn-icone" onClick={() => iniciarEdicao(s)} title="Editar">
+                      <Pencil size={15} />
+                    </button>
+                    <button className="ajustes-btn-icone ajustes-btn-perigo" onClick={() => excluir(s)} title="Excluir">
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -106,7 +153,7 @@ const AbaServicos = () => {
       </div>
 
       <div className="ajustes-form-card">
-        <h3>Adicionar serviço</h3>
+        <h3>{editId ? "Editar serviço" : "Adicionar serviço"}</h3>
         <div className="ajustes-form-row">
           <div className="ajustes-campo">
             <label>Nome do serviço</label>
@@ -128,12 +175,18 @@ const AbaServicos = () => {
           </div>
           <button
             className="ajustes-btn-add"
-            onClick={adicionar}
+            onClick={salvarServico}
             disabled={salvando}
           >
-            <Plus size={16} />
-            {salvando ? "Salvando..." : "Adicionar"}
+            {editId ? <Save size={16} /> : <Plus size={16} />}
+            {salvando ? "Salvando..." : editId ? "Salvar" : "Adicionar"}
           </button>
+          {editId && (
+            <button className="ajustes-btn-cancelar" onClick={limparForm} disabled={salvando}>
+              <X size={16} />
+              Cancelar
+            </button>
+          )}
         </div>
         {erro && <p className="ajustes-erro">{erro}</p>}
         {mensagem && <p className="ajustes-sucesso">{mensagem}</p>}
@@ -149,6 +202,8 @@ const AbaEquipe = () => {
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [especialidade, setEspecialidade] = useState("");
+  const [senha, setSenha] = useState("");
+  const [editId, setEditId] = useState(null);
   const [salvando, setSalvando] = useState(false);
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState("");
@@ -160,29 +215,68 @@ const AbaEquipe = () => {
     carregar();
   }, []);
 
-  const adicionar = async () => {
+  const limparForm = () => {
+    setNome(""); setEmail(""); setTelefone(""); setEspecialidade(""); setSenha("");
+    setEditId(null);
+  };
+
+  const iniciarEdicao = (b) => {
+    setErro("");
+    setMensagem("");
+    setEditId(b.barCodigo);
+    setNome(b.barNome || "");
+    setEmail(b.barEmail || "");
+    setTelefone(formatarTelefone(b.barTelefone || ""));
+    setEspecialidade(b.barEspecialidade || "");
+    setSenha("");
+  };
+
+  const salvar = async () => {
     setErro("");
     setMensagem("");
     if (!nome.trim() || !email.trim() || !telefone.trim()) {
       setErro("Preencha nome, e-mail e telefone");
       return;
     }
+    if (!editId && (!senha || senha.length < 6)) {
+      setErro("Defina uma senha de ao menos 6 caracteres");
+      return;
+    }
     setSalvando(true);
     try {
-      await barbeiroApi.criar({
+      const dados = {
         barNome: nome.trim(),
         barEmail: email.trim(),
         barTelefone: apenasNumeros(telefone),
         barEspecialidade: especialidade.trim() || "Geral",
-        barAtivo: true,
-      });
-      setNome(""); setEmail(""); setTelefone(""); setEspecialidade("");
-      setMensagem("Barbeiro adicionado com sucesso");
+      };
+      if (senha) dados.barSenha = senha;
+
+      if (editId) {
+        await barbeiroApi.atualizar(editId, dados);
+        setMensagem("Barbeiro atualizado com sucesso");
+      } else {
+        await barbeiroApi.criar({ ...dados, barAtivo: true });
+        setMensagem("Barbeiro adicionado com sucesso");
+      }
+      limparForm();
       carregar();
     } catch {
-      setErro("Falha ao adicionar barbeiro");
+      setErro("Falha ao salvar barbeiro");
     } finally {
       setSalvando(false);
+    }
+  };
+
+  const alternarAtivo = async (b) => {
+    setErro("");
+    setMensagem("");
+    try {
+      await barbeiroApi.atualizar(b.barCodigo, { barAtivo: !b.barAtivo });
+      setMensagem(b.barAtivo ? "Barbeiro desativado" : "Barbeiro reativado");
+      carregar();
+    } catch {
+      setErro("Falha ao alterar status do barbeiro");
     }
   };
 
@@ -202,11 +296,12 @@ const AbaEquipe = () => {
               <th>Especialidade</th>
               <th>E-mail</th>
               <th>Status</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             {barbeiros.length === 0 && (
-              <tr><td colSpan={5} className="ajustes-vazio">Nenhum barbeiro cadastrado.</td></tr>
+              <tr><td colSpan={6} className="ajustes-vazio">Nenhum barbeiro cadastrado.</td></tr>
             )}
             {barbeiros.map((b) => (
               <tr key={b.barCodigo}>
@@ -219,6 +314,20 @@ const AbaEquipe = () => {
                     {b.barAtivo ? "Ativo" : "Inativo"}
                   </span>
                 </td>
+                <td>
+                  <div className="ajustes-acoes-linha">
+                    <button className="ajustes-btn-icone" onClick={() => iniciarEdicao(b)} title="Editar">
+                      <Pencil size={15} />
+                    </button>
+                    <button
+                      className="ajustes-btn-texto"
+                      onClick={() => alternarAtivo(b)}
+                      title={b.barAtivo ? "Desativar" : "Reativar"}
+                    >
+                      {b.barAtivo ? "Desativar" : "Reativar"}
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -226,7 +335,7 @@ const AbaEquipe = () => {
       </div>
 
       <div className="ajustes-form-card">
-        <h3>Adicionar barbeiro</h3>
+        <h3>{editId ? "Editar barbeiro" : "Adicionar barbeiro"}</h3>
         <div className="ajustes-form-grid">
           <div className="ajustes-campo">
             <label>Nome</label>
@@ -244,11 +353,28 @@ const AbaEquipe = () => {
             <label>Especialidade</label>
             <input type="text" placeholder="Ex: Corte e Barba" value={especialidade} onChange={(e) => setEspecialidade(e.target.value)} />
           </div>
+          <div className="ajustes-campo">
+            <label>{editId ? "Nova senha (opcional)" : "Senha"}</label>
+            <input
+              type="password"
+              placeholder={editId ? "Deixe em branco para manter" : "Mínimo 6 caracteres"}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
+          </div>
         </div>
-        <button className="ajustes-btn-add" onClick={adicionar} disabled={salvando} style={{ marginTop: "12px" }}>
-          <Plus size={16} />
-          {salvando ? "Salvando..." : "Adicionar"}
-        </button>
+        <div className="ajustes-acoes" style={{ marginTop: "12px" }}>
+          <button className="ajustes-btn-add" onClick={salvar} disabled={salvando}>
+            {editId ? <Save size={16} /> : <Plus size={16} />}
+            {salvando ? "Salvando..." : editId ? "Salvar" : "Adicionar"}
+          </button>
+          {editId && (
+            <button className="ajustes-btn-cancelar" onClick={limparForm} disabled={salvando}>
+              <X size={16} />
+              Cancelar
+            </button>
+          )}
+        </div>
         {erro && <p className="ajustes-erro">{erro}</p>}
         {mensagem && <p className="ajustes-sucesso">{mensagem}</p>}
       </div>

@@ -58,6 +58,17 @@ const formatarMoeda = (valor) =>
     currency: 'BRL',
   });
 
+// Senha inicial aleatoria para clientes criados automaticamente no agendamento.
+// O cliente pode redefini-la depois; evita credencial fixa previsivel.
+const gerarSenhaAleatoria = () =>
+  Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-4).toUpperCase();
+
+const inicioDoDia = () => {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
 const AgendamentoCliente = () => {
   const [servicos, setServicos] = useState(servicosFallback);
   const [barbeiros, setBarbeiros] = useState([]);
@@ -97,19 +108,38 @@ const AgendamentoCliente = () => {
   }, []);
 
   useEffect(() => {
-    if (!barbeiroSelecionado) return;
+    if (!barbeiroSelecionado || !diaSelecionado) return;
+
+    const dataIso = diaSelecionado.toISOString().slice(0, 10);
+
+    // Remove dos slots os horarios ja ocupados (nao cancelados) do barbeiro no dia.
+    const filtrarOcupados = (slots) =>
+      agendamentoApi
+        .disponibilidade(barbeiroSelecionado.barCodigo, dataIso)
+        .then((ocupados) => {
+          const ocupadosHHMM = (ocupados || []).map((h) => String(h).slice(0, 5));
+          return slots.filter((s) => !ocupadosHHMM.includes(s));
+        })
+        .catch(() => slots);
+
     configuracaoAgendaApi
       .porBarbeiro(barbeiroSelecionado.barCodigo)
       .then((cfg) => {
-        const diaSemana = DIAS_JS[diaSelecionado?.getDay() ?? new Date().getDay()];
+        const diaSemana = DIAS_JS[diaSelecionado.getDay()];
         const diasConfig = cfg.cfgDias ? cfg.cfgDias.split(',').map((d) => d.trim()) : [];
         if (diasConfig.length && !diasConfig.includes(diaSemana)) {
-          setHorariosDisponiveis([]);
-        } else {
-          setHorariosDisponiveis(gerarSlots(cfg.cfgHorarioInicio, cfg.cfgHorarioFim, cfg.cfgIntervalo));
+          return [];
         }
+        return filtrarOcupados(gerarSlots(cfg.cfgHorarioInicio, cfg.cfgHorarioFim, cfg.cfgIntervalo));
       })
-      .catch(() => setHorariosDisponiveis(horariosFallback));
+      .catch(() => filtrarOcupados(horariosFallback))
+      .then((slots) => {
+        setHorariosDisponiveis(slots);
+        // Mantem a selecao apenas se ainda estiver disponivel; senao pega o primeiro slot.
+        setHorarioSelecionado((atual) =>
+          slots.includes(atual) ? atual : (slots[0] || '')
+        );
+      });
   }, [barbeiroSelecionado, diaSelecionado]);
 
   const total = useMemo(
@@ -125,12 +155,42 @@ const AgendamentoCliente = () => {
     });
   };
 
+  const avancarParaHorario = () => {
+    setErro('');
+    if (!servicoSelecionado) {
+      setErro('Selecione um serviço para continuar');
+      return;
+    }
+    scrollPara('card-horario', 2);
+  };
+
+  const avancarParaConfirmacao = () => {
+    setErro('');
+    if (!diaSelecionado || !horarioSelecionado || !horariosDisponiveis.includes(horarioSelecionado)) {
+      setErro('Selecione um horário disponível para continuar');
+      return;
+    }
+    scrollPara('card-confirmacao', 3);
+  };
+
   const confirmarAgendamento = async () => {
     setErro('');
     setMensagem('');
 
-    if (!servicoSelecionado || !diaSelecionado || !horarioSelecionado) {
-      setErro('Selecione serviço, dia e horário');
+    if (!servicoSelecionado) {
+      setErro('Selecione um serviço');
+      return;
+    }
+    if (!barbeiroSelecionado) {
+      setErro('Selecione um profissional');
+      return;
+    }
+    if (!diaSelecionado || !horarioSelecionado) {
+      setErro('Selecione dia e horário');
+      return;
+    }
+    if (!horariosDisponiveis.includes(horarioSelecionado)) {
+      setErro('Escolha um horário disponível na lista');
       return;
     }
     if (!nome || !email || !telefone) {
@@ -143,16 +203,15 @@ const AgendamentoCliente = () => {
       let cliCodigo = logado?.cliCodigo;
 
       if (!cliCodigo) {
-        const todos = await clienteApi.listar().catch(() => []);
-        const existente = todos.find((c) => c.cliEmail === email);
-        if (existente) {
+        const existente = await clienteApi.buscarPorEmail(email).catch(() => null);
+        if (existente && existente.cliCodigo) {
           cliCodigo = existente.cliCodigo;
         } else {
           const novo = await clienteApi.criar({
             cliNome: nome,
             cliEmail: email,
             cliTelefone: telefone,
-            cliSenha: '00000000',
+            cliSenha: gerarSenhaAleatoria(),
           });
           cliCodigo = novo.cliCodigo;
         }
@@ -284,7 +343,7 @@ const AgendamentoCliente = () => {
 
               <button
                 className="dark-button"
-                onClick={() => scrollPara('card-horario', 2)}
+                onClick={avancarParaHorario}
               >
                 Continuar
                 <ArrowRight size={17} />
@@ -315,9 +374,10 @@ const AgendamentoCliente = () => {
                   <DayPicker
                     mode="single"
                     selected={diaSelecionado}
-                    onSelect={setDiaSelecionado}
+                    onSelect={(dia) => dia && setDiaSelecionado(dia)}
                     month={month}
                     onMonthChange={setMonth}
+                    disabled={{ before: inicioDoDia() }}
                     showOutsideDays
                     className="custom-calendar"
                   />
@@ -369,7 +429,7 @@ const AgendamentoCliente = () => {
 
               <button
                 className="dark-button"
-                onClick={() => scrollPara('card-confirmacao', 3)}
+                onClick={avancarParaConfirmacao}
               >
                 Revisar
                 <ArrowRight size={17} />

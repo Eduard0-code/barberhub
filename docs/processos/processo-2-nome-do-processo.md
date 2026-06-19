@@ -1,4 +1,4 @@
-### 3.3.2 Processo 2 – NOME DO PROCESSO
+### Modelo de Processo 2 (Template)
 
 _Apresente aqui o nome e as oportunidades de melhoria para o processo 2. 
 Em seguida, apresente o modelo do processo 2, descrito no padrão BPMN._
