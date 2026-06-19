@@ -2,14 +2,15 @@
 body { font-family: 'Segoe UI', sans-serif; background-color: #f9f9f9; margin: 0; color: #333; }
 /* Footer.css */
 .footer-container {
-  width: 100%;
   background-color: #ffffff;
   border-top: 1px solid #e0e0e0;
   padding: 15px 0;
-  position: fixed; 
+  position: fixed;
   bottom: 0;
-  left: 0;
+  left: var(--sidebar-largura);
+  right: 0;
   z-index: 100;
+  transition: left 0.25s ease;
 }
 
 .footer-content {

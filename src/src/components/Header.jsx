@@ -1,4 +1,4 @@
-import { LogOut, Menu, ChevronDown, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { LogOut, Menu, ChevronDown, PanelLeftClose, PanelLeftOpen, Scissors } from 'lucide-react';
 import './Header.css';
 import { useNavigate } from 'react-router-dom';
 import { usuarioLogado, logout } from '../services/api.js';
@@ -27,18 +27,21 @@ const Header = () => {
           <Menu size={22} />
         </button>
 
+        <div className="menu-logo">
+          <span className="logo-icon">
+            <Scissors size={26} strokeWidth={2.2} />
+          </span>
+          <span className="logo-text">Barber Hub</span>
+        </div>
+
         <button
           className="botao-colapsar"
           onClick={alternarColapsado}
-          aria-label="Recolher menu"
+          aria-label={colapsado ? 'Expandir menu' : 'Recolher menu'}
+          title={colapsado ? 'Expandir menu' : 'Recolher menu'}
         >
           {colapsado ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
         </button>
-
-        <div className="menu-logo">
-          <div className="logo-icon">✂</div>
-          <div className="logo-text">Barber Hub</div>
-        </div>
       </div>
 
       <div className="header-profile">

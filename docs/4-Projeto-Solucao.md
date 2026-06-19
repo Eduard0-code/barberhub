@@ -1,6 +1,6 @@
 ## 4. Projeto da Solução
 
-<span style="color:red">Pré-requisitos: <a href="03-Modelagem do Processo de Negocio.md"> Modelagem do Processo de Negocio</a></span>
+<span style="color:red">Pré-requisitos: <a href="3-Modelagem-Processos-Negócio.md"> Modelagem dos Processos de Negócio</a></span>
 
 ## 4.1. Arquitetura da solução
 
@@ -63,7 +63,6 @@ Toda a comunicação acontece de forma segura, e a arquitetura foi organizada pa
 
 #### 4.3.1 Modelo ER
 
-<<<<<<< HEAD
 O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.
 
 ![Diagrama ER](images/Modelo_er.png)
@@ -164,5 +163,5 @@ O funcionamento do sistema ocorrerá da seguinte forma: o usuário acessa o fron
 | SGBD           | MySQL           |
 | Front end      | HTML+CSS+React    |
 | Back end       | SpringBoot |
-| Deploy         | Versel    |
+| Deploy         | Vercel    |
 | Versionamento  | GITHUB    |
