@@ -46,6 +46,7 @@ const formatarMoeda = (valor) =>
 const AvaliacaoCliente = () => {
   const [nota, setNota] = useState(0);
   const [comentario, setComentario] = useState('');
+  const [agendamentos, setAgendamentos] = useState([]);
   const [agendamento, setAgendamento] = useState(null);
   const [avaliacaoExistente, setAvaliacaoExistente] = useState(null);
   const [servicos, setServicos] = useState([]);
@@ -66,40 +67,43 @@ const AvaliacaoCliente = () => {
       setServicos(listaServicos);
       setBarbeiros(listaBarbeiros);
 
-      let agendamentos = [];
+      let todos = [];
       if (logado?.cliCodigo) {
-        agendamentos = await agendamentoApi.porCliente(logado.cliCodigo).catch(() => []);
+        todos = await agendamentoApi.porCliente(logado.cliCodigo).catch(() => []);
         setNomeCliente(logado.cliNome || 'Cliente');
       } else {
-        agendamentos = await agendamentoApi.recentes().catch(() => []);
+        todos = await agendamentoApi.recentes().catch(() => []);
+        if (todos.length) {
+          const clientes = await clienteApi.listar().catch(() => []);
+          const cli = clientes.find((c) => c.cliCodigo === todos[0].cliCodigo);
+          if (cli) setNomeCliente(cli.cliNome);
+        }
       }
 
-      if (!agendamentos.length) {
-        setAgendamento(null);
-        return;
-      }
+      const concluidos = todos.filter((a) => a.agdStatus === 'Concluido');
+      setAgendamentos(concluidos);
 
-      const ultimoConcluido = agendamentos.find((a) => a.agdStatus === 'Concluido') || agendamentos[0];
-      setAgendamento(ultimoConcluido);
-
-      if (!logado?.cliCodigo && ultimoConcluido.cliCodigo) {
-        const clientes = await clienteApi.listar().catch(() => []);
-        const cli = clientes.find((c) => c.cliCodigo === ultimoConcluido.cliCodigo);
-        if (cli) setNomeCliente(cli.cliNome);
+      if (concluidos.length) {
+        await selecionarAgendamento(concluidos[0]);
       }
-
-      const av = await avaliacaoApi.porAgendamento(ultimoConcluido.agdCodigo).catch(() => null);
-      if (av && av.avaCodigo) {
-        setAvaliacaoExistente(av);
-        setNota(av.avaNota);
-        setComentario(av.avaComentario || '');
-      } else {
-        setAvaliacaoExistente(null);
-        setNota(0);
-        setComentario('');
-      }
-    } catch (e) {
+    } catch {
       setErro('Não foi possível carregar os dados');
+    }
+  };
+
+  const selecionarAgendamento = async (agd) => {
+    setAgendamento(agd);
+    setNota(0);
+    setComentario('');
+    setAvaliacaoExistente(null);
+    setMensagem('');
+    setErro('');
+
+    const av = await avaliacaoApi.porAgendamento(agd.agdCodigo).catch(() => null);
+    if (av && av.avaCodigo) {
+      setAvaliacaoExistente(av);
+      setNota(av.avaNota);
+      setComentario(av.avaComentario || '');
     }
   };
 
@@ -165,13 +169,11 @@ const AvaliacaoCliente = () => {
     }
   };
 
-  const nomeServico = agendamento
-    ? servicos.find((s) => s.srvCodigo === agendamento.srvCodigo)?.srvNome || 'Serviço'
-    : 'Serviço';
+  const nomeServico = (agd) =>
+    agd ? servicos.find((s) => s.srvCodigo === agd.srvCodigo)?.srvNome || 'Serviço' : 'Serviço';
 
-  const nomeBarbeiro = agendamento
-    ? barbeiros.find((b) => b.barCodigo === agendamento.barCodigo)?.barNome || 'Profissional'
-    : 'Profissional';
+  const nomeBarbeiro = (agd) =>
+    agd ? barbeiros.find((b) => b.barCodigo === agd.barCodigo)?.barNome || 'Profissional' : 'Profissional';
 
   return (
     <>
@@ -179,11 +181,29 @@ const AvaliacaoCliente = () => {
       <div className="avaliacao-container">
         <MenuLateral />
 
+        {agendamentos.length > 1 && (
+          <div className="avaliacao-lista-agendamentos">
+            <span className="servico-label">SELECIONE O AGENDAMENTO</span>
+            <div className="agendamentos-scroll">
+              {agendamentos.map((agd) => (
+                <button
+                  key={agd.agdCodigo}
+                  className={`agendamento-item ${agendamento?.agdCodigo === agd.agdCodigo ? 'agendamento-ativo' : ''}`}
+                  onClick={() => selecionarAgendamento(agd)}
+                >
+                  <span className="agendamento-item-servico">{nomeServico(agd)}</span>
+                  <span className="agendamento-item-data">{formatarData(agd.agdData)}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="servico-card">
           <div>
             <span className="servico-label">SERVIÇO REALIZADO</span>
 
-            <h1>{nomeServico}</h1>
+            <h1>{nomeServico(agendamento)}</h1>
 
             <div className="servico-info">
               <span>
@@ -198,7 +218,7 @@ const AvaliacaoCliente = () => {
 
               <span>
                 <Scissors size={18} />
-                Profissional: {nomeBarbeiro}
+                Profissional: {nomeBarbeiro(agendamento)}
               </span>
             </div>
           </div>
