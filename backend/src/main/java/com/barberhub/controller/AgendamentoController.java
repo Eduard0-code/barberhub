@@ -134,13 +134,25 @@ public class AgendamentoController {
     }
 
     @PutMapping("/{id}/status")
+    @Transactional
     public ResponseEntity<Agendamento> alterarStatus(@PathVariable Integer id, @RequestBody Map<String, String> dados) {
         Optional<Agendamento> agd = repo.findById(id);
         if (agd.isEmpty()) return ResponseEntity.notFound().build();
 
         Agendamento atual = agd.get();
-        atual.setAgdStatus(dados.get("status"));
-        return ResponseEntity.ok(repo.save(atual));
+        String novoStatus = dados.get("status");
+        atual.setAgdStatus(novoStatus);
+        repo.save(atual);
+
+        if ("Concluido".equalsIgnoreCase(novoStatus)) {
+            financeiroRepo.findByAgdCodigo(id).forEach(fin -> {
+                fin.setFinStatus("Pago");
+                fin.setFinDataPagto(LocalDate.now());
+                financeiroRepo.save(fin);
+            });
+        }
+
+        return ResponseEntity.ok(atual);
     }
 
     /** true se o barbeiro ja possui agendamento nao cancelado no mesmo dia/horario (ignorando idIgnorar). */
