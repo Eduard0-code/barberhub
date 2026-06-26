@@ -26,6 +26,12 @@ O BarberHub é uma solução digital de gestão desenhada para unificar a jornad
 
 Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
 
+## Deploy na Vercel
+
+O frontend fica em `src/` e já está preparado para build na Vercel. O arquivo `vercel.json` da raiz executa o build dentro dessa pasta, publica `src/dist` e faz fallback para `index.html` nas rotas do React Router.
+
+Para funcionar em produção, o backend Spring Boot precisa estar publicado em uma URL própria. Depois de subir a API, configure a variável de ambiente `VITE_API_URL` na Vercel com o endereço base dela. Sem isso, o frontend continua abrindo, mas as telas que dependem da API não conseguem buscar dados fora do ambiente local.
+
 # Documentação
 
 <ol>
