@@ -1,0 +1,1 @@
+import{a as e,r as t}from"./vendor-react-9vnbNHWy.js";var n=t(),r=()=>(0,n.jsx)(e,{to:`/ajustes`,replace:!0});export{r as default};

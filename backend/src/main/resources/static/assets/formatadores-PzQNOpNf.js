@@ -1,0 +1,1 @@
+function e(e){let t=String(e||``).replace(/\D/g,``).slice(0,11);return t.length===0?``:t.length<=2?`(`+t:t.length<=6?`(`+t.slice(0,2)+`) `+t.slice(2):t.length<=10?`(`+t.slice(0,2)+`) `+t.slice(2,6)+`-`+t.slice(6):`(`+t.slice(0,2)+`) `+t.slice(2,7)+`-`+t.slice(7)}function t(e){return String(e||``).replace(/\D/g,``)}export{e as n,t};

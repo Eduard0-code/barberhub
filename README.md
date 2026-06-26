@@ -30,7 +30,17 @@ Assim que a primeira versão do sistema estiver disponível, deverá complementa
 
 O frontend fica em `src/` e já está preparado para build na Vercel. O arquivo `vercel.json` da raiz executa o build dentro dessa pasta, publica `src/dist` e faz fallback para `index.html` nas rotas do React Router.
 
-Em ambiente local, o build continua alimentando `backend/src/main/resources/static` para manter o fluxo com o Spring Boot. Para funcionar em produção, o backend Spring Boot precisa estar publicado em uma URL própria. Depois de subir a API, configure a variável de ambiente `VITE_API_URL` na Vercel com o endereço base dela, porque o frontend usa `/api` por padrão quando essa variável nao estiver definida.
+**Otimizações aplicadas:**
+- Code splitting nas rotas (lazy loading) - cada tela carrega apenas quando acessada
+- Chunking de dependências (React, ApexCharts, UI libs) em arquivos separados
+- Fallback visual durante carregamento de rotas
+
+Em ambiente local, o build continua alimentando `backend/src/main/resources/static` para manter o fluxo com o Spring Boot. Para funcionar em produção, o backend Spring Boot precisa estar publicado em uma URL própria. 
+
+**Próximos passos:**
+1. Veja [DEPLOY-BACKEND.md](DEPLOY-BACKEND.md) para publicar o backend (recomendado: Railway, PlanetScale para DB)
+2. Configure a variável `VITE_API_URL` na Vercel com o endereço base do backend
+3. Consulte [.env.example](.env.example) para configuração local
 
 # Documentação
 
