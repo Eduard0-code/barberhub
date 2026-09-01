@@ -17,7 +17,6 @@ import {
   servicoApi,
   barbeiroApi,
   agendamentoApi,
-  clienteApi,
   configuracaoAgendaApi,
   usuarioLogado,
 } from '../services/api.js';
@@ -58,11 +57,6 @@ const formatarMoeda = (valor) =>
     currency: 'BRL',
   });
 
-// Senha inicial aleatoria para clientes criados automaticamente no agendamento.
-// O cliente pode redefini-la depois; evita credencial fixa previsivel.
-const gerarSenhaAleatoria = () =>
-  Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-4).toUpperCase();
-
 const inicioDoDia = () => {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
@@ -84,9 +78,7 @@ const AgendamentoCliente = () => {
   const [erro, setErro] = useState('');
 
   const logado = usuarioLogado();
-  const [nome, setNome] = useState(logado?.cliNome || '');
-  const [telefone, setTelefone] = useState(logado?.cliTelefone || '');
-  const [email, setEmail] = useState(logado?.cliEmail || '');
+  const [nomeIdentificacao, setNomeIdentificacao] = useState(logado?.cliNome || '');
 
   useEffect(() => {
     servicoApi.listar()
@@ -102,13 +94,20 @@ const AgendamentoCliente = () => {
       .then((dados) => {
         const ativos = dados.filter((b) => b.barAtivo !== false);
         setBarbeiros(ativos);
-        if (ativos.length) setBarbeiroSelecionado(ativos[0]);
       })
       .catch(() => {});
   }, []);
 
   useEffect(() => {
-    if (!barbeiroSelecionado || !diaSelecionado) return;
+    if (!diaSelecionado) return;
+
+    if (!barbeiroSelecionado) {
+      setHorariosDisponiveis(horariosFallback);
+      setHorarioSelecionado((atual) =>
+        horariosFallback.includes(atual) ? atual : (horariosFallback[0] || '')
+      );
+      return;
+    }
 
     const dataIso = diaSelecionado.toISOString().slice(0, 10);
 
@@ -181,10 +180,6 @@ const AgendamentoCliente = () => {
       setErro('Selecione um serviço');
       return;
     }
-    if (!barbeiroSelecionado) {
-      setErro('Selecione um profissional');
-      return;
-    }
     if (!diaSelecionado || !horarioSelecionado) {
       setErro('Selecione dia e horário');
       return;
@@ -193,35 +188,15 @@ const AgendamentoCliente = () => {
       setErro('Escolha um horário disponível na lista');
       return;
     }
-    if (!nome || !email || !telefone) {
-      setErro('Preencha seus dados antes de confirmar');
-      return;
-    }
-
     setCarregando(true);
     try {
-      let cliCodigo = logado?.cliCodigo;
-
-      if (!cliCodigo) {
-        const existente = await clienteApi.buscarPorEmail(email).catch(() => null);
-        if (existente && existente.cliCodigo) {
-          cliCodigo = existente.cliCodigo;
-        } else {
-          const novo = await clienteApi.criar({
-            cliNome: nome,
-            cliEmail: email,
-            cliTelefone: telefone,
-            cliSenha: gerarSenhaAleatoria(),
-          });
-          cliCodigo = novo.cliCodigo;
-        }
-      }
-
       const dataIso = diaSelecionado.toISOString().slice(0, 10);
       const horaIso = horarioSelecionado + ':00';
+      const identificacao = (nomeIdentificacao || '').trim() || (logado?.cliNome || 'Cliente');
 
       await agendamentoApi.criar({
-        cliCodigo,
+        cliCodigo: logado?.cliCodigo ?? null,
+        agdIdentificacao: identificacao,
         barCodigo: barbeiroSelecionado?.barCodigo || null,
         srvCodigo: servicoSelecionado.srvCodigo,
         agdData: dataIso,
@@ -315,25 +290,25 @@ const AgendamentoCliente = () => {
               ))}
             </div>
 
-            {barbeiros.length > 0 && (
-              <div className="barbeiro-selector">
-                <label>Profissional</label>
-                <select
-                  value={barbeiroSelecionado?.barCodigo || ''}
-                  onChange={(e) =>
-                    setBarbeiroSelecionado(
-                      barbeiros.find((b) => b.barCodigo === Number(e.target.value))
-                    )
-                  }
-                >
-                  {barbeiros.map((b) => (
-                    <option key={b.barCodigo} value={b.barCodigo}>
-                      {b.barNome}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
+            <div className="barbeiro-selector">
+              <label>Profissional</label>
+              <select
+                value={barbeiroSelecionado?.barCodigo || ''}
+                onChange={(e) => {
+                  const valor = e.target.value;
+                  setBarbeiroSelecionado(
+                    valor === '' ? null : barbeiros.find((b) => b.barCodigo === Number(valor))
+                  );
+                }}
+              >
+                <option value="">Qualquer barbeiro</option>
+                {barbeiros.map((b) => (
+                  <option key={b.barCodigo} value={b.barCodigo}>
+                    {b.barNome}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             <div className="cliente-card-footer">
               <div>
@@ -516,37 +491,14 @@ const AgendamentoCliente = () => {
             </div>
 
             <div className="customer-data-section">
-              <h3>Seus Dados</h3>
-
-              <div className="form-grid">
-                <div className="input-box">
-                  <label>Nome Completo</label>
-                  <input
-                    type="text"
-                    placeholder="Digite seu nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                  />
-                </div>
-
-                <div className="input-box">
-                  <label>Telefone</label>
-                  <input
-                    type="text"
-                    placeholder="(00) 00000-0000"
-                    value={telefone}
-                    onChange={(e) => setTelefone(e.target.value)}
-                  />
-                </div>
-              </div>
-
+              <h3>Identificação do agendamento</h3>
               <div className="input-box full-width">
-                <label>E-mail</label>
+                <label>Nome para identificação</label>
                 <input
-                  type="email"
-                  placeholder="seuemail@gmail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  placeholder="Ex: Maria, Cliente 01 ou Apelido"
+                  value={nomeIdentificacao}
+                  onChange={(e) => setNomeIdentificacao(e.target.value)}
                 />
               </div>
 
@@ -555,7 +507,7 @@ const AgendamentoCliente = () => {
 
               <div className="confirmation-footer">
                 <p className="policy-text">
-                  Ao confirmar o agendamento você concorda com os termos da barbearia.
+                  Seu nome será usado apenas para identificar o agendamento e não é necessário cadastrar dados pessoais completos.
                 </p>
 
                 <button

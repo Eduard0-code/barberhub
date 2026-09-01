@@ -42,6 +42,11 @@ const LoginScreen = ({ onCadastro }) => {
     }
   };
 
+  const entrarComoVisitante = () => {
+    localStorage.removeItem("usuarioLogado");
+    navigate("/");
+  };
+
   return (
     <div className="card">
       <Header />
@@ -78,6 +83,10 @@ const LoginScreen = ({ onCadastro }) => {
         </div>
 
         {erro && <p className="form-erro">{erro}</p>}
+
+        <button type="button" className="link-visitante" onClick={entrarComoVisitante}>
+          Continuar como visitante
+        </button>
       </div>
 
       <div className="divider" />

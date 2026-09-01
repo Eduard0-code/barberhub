@@ -8,7 +8,6 @@ import AvaliacaoBarbeiro from "./components/AvaliacaoBarbeiro.jsx";
 import Indicadores from "./components/Indicadores.jsx";
 import Ajustes from "./components/Ajustes.jsx";
 import Estoque from "./components/Estoque.jsx";
-import Home from './components/Home.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import "./App.css";
@@ -18,9 +17,10 @@ function App() {
     <Routes>
       <Route path="/login" element={<BarberCadLog />} />
 
-      <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+      {/* Tela inicial do cliente: agendamento simples, sem exigir login */}
+      <Route path="/" element={<AgendamentoCliente />} />
+      <Route path="/agendamento-cliente" element={<AgendamentoCliente />} />
       <Route path="/agendamento-barbeiro" element={<PrivateRoute><AgendamentoBarbeiro /></PrivateRoute>} />
-      <Route path="/agendamento-cliente" element={<PrivateRoute><AgendamentoCliente /></PrivateRoute>} />
       <Route path="/visualizacao-barbeiro" element={<PrivateRoute><VisualizacaoBarbeiro /></PrivateRoute>} />
       <Route path="/gestao-financeira" element={<PrivateRoute><GestaoFinanceira /></PrivateRoute>} />
       <Route path="/avaliacao-cliente" element={<PrivateRoute><AvaliacaoCliente /></PrivateRoute>} />

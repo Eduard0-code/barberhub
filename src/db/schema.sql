@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS Configuracao_Agenda (
 CREATE TABLE IF NOT EXISTS Agendamento (
     AgdCodigo INTEGER PRIMARY KEY AUTO_INCREMENT,
     CliCodigo INTEGER,
+    AgdIdentificacao VARCHAR(100),
     BarCodigo INTEGER,
     SrvCodigo INTEGER,
     AgdData DATE,

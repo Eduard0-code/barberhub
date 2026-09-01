@@ -17,6 +17,9 @@ public class Agendamento {
     @Column(name = "CliCodigo")
     private Integer cliCodigo;
 
+    @Column(name = "AgdIdentificacao")
+    private String agdIdentificacao;
+
     @Column(name = "BarCodigo")
     private Integer barCodigo;
 
@@ -40,6 +43,9 @@ public class Agendamento {
 
     public Integer getCliCodigo() { return cliCodigo; }
     public void setCliCodigo(Integer cliCodigo) { this.cliCodigo = cliCodigo; }
+
+    public String getAgdIdentificacao() { return agdIdentificacao; }
+    public void setAgdIdentificacao(String agdIdentificacao) { this.agdIdentificacao = agdIdentificacao; }
 
     public Integer getBarCodigo() { return barCodigo; }
     public void setBarCodigo(Integer barCodigo) { this.barCodigo = barCodigo; }

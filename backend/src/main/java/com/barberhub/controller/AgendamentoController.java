@@ -73,6 +73,12 @@ public class AgendamentoController {
         if (agendamento.getAgdStatus() == null) {
             agendamento.setAgdStatus("Agendado");
         }
+        if (agendamento.getCliCodigo() != null && agendamento.getCliCodigo() <= 0) {
+            agendamento.setCliCodigo(null);
+        }
+        if (agendamento.getAgdIdentificacao() == null || agendamento.getAgdIdentificacao().isBlank()) {
+            agendamento.setAgdIdentificacao("Cliente");
+        }
 
         if (estaOcupado(agendamento.getBarCodigo(), agendamento.getAgdData(),
                 agendamento.getAgdHorario(), null)) {
