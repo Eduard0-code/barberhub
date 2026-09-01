@@ -1,39 +1,50 @@
 import { useEffect, useMemo, useState } from "react";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
 import "./VisualizacaoBarbeiro.css";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import MenuLateral from "./MenuLateral";
 import { CalendarDays, RefreshCcw, ArrowLeft, Info, Check, X } from "lucide-react";
-import { agendamentoApi, servicoApi, clienteApi, usuarioLogado } from "../services/api.js";
+import { agendamentoApi, servicoApi, clienteApi, barbeiroApi } from "../services/api.js";
+
+const normalizarData = (data) => {
+  if (!data) return "";
+  if (Array.isArray(data)) {
+    const [ano, mes, dia] = data;
+    return `${ano}-${String(mes).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+  }
+  return String(data).slice(0, 10);
+};
+
+const paraDataLocal = (dataIso) => new Date(`${dataIso}T12:00:00`);
 
 const VisualizacaoBarbeiro = () => {
   const hoje = new Date().toISOString().slice(0, 10);
-  const logado = usuarioLogado();
-  const barbeiroLogado = logado?.barCodigo || null;
 
   const [dataSelecionada, setDataSelecionada] = useState(hoje);
+  const [mesExibido, setMesExibido] = useState(paraDataLocal(hoje));
   const [todosAgendamentos, setTodosAgendamentos] = useState([]);
   const [servicos, setServicos] = useState([]);
   const [clientes, setClientes] = useState([]);
+  const [barbeiros, setBarbeiros] = useState([]);
   const [carregando, setCarregando] = useState(false);
 
   const carregarDados = () => {
     setCarregando(true);
-    // Barbeiro logado ve apenas a propria agenda; visao geral lista todos.
-    const fonteAgendamentos = barbeiroLogado
-      ? agendamentoApi.porBarbeiro(barbeiroLogado)
-      : agendamentoApi.listar();
-
+    // Agenda compartilhada: qualquer barbeiro logado ve os agendamentos de todos.
     Promise.all([
-      fonteAgendamentos,
+      agendamentoApi.listar(),
       servicoApi.listar(),
       clienteApi.listar(),
+      barbeiroApi.listar(),
     ])
-      .then(([agds, srvs, clis]) => {
+      .then(([agds, srvs, clis, bars]) => {
         setTodosAgendamentos(agds);
         setServicos(srvs);
         setClientes(clis);
+        setBarbeiros(bars);
       })
       .catch(() => {})
       .finally(() => setCarregando(false));
@@ -58,31 +69,33 @@ const VisualizacaoBarbeiro = () => {
     servicos.forEach((s) => (mapaServico[s.srvCodigo] = s.srvNome));
     const mapaCliente = {};
     clientes.forEach((c) => (mapaCliente[c.cliCodigo] = c.cliNome));
-
-    const normalizar = (data) => {
-      if (!data) return "";
-      if (Array.isArray(data)) {
-        const [y, m, d] = data;
-        return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-      }
-      return String(data).slice(0, 10);
-    };
+    const mapaBarbeiro = {};
+    barbeiros.forEach((b) => (mapaBarbeiro[b.barCodigo] = b.barNome));
 
     return todosAgendamentos
-      .filter((a) => normalizar(a.agdData) === dataSelecionada)
+      .filter((a) => normalizarData(a.agdData) === dataSelecionada)
       .sort((a, b) => (String(a.agdHorario) > String(b.agdHorario) ? 1 : -1))
       .map((a) => ({
         codigo: a.agdCodigo,
         horario: String(a.agdHorario).slice(0, 5),
-        cliente: mapaCliente[a.cliCodigo] || "Cliente",
+        cliente: a.agdIdentificacao || mapaCliente[a.cliCodigo] || "Cliente",
         servico: mapaServico[a.srvCodigo] || "Serviço",
+        barbeiro: mapaBarbeiro[a.barCodigo] || "—",
         status: a.agdStatus,
       }));
-  }, [todosAgendamentos, dataSelecionada, servicos, clientes]);
+  }, [todosAgendamentos, dataSelecionada, servicos, clientes, barbeiros]);
 
   const dataFormatada = useMemo(() => {
     return new Date(dataSelecionada + "T12:00:00").toLocaleDateString("pt-BR");
   }, [dataSelecionada]);
+
+  const diasOcupados = useMemo(
+    () => todosAgendamentos
+      .map((agendamento) => normalizarData(agendamento.agdData))
+      .filter(Boolean)
+      .map(paraDataLocal),
+    [todosAgendamentos]
+  );
 
   const navigate = useNavigate();
 
@@ -116,13 +129,18 @@ const VisualizacaoBarbeiro = () => {
             <label>Selecionar Data</label>
 
             <div className="date-actions">
-              <div className="date-input-wrapper">
-                <input
-                  type="date"
-                  value={dataSelecionada}
-                  onChange={(e) => setDataSelecionada(e.target.value)}
+              <div className="calendar-content custom-calendar-wrapper barber-calendar-wrapper">
+                <DayPicker
+                  mode="single"
+                  selected={paraDataLocal(dataSelecionada)}
+                  onSelect={(dia) => dia && setDataSelecionada(dia.toISOString().slice(0, 10))}
+                  month={mesExibido}
+                  onMonthChange={setMesExibido}
+                  showOutsideDays
+                  modifiers={{ ocupado: diasOcupados }}
+                  modifiersClassNames={{ ocupado: "barber-calendar-occupied" }}
+                  className="custom-calendar"
                 />
-                <CalendarDays size={17} />
               </div>
 
               <button
@@ -143,6 +161,7 @@ const VisualizacaoBarbeiro = () => {
                   <th>Horário</th>
                   <th>Cliente</th>
                   <th>Serviço</th>
+                  <th>Barbeiro</th>
                   <th>Status</th>
                   <th>Ações</th>
                 </tr>
@@ -151,7 +170,7 @@ const VisualizacaoBarbeiro = () => {
               <tbody>
                 {agendamentos.length === 0 ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: "center", padding: "24px", color: "#6b7280" }}>
+                    <td colSpan={6} style={{ textAlign: "center", padding: "24px", color: "#6b7280" }}>
                       {carregando ? "Carregando..." : "Nenhum agendamento para esta data."}
                     </td>
                   </tr>
@@ -170,6 +189,8 @@ const VisualizacaoBarbeiro = () => {
                       </td>
 
                       <td>{agendamento.servico}</td>
+
+                      <td>{agendamento.barbeiro}</td>
 
                       <td>
                         <span
